@@ -12,8 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import manager.elements.SystemListCell;
+import manager.models.SystemListItem;
+import manager.services.DirectoryService;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+
+import java.util.List;
+
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MainWindowController {
@@ -26,7 +31,9 @@ public class MainWindowController {
     @FXML
     private Label directoryLabel, leftStatus, rightStatus;
     @FXML
-    private ListView<String> systemListView, romListView;
+    private ListView<String> romListView;
+    @FXML
+    private ListView<SystemListItem>systemListView;
     @FXML
     private ImageView imagePreview;
     @FXML
@@ -44,17 +51,20 @@ public class MainWindowController {
         topBar.setOnMousePressed(this::handleMousePressed);
         topBar.setOnMouseDragged(this::handleMouseDragged);
 
-       // Create an ObservableList to hold the data
-       ObservableList<String> systemList = FXCollections.observableArrayList();
-       systemList.add("System 1");
-       systemList.add("System 2");
-       systemList.add("System 3");
+        // Create an ObservableList to hold the data
+        ObservableList<SystemListItem> systemList = FXCollections.observableArrayList();
+        
+        List<SystemListItem> systemListItems = DirectoryService.loadDevice();
 
-       // Set the custom cell factory for the ListView
-       systemListView.setCellFactory(listView -> new SystemListCell());
+        for(SystemListItem i : systemListItems){
+            systemList.add(i);
+        }
 
-       // Set the ObservableList as the data source for the ListView
-       systemListView.setItems(systemList);
+        // Set the custom cell factory for the ListView
+        systemListView.setCellFactory(listView -> new SystemListCell());
+
+        // Set the ObservableList as the data source for the ListView
+        systemListView.setItems(systemList);
 
 
     }

@@ -5,10 +5,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import manager.App;
 import manager.controllers.SystemListItemController;
+import manager.models.SystemListItem;
 
 import java.io.IOException;
 
-public class SystemListCell extends ListCell<String> {
+public class SystemListCell extends ListCell<SystemListItem> {
 
     public SystemListCell() {
         // Set the preferred width for the cell
@@ -16,20 +17,20 @@ public class SystemListCell extends ListCell<String> {
     }
 
     @Override
-    protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
+    protected void updateItem(SystemListItem system, boolean empty) {
+        super.updateItem(system, empty);
 
-        if (empty || item == null) {
+        if (empty || system == null) {
             // Clear cell content if item is null or empty
             setGraphic(null);
             setText(null);
         } else {
             // Load the cell layout from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/manager/elements/SystemItemCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SystemItemCell.fxml"));
             try {
                 HBox cellLayout = loader.load();
                 SystemListItemController controller = loader.getController();
-                controller.setItem(item);
+                controller.setItem(system.getSystemName(), system.getRomCount());
                 setGraphic(cellLayout);
                 setText(null);
             } catch (IOException e) {
@@ -37,4 +38,5 @@ public class SystemListCell extends ListCell<String> {
             }
         }
     }
+
 }
