@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<HBox stylesheets="@/styles/systemItemCell.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.SystemListItemController">
+    <ImageView fx:id="imageView" fitHeight="50" fitWidth="50" />
+    <VBox>
+        <Label styleClass="title" fx:id="titleLabel" />
+        <Label styleClass="subtitle" fx:id="subtitle" text="27 Titles" />
+    </VBox>
+</HBox>

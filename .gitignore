@@ -1,0 +1,40 @@
+# Maven target directory
+target/
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Maven build files
+mvnw
+mvnw.cmd
+.mvn/
+src/main/resources/application.properties
+
+# Log files
+*.log
+
+# Compiled Java class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA-specific files
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse-specific files
+.classpath
+.project
+.settings/
+
+# macOS-specific files
+.DS_Store
+
+# json settings
+*.json
