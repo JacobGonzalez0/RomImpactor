@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox stylesheets="@/styles/romCellItem.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.RomListItemController" alignment="CENTER_RIGHT">
+    <VBox HBox.hgrow="ALWAYS">
+        <Label styleClass="title" fx:id="titleLabel" />
+        <Label styleClass="subtitle" fx:id="subTitle" />
+    </VBox>
+     <ImageView id="imageView" fx:id="imageView" fitHeight="40" fitWidth="40" preserveRatio="true" HBox.hgrow="NEVER"/>
+</HBox>

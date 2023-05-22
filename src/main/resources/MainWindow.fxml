@@ -110,7 +110,7 @@
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
             </Label>
-                  <ListView fx:id="systemListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="220.0">
+                  <ListView fx:id="systemListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="220.0" onMouseClicked="#handleSystemListViewClick">
                       <cellFactory>
                           
                       </cellFactory>
@@ -124,7 +124,11 @@
       <AnchorPane id="Content" fx:id="romPane" minHeight="-1.0" minWidth="315.0" prefHeight="545.0" prefWidth="315.0" styleClass="root">
         <children>
           <Label alignment="CENTER" font="$x1" layoutX="10.0" layoutY="7.0" style="&#10;" styleClass="title" text="Roms" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-          <ListView fx:id="romListView" layoutX="10.0" layoutY="40.0" prefHeight="434.0" prefWidth="296.0" />
+          <ListView fx:id="romListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="300.0">
+            <cellFactory>
+                
+            </cellFactory>
+          </ListView>
           <Button fx:id="addRomButton" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="116.0">
             <graphic>
               <FontIcon iconLiteral="far-plus-square" iconSize="12" iconColor="e3e4fc"/>

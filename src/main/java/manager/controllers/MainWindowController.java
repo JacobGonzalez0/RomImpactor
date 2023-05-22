@@ -8,10 +8,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import manager.elements.RomListCell;
 import manager.elements.SystemListCell;
+import manager.models.Rom;
 import manager.models.SystemListItem;
 import manager.services.DirectoryService;
 import javafx.scene.control.Button;
@@ -31,7 +34,7 @@ public class MainWindowController {
     @FXML
     private Label directoryLabel, leftStatus, rightStatus;
     @FXML
-    private ListView<String> romListView;
+    private ListView<Rom> romListView;
     @FXML
     private ListView<SystemListItem>systemListView;
     @FXML
@@ -69,12 +72,12 @@ public class MainWindowController {
 
     }
 
-    private void handleMousePressed(javafx.scene.input.MouseEvent event) {
+    private void handleMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
 
-    private void handleMouseDragged(javafx.scene.input.MouseEvent event) {
+    private void handleMouseDragged(MouseEvent event) {
         primaryStage.setX(event.getScreenX() - xOffset);
         primaryStage.setY(event.getScreenY() - yOffset);
     }
@@ -85,6 +88,27 @@ public class MainWindowController {
 
     public MainWindowController() {
   
+    }
+
+    @FXML
+    public void handleSystemListViewClick(MouseEvent event){
+        // Get the selected item from the ListView
+        SystemListItem selectedItem = systemListView.getSelectionModel().getSelectedItem();
+
+        // Create an ObservableList to hold the data
+        ObservableList<Rom> romList = FXCollections.observableArrayList();
+        
+        List<Rom> romListItems = selectedItem.getRoms();
+
+        for(Rom rom : romListItems){
+            romList.add(rom);
+        }
+
+        // Set the custom cell factory for the ListView
+        romListView.setCellFactory(listView -> new RomListCell());
+
+        // Set the ObservableList as the data source for the ListView
+        romListView.setItems(romList);
     }
     
     @FXML

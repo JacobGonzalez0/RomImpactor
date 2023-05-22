@@ -2,8 +2,6 @@ package manager.models;
 
 import java.util.List;
 
-import manager.elements.SystemListCell;
-
 public class SystemListItem {
     private String systemName;
     private List<Rom> roms;

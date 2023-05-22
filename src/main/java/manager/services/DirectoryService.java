@@ -126,23 +126,27 @@ public class DirectoryService {
     public static List<File[]> funkeyFindRom(FunkeyDevice funkeyDevice, String filePath) {
         List<File[]> foundFiles = new ArrayList<>();
         File directory = new File(filePath);
-
+    
         if (directory.exists() && directory.isDirectory()) {
             for (String extension : funkeyDevice.getFileExtensions()) {
                 File[] romFiles = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(extension));
                 if (romFiles != null && romFiles.length > 0) {
                     for (File romFile : romFiles) {
                         String romNameWithoutExtension = romFile.getName().replaceFirst("[.][^.]+$", "");
-
-                        File[] imageFiles = directory.listFiles((dir, name) -> Pattern.matches(funkeyDevice.getImageRegexPattern(), name)
-                                && name.startsWith(romNameWithoutExtension));
-
-                        foundFiles.add(new File[] {romFile, imageFiles != null && imageFiles.length > 0 ? imageFiles[0] : null});
+    
+                        File imageFile = new File(directory, romNameWithoutExtension + ".png");
+    
+                        if (imageFile.exists()) {
+                            foundFiles.add(new File[]{romFile, imageFile});
+                        } else {
+                            foundFiles.add(new File[]{romFile, null});
+                        }
                     }
                 }
             }
         }
-
+    
         return foundFiles;
     }
+    
 }

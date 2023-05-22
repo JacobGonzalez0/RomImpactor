@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto-bold';
+    src: url('../fonts/Roboto-Bold.ttf');
+}
+
+.title{
+    -fx-font-size: 14;
+    -fx-font-family: 'Roboto-bold';
+    
+}
+
+.subtitle{
+    -fx-font-size: 12;
+    -fx-font-family: 'Roboto';
+    
+}
+
+.hbox {
+    -fx-background-color: orange;
+    -fx-margin: 0;
+}
+
+#imageView {
+    -fx-fit-width: 40px;
+    -fx-fit-height: 40px;
+    -fx-preserve-ratio: true;
+}

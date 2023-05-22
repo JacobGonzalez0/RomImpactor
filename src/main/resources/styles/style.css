@@ -129,15 +129,15 @@ Buttons/icons: #77afb8
 }
 
 .minimize-button {
-    -fx-background-color: radial-gradient(center 75% 25%, radius 90%, #cf6fd6, #4b4fff);
+    -fx-background-color: #883cdf;
 }
 
 .maximize-button {
-    -fx-background-color: radial-gradient(center 75% 25%, radius 90%, #fee233 ,#ff6d4f);
+    -fx-background-color: #ff6d4f;
 }
 
 .close-button {
-    -fx-background-color: radial-gradient(center 75% 25%, radius 90%, #ffa3da, #d30147);
+    -fx-background-color: #f926ba;
 }
 
 .minimize-button:hover, .maximize-button:hover, .close-button:hover {
