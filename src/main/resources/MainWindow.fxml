@@ -52,10 +52,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ContextMenu?>
 
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox fx:controller="manager.controllers.MainWindowController" minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="manager.controllers.MainWindowController" minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@/styles/mainWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <HBox id="topBar" fx:id="topBar" prefHeight="33.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
         <children>
@@ -124,7 +125,7 @@
       <AnchorPane id="Content" fx:id="romPane" minHeight="-1.0" minWidth="315.0" prefHeight="545.0" prefWidth="315.0" styleClass="root">
         <children>
           <Label alignment="CENTER" font="$x1" layoutX="10.0" layoutY="7.0" style="&#10;" styleClass="title" text="Roms" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-          <ListView fx:id="romListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="300.0">
+          <ListView fx:id="romListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="300.0" onMouseClicked="#handleRomListViewClick" onKeyPressed="#handleRomListViewKeyPressed">
             <cellFactory>
                 
             </cellFactory>
@@ -145,7 +146,15 @@
                         <Image url="@images/noselection.png" />
                      </image>
                   </ImageView>
-                  <Pane id="RomInfo" layoutX="10.0" layoutY="372.0" prefHeight="103.0" prefWidth="326.0" />
+                  <Pane fx:id="romInfo" id="RomInfo" layoutX="10.0" layoutY="372.0" prefHeight="103.0" prefWidth="326.0">
+                      <AnchorPane>
+                        <VBox>
+                          <Label styleClass="romInfoTitle" fx:id="romInfoTitle" />
+                          <Label styleClass="romInfoSubTitle" fx:id="romInfoSubTitle" />
+                        </VBox>
+                          
+                      </AnchorPane>
+                  </Pane>
                   <Button fx:id="localImageButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="164.0">  
                     <graphic>
                      <FontIcon iconLiteral="fas-plus" iconSize="12" iconColor="e3e4fc"/>

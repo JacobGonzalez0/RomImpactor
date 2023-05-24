@@ -1,0 +1,65 @@
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto-bold';
+    src: url('../fonts/Roboto-Bold.ttf');
+}
+
+.root {
+    -fx-font-family: 'Roboto';
+    -fx-border-width: 0;
+    -fx-padding: 0;
+    -fx-background-color: #0b192f;
+    -fx-text-fill: #e3e4fc;
+}
+
+.tab-header-background{
+    -fx-background-color: #182a46;
+}
+
+.tab-label{
+    -fx-border-width: 2;
+    -fx-text-fill: #e3e4fc;
+    -fx-font-family: 'Roboto-bold';
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab-header-area .tab {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%,  #9c1774, #77025a);
+    -fx-background-radius: 15 15px 0px 0;
+    -fx-padding: 5 20;
+    -fx-translate-y: 1px;
+}
+
+.tab-pane .tab-header-area .tab:selected {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%,  #9c1774, #77025a);
+    -fx-background-radius: 15 15px 0px 0;
+    -fx-translate-y: 1px;
+}
+
+.tab-pane .tab-header-area .tab:last-child {
+    -fx-background-radius: 0;
+}
+
+.label {
+    -fx-text-fill: #e3e4fc;
+    -fx-font-family: 'Roboto-bold';
+    -fx-font-weight: bold;
+    -fx-font-size: 12pt; /* Set font size to 16pt */
+    -fx-fill: rgb(255, 255, 255);
+    -fx-stroke: rgb(0, 0, 0);
+    -fx-stroke-width: .2px;
+}
+
+.apiCheckbox {
+    -fx-padding: 0 5 0 0;
+    -fx-text-fill: #e3e4fc;
+    -fx-font-family: 'Roboto-bold';
+    -fx-font-weight: bold;
+}
+
+

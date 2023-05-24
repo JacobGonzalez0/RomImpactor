@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="320.0" maxWidth="560.0" minHeight="320.0" minWidth="560.0" prefHeight="320.0" prefWidth="560.0" styleClass="root" stylesheets="@styles/optionsWindow.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TabPane prefHeight="320.0" prefWidth="560.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="General">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <ComboBox layoutX="201.0" layoutY="45.0" prefWidth="150.0" />
+                        <Label layoutX="14.0" layoutY="44.0" text="Device Profile" />
+                        <Label layoutX="14.0" layoutY="78.0" />
+                        <TextField layoutX="201.0" layoutY="79.0" prefHeight="23.0" prefWidth="151.0" />
+                        <Label layoutX="14.0" layoutY="78.0" text="Manual Scale Size" />
+                        <CheckBox contentDisplay="RIGHT" layoutX="288.0" layoutY="109.0" mnemonicParsing="false" styleClass="apiCheckbox" text="Enable" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="API Keys">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <TextField layoutX="14.0" layoutY="47.0" prefHeight="23.0" prefWidth="342.0" promptText="API Key" />
+                        <Label layoutX="14.0" layoutY="22.0" text="SteamGridDB" />
+                        <TextField layoutX="14.0" layoutY="155.0" prefHeight="23.0" prefWidth="342.0" promptText="Secret" />
+                        <Label layoutX="14.0" layoutY="99.0" text="IGDB" />
+                        <TextField layoutX="14.0" layoutY="124.0" prefHeight="23.0" prefWidth="342.0" promptText="Client ID" />
+                        <CheckBox contentDisplay="RIGHT" layoutX="286.0" layoutY="76.0" mnemonicParsing="false" styleClass="apiCheckbox" text="Enabled" />
+                        <CheckBox contentDisplay="RIGHT" layoutX="286.0" layoutY="188.0" mnemonicParsing="false" styleClass="apiCheckbox" text="Enabled" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

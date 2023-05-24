@@ -162,3 +162,14 @@ Buttons/icons: #77afb8
 .list-cell:focused {
     -fx-background-color: #4d8bf1;
 }
+
+.romInfoTitle{
+    -fx-font-family: "Roboto-bold";
+    -fx-font-weight: Bold;
+    -fx-font-size: 14pt;
+}
+
+.romInfoSubTitle{
+    -fx-font-family: "Roboto";
+    -fx-font-size: 10pt;
+}
