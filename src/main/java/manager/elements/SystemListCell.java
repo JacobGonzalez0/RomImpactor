@@ -30,7 +30,7 @@ public class SystemListCell extends ListCell<SystemListItem> {
             try {
                 HBox cellLayout = loader.load();
                 SystemListItemController controller = loader.getController();
-                controller.setItem(system.getSystemName(), system.getRomCount());
+                controller.setItem(system.getSystemName(), system.getImage(), system.getRomCount());
                 setGraphic(cellLayout);
                 setText(null);
             } catch (IOException e) {

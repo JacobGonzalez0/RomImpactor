@@ -86,6 +86,21 @@ public class OptionsWindowController {
         
     }
 
+    @FXML
+    public void saveSettings() {
+        String deviceProfile = deviceProfileComboBox.getValue();
+        int manualScaleSize = Integer.parseInt(manualScaleSizeTextField.getText());
+        boolean manualScale = manualScaleEnableCheckBox.isSelected();
+        String steamGridDbKey = steamGridDBApiKeyTextField.getText();
+        boolean steamGridDb = steamGridDBEnabledCheckBox.isSelected();
+        String igdbClientId = igdbClientIdTextField.getText();
+        String igdbSecret = igdbSecretTextField.getText();
+        boolean igdb = igdbEnabledCheckBox.isSelected();
+
+        SettingsService.saveSettings(deviceProfile, manualScaleSize, manualScale,
+                steamGridDbKey, steamGridDb, igdbClientId, igdbSecret, igdb);
+    }
+
     private static List<String> getDeviceList() {
         List<String> deviceList = new ArrayList<>();
 
@@ -116,4 +131,6 @@ public class OptionsWindowController {
             igdbSecretTextField.setText(apiSettings.getIgdbSecret());
         }
     }
+
+    
 }

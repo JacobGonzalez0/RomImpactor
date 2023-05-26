@@ -1,16 +1,19 @@
 package manager.models;
 
 import java.util.List;
+import java.awt.image.BufferedImage;
 
 public class SystemListItem {
     private String systemName;
     private List<Rom> roms;
     private int romCount;
+    private BufferedImage image;
 
-    public SystemListItem(String systemName, List<Rom> roms) {
+    public SystemListItem(String systemName, List<Rom> roms, BufferedImage image) {
         this.systemName = systemName;
         this.roms = roms;
         this.romCount = roms.size();
+        this.image = image;
     }
 
     public String getSystemName() {
@@ -36,6 +39,14 @@ public class SystemListItem {
 
     public void setRomCount(int romCount) {
         this.romCount = romCount;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
 }

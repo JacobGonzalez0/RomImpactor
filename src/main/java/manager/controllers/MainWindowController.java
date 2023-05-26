@@ -218,6 +218,15 @@ public class MainWindowController {
             
             // Show the options window
             optionsStage.show();
+
+            // Get the controller of the options window
+            OptionsWindowController optionsController = loader.getController();
+
+            // Set listener for options window closing event
+            optionsStage.setOnHidden(event -> {
+                // Perform saveSettings() operation when the options window is closed
+                optionsController.saveSettings();
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

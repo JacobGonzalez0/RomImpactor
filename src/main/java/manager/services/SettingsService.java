@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import manager.models.ApiSettings;
+import manager.models.General;
 import manager.models.Settings;
 
 public class SettingsService {
@@ -35,4 +37,36 @@ public class SettingsService {
             e.printStackTrace();
         }
     }
+
+    public static void saveSettings(
+            String deviceProfile,
+            int manualScaleSize,
+            boolean manualScale,
+            String steamGridDbKey,
+            boolean steamGridDb,
+            String igdbClientId,
+            String igdbSecret,
+            boolean igdb
+    ) {
+        // Create new settings object
+        Settings settings = new Settings();
+
+        General general = new General();
+        general.setDeviceProfile(deviceProfile);
+        general.setManualScaleSize(manualScaleSize);
+        general.setManualScale(manualScale);
+        settings.setGeneral(general);
+
+        ApiSettings apiSettings = new ApiSettings();
+        apiSettings.setSteamGridDbKey(steamGridDbKey);
+        apiSettings.setSteamGridDb(steamGridDb);
+        apiSettings.setIgdbClientId(igdbClientId);
+        apiSettings.setIgdbSecret(igdbSecret);
+        apiSettings.setIgdb(igdb);
+        settings.setApiSettings(apiSettings);
+
+        // Save settings to the JSON file
+        writeSettings(settings);
+    }
+
 }

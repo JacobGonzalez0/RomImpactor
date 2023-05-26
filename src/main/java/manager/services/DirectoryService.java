@@ -2,7 +2,9 @@ package manager.services;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +13,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+
+import manager.enums.consoles.ConsoleImages;
 import manager.enums.devices.DeviceSupport;
 import manager.enums.devices.FunkeyDevice;
 import manager.models.Rom;
@@ -24,42 +33,95 @@ public class DirectoryService {
         DeviceSupport device = DeviceSupport.FUNKEY_S; //set to funkey for now
         String rootFolder = "C:\\roms\\";
 
-        Map<String,String> folders = getFolderList(device, rootFolder);
+        Map<String, Entry<String, String>> folders = getFolderList(device, rootFolder);
         List<SystemListItem> systemList = new ArrayList<SystemListItem>();
 
 
         switch (device) {
             case FUNKEY_S: // Funkey S Implementation
-                for(Entry<String, String> folderPath : folders.entrySet()){
+                for (Map.Entry<String, Map.Entry<String, String>> folderEntry : folders.entrySet()) {
+        
+                    String filePath = folderEntry.getKey();
+        
+                    // Extracting both strings from the Entry
+                    Map.Entry<String, String> innerEntry = folderEntry.getValue();
+                    String folderName = innerEntry.getKey();
+                    String enumName = innerEntry.getValue();
 
-                    String filePath = folderPath.getKey();
-                    String systemName = folderPath.getValue();
-                    
-                    List<Rom> roms = new ArrayList<Rom>();
-                    
+                    // Extract the ConsoleImages enum using the enumName
+                    ConsoleImages imageEnum = null;
+                    try {
+                        imageEnum = ConsoleImages.valueOf(enumName);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("No console image found for: " + enumName);
+                    }
+
+                    BufferedImage image = null;
+
+                    if (imageEnum != null) {
+                        String imagePath = imageEnum.getPath();
+                        // Get ConsoleImage from enum
+                        try {
+                            Image originalImage = ImageIO.read(DirectoryService.class.getResourceAsStream(imageEnum.getPath()));
+
+                            // Create a new BufferedImage with the same dimensions and the default type
+                            image = new BufferedImage(originalImage.getWidth(null), originalImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+                            // Draw the original image onto the new BufferedImage
+                            Graphics2D graphics = image.createGraphics();
+                            graphics.drawImage(originalImage, 0, 0, null);
+                            graphics.dispose();
+                        } catch (Exception e) {
+                            System.out.println("Error loading console image: " + imagePath);
+                            e.printStackTrace();
+                        }
+                    }else{
+                        try {
+                            Image originalImage = ImageIO.read(DirectoryService.class.getResourceAsStream("/images/systems/small/generic.png"));
+
+                            // Create a new BufferedImage with the same dimensions and the default type
+                            image = new BufferedImage(originalImage.getWidth(null), originalImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+                            // Draw the original image onto the new BufferedImage
+                            Graphics2D graphics = image.createGraphics();
+                            graphics.drawImage(originalImage, 0, 0, null);
+                            graphics.dispose();
+                        } catch (IOException e) {
+                            System.out.println("Error loading generic console image ");
+                            e.printStackTrace();
+                        }
+                    }
+
+        
+                    List<Rom> roms = new ArrayList<>();
+        
                     // TODO: eventually check json as a next step to get more info about each rom
 
+        
                     // we get all the file pairs in a folder
-                    for(File[] romFile : checkRomFolder(device, filePath)){
-
+                    for (File[] romFile : checkRomFolder(device, filePath)) {
+        
                         // remove the file extention for the romName by default
                         String fileNameWithExtension = romFile[0].getName();
                         int extensionIndex = fileNameWithExtension.lastIndexOf(".");
                         String romName = (extensionIndex != -1) ? fileNameWithExtension.substring(0, extensionIndex) : fileNameWithExtension;
-
+        
                         //add to the rom list for the systemListItem
                         roms.add(new Rom(
-                            romName,
-                            "", // TODO: grab release date from json
-                            romFile
+                                romName,
+                                "", // TODO: grab release date from json
+                                romFile
                         ));
                     }
-
-                    SystemListItem system = new SystemListItem(systemName, roms);
+        
+                    // Using folderName here for systemName, replace it with the variable you want
+                    SystemListItem system = new SystemListItem(folderName, roms, image);
                     systemList.add(system);
                 }
-            break;
+                break;
+            // potentially handle more devices here
         }
+        
 
         return systemList;
 
@@ -69,8 +131,8 @@ public class DirectoryService {
     /*
      * Based on device get folders that match that device only ruturns filePath and foldername
      */
-    public static Map<String,String> getFolderList(DeviceSupport deviceSupport, String filePath) {
-        Map<String,String> folderPaths = new HashMap<String,String>();
+    public static Map<String, Entry<String, String>> getFolderList(DeviceSupport deviceSupport, String filePath) {
+        Map<String, Entry<String, String>> folderPaths = new HashMap<>();
     
         switch (deviceSupport) {
             case FUNKEY_S:
@@ -80,8 +142,13 @@ public class DirectoryService {
                     if (files != null) {
                         for (File file : files) {
                             String folderName = file.getName();
-                            if (Arrays.stream(FunkeyDevice.values()).anyMatch(device -> device.getDeviceName().equals(folderName))) {
-                                folderPaths.put(file.getPath(), folderName);
+                            for (FunkeyDevice device : FunkeyDevice.values()) {
+                                if (device.getDeviceName().equals(folderName)) {
+                                    folderPaths.put(
+                                        file.getPath(), 
+                                        new AbstractMap.SimpleEntry<>(folderName, device.name())
+                                    );
+                                }
                             }
                         }
                     }
@@ -92,6 +159,7 @@ public class DirectoryService {
     
         return folderPaths;
     }
+    
 
     /*
      * check which method to use based on the device we have

@@ -10,5 +10,5 @@
         <Label styleClass="title" fx:id="titleLabel" />
         <Label styleClass="subtitle" fx:id="subTitle" />
     </VBox>
-     <ImageView id="imageView" fx:id="imageView" fitHeight="40" fitWidth="40" preserveRatio="true" HBox.hgrow="NEVER"/>
+     <ImageView id="imageView" fx:id="imageView" fitHeight="50" fitWidth="50" preserveRatio="true" HBox.hgrow="NEVER"/>
 </HBox>

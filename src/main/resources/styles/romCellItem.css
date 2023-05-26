@@ -24,9 +24,3 @@
     -fx-background-color: orange;
     -fx-margin: 0;
 }
-
-#imageView {
-    -fx-fit-width: 40px;
-    -fx-fit-height: 40px;
-    -fx-preserve-ratio: true;
-}
