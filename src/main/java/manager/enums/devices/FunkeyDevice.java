@@ -89,6 +89,7 @@ public class FunkeyDevice implements DeviceRomType {
                 WONDERSWAN, VECTREX, SCALING
         };
     }
+
 }
 
 

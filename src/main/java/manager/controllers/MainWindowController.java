@@ -3,6 +3,7 @@ package manager.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
@@ -20,6 +21,8 @@ import manager.models.Rom;
 import manager.models.SystemListItem;
 import manager.services.DirectoryService;
 import manager.services.ImageService;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 
@@ -203,7 +206,21 @@ public class MainWindowController {
     
     @FXML
     public void handleOptionsMenuItem() {
-        // Handle optionsMenuItem action here
+        try {
+            // Load the OptionsWindow.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/OptionsWindow.fxml"));
+            Parent root = loader.load();
+            
+            // Create a new stage for the options window
+            Stage optionsStage = new Stage();
+            optionsStage.setTitle("Options");
+            optionsStage.setScene(new Scene(root));
+            
+            // Show the options window
+            optionsStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
