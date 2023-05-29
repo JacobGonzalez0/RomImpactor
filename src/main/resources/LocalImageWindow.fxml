@@ -15,7 +15,7 @@
         </AnchorPane>
 
         <!-- Step 2 -->
-        <AnchorPane fx:id="step2" visible="false" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <AnchorPane fx:id="step2" visible="false" minWidth="${wizardPane.width}" minHeight="${wizardPane.height}" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         </AnchorPane>
 
         <!-- Step 3 -->

@@ -47,8 +47,7 @@ public class ImageCropperPanelController {
     @FXML
     private ImageView imageView;
 
-    @FXML
-    private TextField xField, yField, widthField, heightField;
+
     
     private File selectedImageFile; // Stores the selected image file
 
@@ -76,13 +75,8 @@ public class ImageCropperPanelController {
          // bind the fitWidth and fitHeight properties of the imageView
         // to the width and height of the vbox
         imageView.fitWidthProperty().bind(vbox.widthProperty());
-        imageView.fitHeightProperty().bind(vbox.heightProperty().divide(2));
-        // Make second step text fields, number fields
-        configureNumericTextField(xField);
-        configureNumericTextField(yField);
-        configureNumericTextField(widthField);
-        configureNumericTextField(heightField);
-        
+        imageView.fitHeightProperty().bind(vbox.heightProperty());
+
     }
 
     public void loadImage(File inputFile){
@@ -111,7 +105,6 @@ public class ImageCropperPanelController {
         actualCropRectangle = new Rectangle();
 
         // Setup Crop Listeners
-        setupTextFieldListeners();
         setupResizeListener();
         moveCropHandler();
     }
@@ -231,36 +224,7 @@ public class ImageCropperPanelController {
      * Text Field Listeners
      */
 
-    private void setupTextFieldListeners() {
-        // Update the actualCropRectangle's dimensions when the text fields change
-        xField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                double doubleValue = Double.parseDouble(newValue);
-                actualCropRectangle.setX(doubleValue);
-            } catch (NumberFormatException ignored) {}
-        });
     
-        yField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                double doubleValue = Double.parseDouble(newValue);
-                actualCropRectangle.setY(doubleValue);
-            } catch (NumberFormatException ignored) {}
-        });
-    
-        widthField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                double doubleValue = Double.parseDouble(newValue);
-                actualCropRectangle.setWidth(doubleValue);
-            } catch (NumberFormatException ignored) {}
-        });
-    
-        heightField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                double doubleValue = Double.parseDouble(newValue);
-                actualCropRectangle.setHeight(doubleValue);
-            } catch (NumberFormatException ignored) {}
-        });
-    }
 
     /*
      * Click and Drag Crop Events
@@ -353,10 +317,6 @@ public class ImageCropperPanelController {
         prevX = currentX;
         prevY = currentY;
 
-        xField.setText(String.valueOf(minX));
-        yField.setText(String.valueOf(minY));
-        widthField.setText(String.valueOf(newWidth));
-        heightField.setText(String.valueOf(newHeight));
     }
 
     private void handleMouseReleased(MouseEvent event) {
