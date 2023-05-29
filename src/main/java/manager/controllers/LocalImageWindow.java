@@ -8,12 +8,12 @@ import java.util.function.UnaryOperator;
 import javax.imageio.ImageIO;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -29,11 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import manager.services.ImageService;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 public class LocalImageWindow {
     @FXML
@@ -77,6 +73,8 @@ public class LocalImageWindow {
     private Rectangle nwHandle, neHandle, seHandle, swHandle; // North-West, North-East, South-East, South-West handles
     private static final double HANDLE_SIZE = 10.0; // Size of the resize handles
 
+    private double initX;
+    private double initY;
 
 
     @FXML
@@ -184,6 +182,7 @@ public class LocalImageWindow {
         // Setup Crop Listeners
         setupTextFieldListeners();
         setupResizeListener();
+        moveCropHandler();
     }
 
 
@@ -298,8 +297,6 @@ public class LocalImageWindow {
             updateCropRectangle();
         });
     }
-    
-    
 
     private void handleMousePressed(MouseEvent event) {
         nwHandle.setVisible(true);
@@ -369,10 +366,14 @@ public class LocalImageWindow {
             }
         }
 
-        cropRectangle.setX(minX );
-        cropRectangle.setY(minY );
-        cropRectangle.setWidth(newWidth);
-        cropRectangle.setHeight(newHeight);
+        if (isWithinImageView(minX, minY, newWidth, newHeight)) {
+            cropRectangle.setX(minX);
+            cropRectangle.setY(minY);
+            cropRectangle.setWidth(newWidth);
+            cropRectangle.setHeight(newHeight);
+    
+            
+        }
 
         // update visibleCropRectangle bounds
         visibleCropRectangle.setX(cropRectangle.getX() + calculateHalfDifferenceWidth());
@@ -459,6 +460,10 @@ public class LocalImageWindow {
     }
 
     private void updateCropRectangle() {
+
+        if(originalCropBounds == null){
+            return;
+        }
         // Calculate the new position and dimensions based on the ImageView's new size
         double newX = originalCropBounds.getMinX() * imageView.getBoundsInParent().getWidth();
         double newY = originalCropBounds.getMinY() * imageView.getBoundsInParent().getHeight();
@@ -490,6 +495,10 @@ public class LocalImageWindow {
         actualCropRectangle.setHeight(actualHeight);
     }
     
+    private boolean isWithinImageView(double x, double y, double width, double height) {
+        Bounds imageViewBounds = imageView.getBoundsInParent();
+        return x >= 0 && y >= 0 && (x + width) <= imageViewBounds.getWidth() && (y + height) <= imageViewBounds.getHeight();
+    }    
     
     /*
      * Cropping rectangle dragging
@@ -501,7 +510,7 @@ public class LocalImageWindow {
         double newWidth = cropRectangle.getX() + cropRectangle.getWidth() - newX;
         double newHeight = cropRectangle.getY() + cropRectangle.getHeight() - newY;
     
-        if (newWidth > 0 && newHeight > 0) {
+        if (newWidth > 0 && newHeight > 0 && isWithinImageView(newX, newY, newWidth, newHeight)) {
             cropRectangle.setX(newX);
             cropRectangle.setY(newY);
             cropRectangle.setWidth(newWidth);
@@ -515,7 +524,7 @@ public class LocalImageWindow {
         double newWidth = event.getX() - cropRectangle.getX() - calculateHalfDifferenceWidth();
         double newHeight = cropRectangle.getY() + cropRectangle.getHeight() - newY;
     
-        if (newWidth > 0 && newHeight > 0) {
+        if (newWidth > 0 && newHeight > 0 && isWithinImageView(cropRectangle.getX(), newY, newWidth, newHeight)) {
             cropRectangle.setY(newY);
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
@@ -527,7 +536,7 @@ public class LocalImageWindow {
         double newWidth = event.getX() - cropRectangle.getX() - calculateHalfDifferenceWidth();
         double newHeight = event.getY() - cropRectangle.getY() - calculateHalfDifferenceHeight();
     
-        if (newWidth > 0 && newHeight > 0) {
+        if (newWidth > 0 && newHeight > 0 && isWithinImageView(cropRectangle.getX(), cropRectangle.getY(), newWidth, newHeight)) {
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
         }
@@ -539,14 +548,13 @@ public class LocalImageWindow {
         double newWidth = cropRectangle.getX() + cropRectangle.getWidth() - newX;
         double newHeight = event.getY() - cropRectangle.getY() - calculateHalfDifferenceHeight();
     
-        if (newWidth > 0 && newHeight > 0) {
+        if (newWidth > 0 && newHeight > 0 && isWithinImageView(newX, cropRectangle.getY(), newWidth, newHeight)) {
             cropRectangle.setX(newX);
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
         }
-
         updateVisibleCropRectangle();
-    }
+    }    
     
     private void updateVisibleCropRectangle() {
         visibleCropRectangle.setX(cropRectangle.getX() + calculateHalfDifferenceWidth());
@@ -555,5 +563,67 @@ public class LocalImageWindow {
         visibleCropRectangle.setHeight(cropRectangle.getHeight());
     }
     
+    /*
+     * Drag Cropping Rectangle
+     */
+
+    private void move(MouseEvent event) {
+        // Calculate the difference between the initial click and the current event
+        double deltaX = event.getX() - initX;
+        double deltaY = event.getY() - initY;
+    
+        // Calculate the new position of the crop rectangle
+        double newX = cropRectangle.getX() + deltaX;
+        double newY = cropRectangle.getY() + deltaY;
+    
+        // Calculate the maximum allowed position based on the image boundaries
+        double maxPosX = imageView.getBoundsInParent().getWidth() - cropRectangle.getWidth();
+        double maxPosY = imageView.getBoundsInParent().getHeight() - cropRectangle.getHeight();
+    
+        // Check if the new position exceeds the image boundaries
+        if (newX >= 0 && newY >= 0 && newX <= maxPosX && newY <= maxPosY) {
+            // Update the position of the crop rectangle
+            cropRectangle.setX(newX);
+            cropRectangle.setY(newY);
+    
+            // Update the position of the visible crop rectangle
+            visibleCropRectangle.setX(visibleCropRectangle.getX() + deltaX);
+            visibleCropRectangle.setY(visibleCropRectangle.getY() + deltaY);
+    
+            // Update the initial positions
+            initX = event.getX();
+            initY = event.getY();
+    
+            
+        }
+        // Update the visible rectangle
+        updateVisibleCropRectangle();
+    }
+     
+
+    private void moveCropHandler(){
+        visibleCropRectangle.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                // Record the initial positions during a click
+                initX = event.getX();
+                initY = event.getY();
+            }
+        });
+        
+        visibleCropRectangle.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                move(event);
+            }
+        });
+        
+        visibleCropRectangle.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                
+            }
+        });
+    }
     
 }
