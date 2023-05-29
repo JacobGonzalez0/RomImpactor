@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane fx:id="wizardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.panels.ImageCropperPanelController">
+    <!-- Define the UI components for Step 2 -->
+    <VBox fx:id="vbox" spacing="10.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <StackPane fx:id="imagePane">
+            <ImageView fx:id="imageView" preserveRatio="true" >
+            </ImageView>
+        </StackPane>
+        <AnchorPane>
+            <TextField fx:id="xField" layoutX="14" layoutY="14" prefHeight="25" prefWidth="59"/>
+            <TextField fx:id="yField" layoutX="14" layoutY="49" prefHeight="25" prefWidth="59"/>
+            <TextField fx:id="widthField" layoutX="14" layoutY="84" prefHeight="25" prefWidth="59"/>
+            <TextField fx:id="heightField" layoutX="14" layoutY="119" prefHeight="25" prefWidth="59"/>
+        </AnchorPane>
+    </VBox>
+</AnchorPane>
