@@ -155,7 +155,7 @@
                           
                       </AnchorPane>
                   </Pane>
-                  <Button fx:id="localImageButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="164.0">  
+                  <Button onMouseClicked="#handlelocalImageButton" fx:id="localImageButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="164.0">  
                     <graphic>
                      <FontIcon iconLiteral="fas-plus" iconSize="12" iconColor="e3e4fc"/>
                     </graphic>

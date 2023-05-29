@@ -46,7 +46,6 @@ public class OptionsWindowController {
         Settings settings = SettingsService.loadSettings();
 
         if (settings != null) {
-            System.out.println("logging");
             populateSettingsUI(settings);
         }
         else 

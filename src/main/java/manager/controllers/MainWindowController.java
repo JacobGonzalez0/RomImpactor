@@ -240,5 +240,33 @@ public class MainWindowController {
         // Handle changeDirButton action here
     }
 
+    @FXML
+    public void handlelocalImageButton() {
+        try {
+            // Load the OptionsWindow.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LocalImageWindow.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the options window
+            Stage localImageStage = new Stage();
+            localImageStage.setTitle("Local Image Wizard");
+            localImageStage.setScene(new Scene(root));
+
+            // Show the options window
+            localImageStage.show();
+
+            // Get the controller of the options window
+            LocalImageWindow localImageController = loader.getController();
+
+            // Set listener for options window closing event
+            localImageStage.setOnHidden(event -> {
+                // Perform saveSettings() operation when the options window is closed
+                // localImageController.saveSettings();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     
 }
