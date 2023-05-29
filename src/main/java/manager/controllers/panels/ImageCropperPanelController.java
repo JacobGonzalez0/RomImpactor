@@ -33,10 +33,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import manager.services.ImageService;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextFormatter;
-import javafx.util.converter.IntegerStringConverter;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
 public class ImageCropperPanelController {
     @FXML
@@ -142,16 +140,35 @@ public class ImageCropperPanelController {
 
     private void setupSpinners() {
         configureSpinner(xCordSpinner, 0, 0, imageWidth);
-        configureSpinner(yCordSpinner, 0, 0, imageHeight);
+        configureInverseSpinner(yCordSpinner, 0, 0, imageHeight);
         configureSpinner(widthSpinner, 0, 0, imageWidth);
-        configureSpinner(heightSpinner, 0, 0, imageHeight);
+        configureInverseSpinner(heightSpinner, 0, 0, imageHeight);
     }
 
     private void configureSpinner(Spinner<Integer> spinner, int initialValue, int min, int max) {
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initialValue));
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initialValue);
+        spinner.setValueFactory(valueFactory);
     }
 
-     private void setupVisibleCropRectangle() {
+    private void configureInverseSpinner(Spinner<Integer> spinner, int initialValue, int min, int max) {
+        SpinnerValueFactory<Integer> valueFactory = 
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initialValue) {
+                @Override
+                public void increment(int steps) {
+                    super.decrement(steps);
+                }
+    
+                @Override
+                public void decrement(int steps) {
+                    super.increment(steps);
+                }
+            };
+        
+        spinner.setValueFactory(valueFactory);
+    }
+    
+
+    private void setupVisibleCropRectangle() {
         visibleCropRectangle = new Rectangle();
         visibleCropRectangle.setStroke(Color.RED);
         visibleCropRectangle.setStrokeWidth(2);

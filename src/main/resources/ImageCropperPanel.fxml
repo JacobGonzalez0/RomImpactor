@@ -2,10 +2,13 @@
 
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane fx:id="wizardPane" styleClass="wizardPane" stylesheets="@styles/imageCropperPanel.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.panels.ImageCropperPanelController">
     <VBox fx:id="vbox" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" prefHeight="400" prefWidth="600" spacing="10.0" styleClass="vbox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -16,11 +19,11 @@
         <ToolBar minWidth="${wizardPane.width}" prefHeight="32.0" prefWidth="400" styleClass="toolbar" translateX="-8.0" VBox.vgrow="NEVER">
             <items>
                 <HBox alignment="CENTER" minWidth="${wizardPane.width}" prefHeight="32.0" styleClass="hbox">
-                    <Spinner fx:id="xCordSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
+                    <Spinner fx:id="xCordSpinner" styleClass="horizontal-spinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
                     <Spinner fx:id="yCordSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
-                    <Spinner fx:id="widthSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
+                    <Spinner fx:id="widthSpinner" styleClass="horizontal-spinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
                     <Spinner fx:id="heightSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
-                    <Button>
+                    <Button />
                 </HBox>
             </items>
         </ToolBar>
