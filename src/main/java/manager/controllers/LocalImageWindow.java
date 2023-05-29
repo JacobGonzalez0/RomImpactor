@@ -73,6 +73,11 @@ public class LocalImageWindow {
     private Rectangle actualCropRectangle;
     private Rectangle visibleCropRectangle;
 
+    // Crop rectangle resize handlers
+    private Rectangle nwHandle, neHandle, seHandle, swHandle; // North-West, North-East, South-East, South-West handles
+    private static final double HANDLE_SIZE = 10.0; // Size of the resize handles
+
+
 
     @FXML
     public void initialize() {
@@ -83,14 +88,7 @@ public class LocalImageWindow {
         configureNumericTextField(widthField);
         configureNumericTextField(heightField);
 
-        // initialize the actualCropRectangle
-        setupCropRectangle();
-        setupVisibleCropRectangle();
-        actualCropRectangle = new Rectangle();
-
-        // Setup Crop Listeners
-        setupTextFieldListeners();
-        setupResizeListener();
+        
     }
     
     /*
@@ -162,7 +160,7 @@ public class LocalImageWindow {
                 backButton.setDisable(false);
                 nextButton.setDisable(false);
                 displaySelectedImage();
-                setupCropRectangle();
+                setupSecondStepListeners();
                 break;
             case 3:
                 step3.setVisible(true);
@@ -176,7 +174,17 @@ public class LocalImageWindow {
      * Second Step Actions
      */
 
-    
+    private void setupSecondStepListeners(){
+        // initialize the actualCropRectangle
+        
+        setupVisibleCropRectangle();
+        setupCropRectangle();
+        actualCropRectangle = new Rectangle();
+
+        // Setup Crop Listeners
+        setupTextFieldListeners();
+        setupResizeListener();
+    }
 
 
     private void displaySelectedImage() {
@@ -248,6 +256,37 @@ public class LocalImageWindow {
         imageView.setOnMousePressed(this::handleMousePressed);
         imageView.setOnMouseDragged(this::handleMouseDragged);
         imageView.setOnMouseReleased(this::handleMouseReleased);
+
+        // Setup resize handles
+        nwHandle = new Rectangle(HANDLE_SIZE, HANDLE_SIZE);
+        neHandle = new Rectangle(HANDLE_SIZE, HANDLE_SIZE);
+        seHandle = new Rectangle(HANDLE_SIZE, HANDLE_SIZE);
+        swHandle = new Rectangle(HANDLE_SIZE, HANDLE_SIZE);
+        Rectangle[] handles = new Rectangle[] { nwHandle, neHandle, seHandle, swHandle };
+
+        for (Rectangle handle : handles) {
+            handle.setFill(Color.RED);
+            handle.setStroke(Color.WHITE);
+            handle.setStrokeWidth(2);
+            handle.setVisible(false);
+            wizardPane.getChildren().add(handle);
+        }
+
+         // Bind handle positions to crop rectangle's properties
+         nwHandle.xProperty().bind(visibleCropRectangle.xProperty());
+         nwHandle.yProperty().bind(visibleCropRectangle.yProperty());
+         neHandle.xProperty().bind(visibleCropRectangle.xProperty().add(visibleCropRectangle.widthProperty()).subtract(HANDLE_SIZE));
+         neHandle.yProperty().bind(visibleCropRectangle.yProperty());
+         seHandle.xProperty().bind(visibleCropRectangle.xProperty().add(visibleCropRectangle.widthProperty()).subtract(HANDLE_SIZE));
+         seHandle.yProperty().bind(visibleCropRectangle.yProperty().add(visibleCropRectangle.heightProperty()).subtract(HANDLE_SIZE));
+         swHandle.xProperty().bind(visibleCropRectangle.xProperty());
+         swHandle.yProperty().bind(visibleCropRectangle.yProperty().add(visibleCropRectangle.heightProperty()).subtract(HANDLE_SIZE));
+        
+         // Add drag listeners to handles
+        nwHandle.setOnMouseDragged(e -> resizeFromNW(e));
+        neHandle.setOnMouseDragged(e -> resizeFromNE(e));
+        seHandle.setOnMouseDragged(e -> resizeFromSE(e));
+        swHandle.setOnMouseDragged(e -> resizeFromSW(e));
     }
 
     /*
@@ -263,6 +302,11 @@ public class LocalImageWindow {
     
 
     private void handleMousePressed(MouseEvent event) {
+        nwHandle.setVisible(true);
+        neHandle.setVisible(true);
+        seHandle.setVisible(true);
+        swHandle.setVisible(true);
+
         // Get the initial mouse press event location relative to the imageView
         startX = event.getX() ;
         startY = event.getY() ;
@@ -291,6 +335,11 @@ public class LocalImageWindow {
     }
 
     private void handleMouseDragged(MouseEvent event) {
+        nwHandle.setVisible(true);
+        neHandle.setVisible(true);
+        seHandle.setVisible(true);
+        swHandle.setVisible(true);
+
         double currentX = event.getX();
         double currentY = event.getY();
 
@@ -345,6 +394,11 @@ public class LocalImageWindow {
         imageView.setCursor(Cursor.DEFAULT);
         cropRectangle.setVisible(false); // Keep the crop rectangle visible
         visibleCropRectangle.setVisible(true); // Keep the visibleCropRectangle visible
+
+        nwHandle.setVisible(true);
+        neHandle.setVisible(true);
+        seHandle.setVisible(true);
+        swHandle.setVisible(true);
     
         // Get the bounds of the crop rectangle in the image's coordinate system
         Bounds cropBounds = cropRectangle.getBoundsInParent();
@@ -437,6 +491,69 @@ public class LocalImageWindow {
     }
     
     
+    /*
+     * Cropping rectangle dragging
+     */
+
+     private void resizeFromNW(MouseEvent event) {
+        double newX = event.getX() - calculateHalfDifferenceWidth();
+        double newY = event.getY() - calculateHalfDifferenceHeight();
+        double newWidth = cropRectangle.getX() + cropRectangle.getWidth() - newX;
+        double newHeight = cropRectangle.getY() + cropRectangle.getHeight() - newY;
+    
+        if (newWidth > 0 && newHeight > 0) {
+            cropRectangle.setX(newX);
+            cropRectangle.setY(newY);
+            cropRectangle.setWidth(newWidth);
+            cropRectangle.setHeight(newHeight);
+        }
+        updateVisibleCropRectangle();
+    }
+    
+    private void resizeFromNE(MouseEvent event) {
+        double newY = event.getY() - calculateHalfDifferenceHeight();
+        double newWidth = event.getX() - cropRectangle.getX() - calculateHalfDifferenceWidth();
+        double newHeight = cropRectangle.getY() + cropRectangle.getHeight() - newY;
+    
+        if (newWidth > 0 && newHeight > 0) {
+            cropRectangle.setY(newY);
+            cropRectangle.setWidth(newWidth);
+            cropRectangle.setHeight(newHeight);
+        }
+        updateVisibleCropRectangle();
+    }
+    
+    private void resizeFromSE(MouseEvent event) {
+        double newWidth = event.getX() - cropRectangle.getX() - calculateHalfDifferenceWidth();
+        double newHeight = event.getY() - cropRectangle.getY() - calculateHalfDifferenceHeight();
+    
+        if (newWidth > 0 && newHeight > 0) {
+            cropRectangle.setWidth(newWidth);
+            cropRectangle.setHeight(newHeight);
+        }
+        updateVisibleCropRectangle();
+    }
+    
+    private void resizeFromSW(MouseEvent event) {
+        double newX = event.getX() - calculateHalfDifferenceWidth();
+        double newWidth = cropRectangle.getX() + cropRectangle.getWidth() - newX;
+        double newHeight = event.getY() - cropRectangle.getY() - calculateHalfDifferenceHeight();
+    
+        if (newWidth > 0 && newHeight > 0) {
+            cropRectangle.setX(newX);
+            cropRectangle.setWidth(newWidth);
+            cropRectangle.setHeight(newHeight);
+        }
+
+        updateVisibleCropRectangle();
+    }
+    
+    private void updateVisibleCropRectangle() {
+        visibleCropRectangle.setX(cropRectangle.getX() + calculateHalfDifferenceWidth());
+        visibleCropRectangle.setY(cropRectangle.getY() + calculateHalfDifferenceHeight());
+        visibleCropRectangle.setWidth(cropRectangle.getWidth());
+        visibleCropRectangle.setHeight(cropRectangle.getHeight());
+    }
     
     
 }
