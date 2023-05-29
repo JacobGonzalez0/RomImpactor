@@ -16,6 +16,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
@@ -29,7 +31,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 import manager.services.ImageService;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextFormatter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class ImageCropperPanelController {
     @FXML
@@ -47,9 +54,12 @@ public class ImageCropperPanelController {
     @FXML
     private ImageView imageView;
 
+    @FXML
+    private Spinner<Integer> xCordSpinner, yCordSpinner, widthSpinner, heightSpinner;
 
-    
     private File selectedImageFile; // Stores the selected image file
+    private int imageWidth;
+    private int imageHeight;
 
     private double aspectRatio;
 
@@ -74,20 +84,72 @@ public class ImageCropperPanelController {
     public void initialize() {
          // bind the fitWidth and fitHeight properties of the imageView
         // to the width and height of the vbox
-        imageView.fitWidthProperty().bind(vbox.widthProperty());
-        imageView.fitHeightProperty().bind(vbox.heightProperty());
+        imageView.fitWidthProperty().bind(imagePane.widthProperty());
+        imageView.fitHeightProperty().bind(imagePane.heightProperty());
 
     }
 
     public void loadImage(File inputFile){
         selectedImageFile = inputFile;
         displaySelectedImage();
+        setSelectedImageFile(selectedImageFile);
         setupListeners();
+        setupSpinners();
+        setupSpinnerListeners();
     }
 
     /*
      * Init Helpers
      */
+
+    private void updateSpinners() {
+        xCordSpinner.getValueFactory().setValue((int) cropRectangle.getX());
+        yCordSpinner.getValueFactory().setValue((int) cropRectangle.getY());
+        widthSpinner.getValueFactory().setValue((int) cropRectangle.getWidth());
+        heightSpinner.getValueFactory().setValue((int) cropRectangle.getHeight());
+    }
+
+    private void setupSpinnerListeners() {
+        xCordSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            cropRectangle.setX(newValue);
+            updateVisibleCropRectangle();
+        });
+        yCordSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            cropRectangle.setY(newValue);
+            updateVisibleCropRectangle();
+        });
+        widthSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            cropRectangle.setWidth(newValue);
+            updateVisibleCropRectangle();
+        });
+        heightSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            cropRectangle.setHeight(newValue);
+            updateVisibleCropRectangle();
+        });
+    }
+
+    public void setSelectedImageFile(File selectedImageFile) {
+        this.selectedImageFile = selectedImageFile;
+        try {
+            imageWidth = ImageIO.read(selectedImageFile).getWidth();
+            imageHeight = ImageIO.read(selectedImageFile).getHeight();
+            setupSpinners();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
+
+    private void setupSpinners() {
+        configureSpinner(xCordSpinner, 0, 0, imageWidth);
+        configureSpinner(yCordSpinner, 0, 0, imageHeight);
+        configureSpinner(widthSpinner, 0, 0, imageWidth);
+        configureSpinner(heightSpinner, 0, 0, imageHeight);
+    }
+
+    private void configureSpinner(Spinner<Integer> spinner, int initialValue, int min, int max) {
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initialValue));
+    }
 
      private void setupVisibleCropRectangle() {
         visibleCropRectangle = new Rectangle();
@@ -261,6 +323,8 @@ public class ImageCropperPanelController {
         visibleCropRectangle.setWidth(cropRectangle.getWidth());
         visibleCropRectangle.setHeight(cropRectangle.getHeight());
         visibleCropRectangle.setVisible(false);
+
+        updateSpinners();
     }
 
     private void handleMouseDragged(MouseEvent event) {
@@ -316,7 +380,7 @@ public class ImageCropperPanelController {
 
         prevX = currentX;
         prevY = currentY;
-
+        updateSpinners();
     }
 
     private void handleMouseReleased(MouseEvent event) {
@@ -338,7 +402,7 @@ public class ImageCropperPanelController {
     
         // Store the crop rectangle's original coordinates and dimensions relative to the ImageView's size
         updateOriginalCropBounds(cropX,cropY,cropWidth,cropHeight);
-    
+        updateSpinners();
         System.out.println("Crop Rectangle Bounds: X=" + cropX + ", Y=" + cropY + ", Width=" + cropWidth + ", Height=" + cropHeight);
     
     }
@@ -405,6 +469,7 @@ public class ImageCropperPanelController {
             cropRectangle.setY(newY);
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
+            updateOriginalCropBounds(newX, newY, newWidth, newHeight);
         }
         updateVisibleCropRectangle();
     }
@@ -418,6 +483,8 @@ public class ImageCropperPanelController {
             cropRectangle.setY(newY);
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
+            updateOriginalCropBounds(cropRectangle.getX(), newY, newWidth, newHeight);
+            updateSpinners();
         }
         updateVisibleCropRectangle();
     }
@@ -429,6 +496,8 @@ public class ImageCropperPanelController {
         if (newWidth > 0 && newHeight > 0 && isWithinImageView(cropRectangle.getX(), cropRectangle.getY(), newWidth, newHeight)) {
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
+            updateOriginalCropBounds(cropRectangle.getX(), cropRectangle.getY(), newWidth, newHeight);
+            updateSpinners();
         }
         updateVisibleCropRectangle();
     }
@@ -442,6 +511,8 @@ public class ImageCropperPanelController {
             cropRectangle.setX(newX);
             cropRectangle.setWidth(newWidth);
             cropRectangle.setHeight(newHeight);
+            updateOriginalCropBounds(newX, cropRectangle.getY(), newWidth, newHeight);
+            updateSpinners();
         }
         updateVisibleCropRectangle();
     }    
@@ -451,6 +522,7 @@ public class ImageCropperPanelController {
         visibleCropRectangle.setY(cropRectangle.getY() + calculateHalfDifferenceHeight());
         visibleCropRectangle.setWidth(cropRectangle.getWidth());
         visibleCropRectangle.setHeight(cropRectangle.getHeight());
+        updateSpinners();
     }
 
     /*
@@ -484,7 +556,8 @@ public class ImageCropperPanelController {
             initX = event.getX();
             initY = event.getY();
     
-            
+            updateOriginalCropBounds(newX, newY, cropRectangle.getWidth(), cropRectangle.getHeight());
+            updateSpinners();
         }
         // Update the visible rectangle
         updateVisibleCropRectangle();
