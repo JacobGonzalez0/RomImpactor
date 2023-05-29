@@ -255,9 +255,6 @@ public class MainWindowController {
             // Show the options window
             localImageStage.show();
 
-            // Get the controller of the options window
-            LocalImageWindow localImageController = loader.getController();
-
             // Set listener for options window closing event
             localImageStage.setOnHidden(event -> {
                 // Perform saveSettings() operation when the options window is closed

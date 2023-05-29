@@ -16,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import manager.controllers.panels.ImageCropperPanelController;
-import manager.services.ImageService;
 
 public class LocalImageWindow {
     @FXML

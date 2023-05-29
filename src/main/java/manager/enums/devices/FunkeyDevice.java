@@ -10,9 +10,6 @@ import manager.interfaces.DeviceRomType;
  * This enum is for finding the right folder names for different devices,
  * and the file extentions for them, along with how to find the associated png for cover art
  */
-import java.util.Arrays;
-import java.util.List;
-
 public enum FunkeyDevice implements DeviceRomType {
     NINTENDO_GAME_BOY_COLOR(
             "Game Boy Color",

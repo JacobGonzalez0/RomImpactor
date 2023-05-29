@@ -3,11 +3,9 @@ package manager.controllers.panels;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.function.UnaryOperator;
 
 import javax.imageio.ImageIO;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.BoundingBox;
@@ -15,11 +13,8 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -29,12 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.util.converter.IntegerStringConverter;
 import manager.services.ImageService;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
 public class ImageCropperPanelController {
     @FXML
@@ -282,28 +272,10 @@ public class ImageCropperPanelController {
         }
     }
 
-    private void configureNumericTextField(TextField textField) {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String input = change.getText();
-            if (input.matches("[0-9]*")) { // only accept numeric input
-                return change;
-            }
-            return null;
-        };
-        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
-        textField.setTextFormatter(textFormatter);
-    }
-
     private boolean isWithinImageView(double x, double y, double width, double height) {
         Bounds imageViewBounds = imageView.getBoundsInParent();
         return x >= 0 && y >= 0 && (x + width) <= imageViewBounds.getWidth() && (y + height) <= imageViewBounds.getHeight();
     }
-    
-    /*
-     * Text Field Listeners
-     */
-
-    
 
     /*
      * Click and Drag Crop Events

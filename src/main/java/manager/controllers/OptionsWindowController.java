@@ -1,7 +1,6 @@
 package manager.controllers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javafx.fxml.FXML;

@@ -3,7 +3,6 @@ package manager.elements;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
-import manager.App;
 import manager.controllers.SystemListItemController;
 import manager.models.SystemListItem;
 
