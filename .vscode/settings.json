@@ -1,0 +1,6 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic", 
+    "java.project.referencedLibraries": [
+        "C:\\Program Files\\OpenJDK\\javafx-sdk-17.0.7\\lib"
+    ]
+}
