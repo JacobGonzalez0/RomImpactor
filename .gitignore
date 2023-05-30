@@ -3,7 +3,7 @@ target/
 
 # IDE-specific files
 .idea/
-.vscode/
+
 
 # Maven build files
 mvnw
