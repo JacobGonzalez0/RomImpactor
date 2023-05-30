@@ -2,34 +2,56 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="wizardPane" prefWidth="400" prefHeight="300" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.LocalImageWindow">
+<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="640.0" styleClass="defaultContainer" stylesheets="@styles/localImageWindow.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.LocalImageWindow">
     <children>
-        <!-- Step 1 -->
-        <AnchorPane fx:id="step1" visible="true">
-            <!-- Define the UI components for Step 1 -->
-            <Button fx:id="imageSelectButton" onMouseClicked="#chooseFile" text="Select Image" />
-            <Label fx:id="selectedFileLabel"/>
+        <!-- Select Operating Mode -->
+        <AnchorPane fx:id="selectMode" styleClass="defaultContainer" visible="true">
+    <Label layoutX="23.0" layoutY="14.0" text="Select Mode" />
+            <Pane layoutX="23.0" layoutY="67.0" prefHeight="141.0" prefWidth="309.0" styleClass="borderBox">
+                <children>
+                    <Label layoutX="14.0" layoutY="14.0" text="Cover Art Actions" />
+                    <RadioButton fx:id="localImageSelect" layoutX="26.0" layoutY="60.0" mnemonicParsing="false" selected="true" text="Local Image Select"/>
+                    <RadioButton fx:id="onlineImageSearch" layoutX="26.0" layoutY="93.0" mnemonicParsing="false" text="Online Image Search"  />
+                </children>
+            </Pane>
+            <Pane layoutX="23.0" layoutY="224.0" prefHeight="141.0" prefWidth="309.0" styleClass="borderBox">
+                <children>
+                    <Label layoutX="14.0" layoutY="14.0" text="Other Actions" />
+                    <RadioButton fx:id="localRomPatcher" layoutX="26.0" layoutY="60.0" mnemonicParsing="false" text="Local Rom Patcher"  />
+                    <RadioButton fx:id="onlineRomPatcher" layoutX="26.0" layoutY="93.0" mnemonicParsing="false" text="Online Rom Patcher"  />
+                </children>
+            </Pane>
         </AnchorPane>
 
-        <!-- Step 2 -->
-        <AnchorPane fx:id="step2" visible="false" minWidth="${wizardPane.width}" minHeight="${wizardPane.height}" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <!-- Local File Select -->
+        <AnchorPane fx:id="localFileSelect" visible="false">
+            <Button fx:id="imageSelectButton" onMouseClicked="#chooseFile" text="Select Image" />
+            <Label fx:id="selectedFileLabel" />
+        </AnchorPane>
+
+        <!-- ImageCropper -->
+        <AnchorPane fx:id="imageCropper" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         </AnchorPane>
 
         <!-- Step 3 -->
-        <AnchorPane fx:id="step3" visible="false">
+        <AnchorPane fx:id="finalPreview" styleClass="defaultContainer" visible="false">
             <!-- Define the UI components for Step 3 -->
-            <Button text="Step 3" onMouseClicked="#saveImage"/>
-            <ImageView fx:id="croppedImage" layoutY="100" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" preserveRatio="true" styleClass="imageView"/>
+            <Button onMouseClicked="#saveImage" text="Step 3" />
+            <ImageView fx:id="croppedImage" layoutY="100" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" preserveRatio="true" styleClass="imageView" />
         </AnchorPane>
 
         <!-- Back Button -->
-        <Button fx:id="backButton" text="Back" layoutX="50" layoutY="250" onAction="#goBack" disable="true" />
+        <Button fx:id="backButton" disable="true" layoutX="18.0" layoutY="262.0" onAction="#goBack" prefHeight="23.0" prefWidth="80.0" text="Back" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="18.0" />
 
         <!-- Next Button -->
-        <Button fx:id="nextButton" text="Next" layoutX="100" layoutY="250" onAction="#goNext" />
+        <Button fx:id="nextButton" layoutX="345.0" layoutY="262.0" onAction="#goNext" prefHeight="23.0" prefWidth="80.0" text="Next" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.0" />
+               
+            
     </children>
 </AnchorPane>

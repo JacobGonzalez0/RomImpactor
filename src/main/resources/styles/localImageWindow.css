@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto-bold';
+    src: url('../fonts/Roboto-Bold.ttf');
+}
+
+*{
+    -fx-font-family: 'Roboto';
+    -fx-text-fill: #e3e4fc;
+}
+
+.defaultContainer{
+    -fx-background-color: #0b192f;
+}
+
+.borderBox{
+    -fx-background-color: #182a46;
+    -fx-border-color: #091220;
+    -fx-border-width: 2pt;
+}
+
+.borderBox .label{
+    -fx-font-family: 'Roboto-bold';
+    -fx-font-weight: bold;
+    -fx-font-size: 16pt;
+}
+
+.label{
+    -fx-font-family: 'Roboto-bold';
+    -fx-font-weight: bold;
+    -fx-font-size: 20pt;
+}
+
+.button {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #845db1, #6A0DAD);
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-transition-duration: 0.3s;
+    -fx-transition-property: -fx-background-color;
+    -fx-text-fill: #e3e4fc;
+    -fx-font-size: 12pt; /* Set font size to 16pt */
+    -fx-font-weight: bold; /* Set font weight to bold */
+    -fx-text-transform: uppercase; /* Convert text to uppercase */
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(from 0% 50% to 100% 50%,  #3d0e66, #24083d);
+    -fx-transition-timing-function: linear;
+}

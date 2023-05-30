@@ -251,6 +251,7 @@ public class MainWindowController {
             Stage localImageStage = new Stage();
             localImageStage.setTitle("Local Image Wizard");
             localImageStage.setScene(new Scene(root));
+            
 
             // Show the options window
             localImageStage.show();

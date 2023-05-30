@@ -3,13 +3,18 @@ package manager.controllers;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -17,13 +22,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import manager.controllers.panels.ImageCropperPanelController;
+import manager.enums.OperatingMode;
 import manager.services.ImageService;
 import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
 
 public class LocalImageWindow {
     @FXML
-    private AnchorPane wizardPane, step1, step2, step3;
+    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview;
 
     @FXML
     private Label selectedFileLabel;
@@ -40,6 +46,11 @@ public class LocalImageWindow {
     @FXML
     private ImageView croppedImage;
 
+    private ToggleGroup operatingModeSelection;
+
+    @FXML
+    private RadioButton localImageSelect, onlineImageSearch, localRomPatcher, onlineRomPatcher;
+
     @FXML
     private TextField xField, yField, widthField, heightField;
     
@@ -49,18 +60,52 @@ public class LocalImageWindow {
 
     private ImageCropperPanelController imageCropperPanelController;
 
+    private OperatingMode operatingMode; 
 
     @FXML
     public void initialize() {
+        operatingModeSelection = new ToggleGroup();
+
+        localImageSelect.setToggleGroup(operatingModeSelection);
+        onlineImageSearch.setToggleGroup(operatingModeSelection);
+        localRomPatcher.setToggleGroup(operatingModeSelection);
+        onlineRomPatcher.setToggleGroup(operatingModeSelection);
+
+        operatingModeSelection.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> ov,
+                    Toggle old_toggle, Toggle new_toggle) {
+                if (operatingModeSelection.getSelectedToggle() != null) {
+                    RadioButton selectedButton = (RadioButton) operatingModeSelection.getSelectedToggle();
+                    if (selectedButton.equals(localImageSelect)) {
+                        // Code for localImageSelect
+                        selectOperatingMode(OperatingMode.LOCAL_IMAGE);
+                    } else if (selectedButton.equals(onlineImageSearch)) {
+                        // Code for onlineImageSearch
+                        selectOperatingMode(OperatingMode.ONLINE_IMAGE);
+                    } else if (selectedButton.equals(localRomPatcher)) {
+                        // Code for localRomPatcher
+                        selectOperatingMode(OperatingMode.LOCAL_PATCH);
+                    } else if (selectedButton.equals(onlineRomPatcher)) {
+                        // Code for onlineRomPatcher
+                        selectOperatingMode(OperatingMode.ONLINE_PATCH);
+                    }
+                    showCurrentStep();
+                }
+            }
+        });
         showCurrentStep();
-        
     }
+
     
     /*
      * Init Helpers
      */
 
-   
+    public OperatingMode selectOperatingMode(OperatingMode input){
+        this.operatingMode = input;
+        return input;
+    }
 
     /*
      * Wizard Buttons
@@ -76,7 +121,7 @@ public class LocalImageWindow {
     
     @FXML
     public void goNext(ActionEvent event) {
-        if (currentStep < 3) { // Assuming there are three steps in total
+        if (currentStep < 4) { // Assuming there are three steps in total
             currentStep++;
             showCurrentStep();
         }
@@ -103,30 +148,85 @@ public class LocalImageWindow {
     }
     
     private void showCurrentStep() {
-        step1.setVisible(false);
-        step2.setVisible(false);
-        step3.setVisible(false);
+        selectMode.setVisible(false);
+        imageCropper.setVisible(false);
+        finalPreview.setVisible(false);
         
-        switch (currentStep) {
-            case 1:
-                step1.setVisible(true);
-                backButton.setDisable(true);
-                nextButton.setDisable(selectedImageFile == null); // Disable Next button if no image is selected
-                break;
-            case 2:
-                step2.setVisible(true);
-                backButton.setDisable(false);
-                nextButton.setDisable(false);
-                imageCropperPanelController = loadStep2Panel();
-                imageCropperPanelController.loadImage(selectedImageFile);
-                break;
-            case 3:
-                step3.setVisible(true);
-                loadStep3Image(imageCropperPanelController.cropImage());
-                backButton.setDisable(false);
-                nextButton.setDisable(true);
-                break;
+        if (operatingMode == null) {
+            System.out.println("no Operating mode");
+            selectMode.setVisible(true);
+            backButton.setDisable(false);
+            nextButton.setDisable(false); // Disable Next button if no image is selected
+            return;
         }
+
+
+        switch(operatingMode){
+            case LOCAL_IMAGE:
+                switch (currentStep) 
+                {
+                    case 1: //Select Mode
+                        selectMode.setVisible(true);
+                        localFileSelect.setVisible(false);
+                        backButton.setDisable(false);
+                        nextButton.setDisable(false); // Disable Next button if no image is selected
+                        break;
+                    case 2:
+                        selectMode.setVisible(false);
+                        localFileSelect.setVisible(true);
+                        backButton.setDisable(true);
+                        nextButton.setDisable(selectedImageFile == null);
+                        break;
+                    case 3:
+                        imageCropper.setVisible(true);
+                        backButton.setDisable(false);
+                        nextButton.setDisable(false);
+                        imageCropperPanelController = loadStep2Panel();
+                        imageCropperPanelController.loadImage(selectedImageFile);
+                        break;
+                    case 4:
+                        finalPreview.setVisible(true);
+                        loadStep3Image(imageCropperPanelController.cropImage());
+                        backButton.setDisable(false);
+                        nextButton.setDisable(true);
+                        break;
+                }
+                break;
+            case ONLINE_IMAGE:
+                switch (currentStep) 
+                {
+                    case 1: 
+                        selectMode.setVisible(true);
+                        backButton.setDisable(true);
+                        nextButton.setDisable(selectedImageFile == null); // Disable Next button if no image is selected
+                        break;
+                    case 2:
+                        imageCropper.setVisible(true);
+                        backButton.setDisable(false);
+                        nextButton.setDisable(false);
+                        imageCropperPanelController = loadStep2Panel();
+                        imageCropperPanelController.loadImage(selectedImageFile);
+                        break;
+                    case 3:
+                        finalPreview.setVisible(true);
+                        loadStep3Image(imageCropperPanelController.cropImage());
+                        backButton.setDisable(false);
+                        nextButton.setDisable(true);
+                        break;
+                }
+            default:
+                switch (currentStep) 
+                {
+                    case 1: 
+                        selectMode.setVisible(true);
+                        backButton.setDisable(false);
+                        nextButton.setDisable(false); // Disable Next button if no image is selected
+                        break;
+                }
+                break;
+                
+        }
+        
     }
 
     /*
@@ -137,7 +237,7 @@ public class LocalImageWindow {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ImageCropperPanel.fxml"));
             Node step2Panel = loader.load();
-            step2.getChildren().setAll(step2Panel);
+            imageCropper.getChildren().setAll(step2Panel);
 
             // stretch the loaded panel to fit the step2 pane
             AnchorPane.setTopAnchor(step2Panel, 0.0);

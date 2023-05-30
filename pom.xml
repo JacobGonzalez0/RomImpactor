@@ -62,14 +62,7 @@
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-      <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
-          <configuration>
-              <release>17</release>
-          </configuration>
-      </plugin>
+     
     </pluginManagement>
   </build>
 </project>
