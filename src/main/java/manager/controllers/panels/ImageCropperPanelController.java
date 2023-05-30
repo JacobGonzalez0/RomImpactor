@@ -241,6 +241,35 @@ public class ImageCropperPanelController {
     }
 
     /*
+     * Image cropping methods
+     */
+
+    public BufferedImage cropImage() {
+        if (selectedImageFile != null && originalCropBounds != null) {
+            try {
+                BufferedImage originalImage = ImageIO.read(selectedImageFile);
+                
+                
+                // Convert the crop bounds to the original image's coordinate system
+                double scaleX = originalImage.getWidth() / imageView.getBoundsInParent().getWidth();
+                double scaleY = originalImage.getHeight() / imageView.getBoundsInParent().getHeight();
+                int cropX = (int) (cropRectangle.getX() * scaleX);
+                int cropY = (int) (cropRectangle.getX() * scaleY);
+                int cropWidth = (int) (cropRectangle.getWidth() * scaleX);
+                int cropHeight = (int) (cropRectangle.getHeight() * scaleY);
+    
+                // Perform the cropping operation
+                return originalImage.getSubimage(cropX, cropY, cropWidth, cropHeight);
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception appropriately
+            }
+        }
+        return null;
+    }
+
+    /*
      * Helper Methods
      */
 

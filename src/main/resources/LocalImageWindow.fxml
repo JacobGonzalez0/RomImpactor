@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane fx:id="wizardPane" prefWidth="400" prefHeight="300" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.LocalImageWindow">
     <children>
@@ -21,7 +22,8 @@
         <!-- Step 3 -->
         <AnchorPane fx:id="step3" visible="false">
             <!-- Define the UI components for Step 3 -->
-            <Button text="Step 3" />
+            <Button text="Step 3" onMouseClicked="#saveImage"/>
+            <ImageView fx:id="croppedImage" layoutY="100" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" preserveRatio="true" styleClass="imageView"/>
         </AnchorPane>
 
         <!-- Back Button -->

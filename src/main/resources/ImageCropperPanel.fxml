@@ -23,7 +23,7 @@
                     <Spinner fx:id="yCordSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
                     <Spinner fx:id="widthSpinner" styleClass="horizontal-spinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
                     <Spinner fx:id="heightSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
-                    <Button text="Crop" />
+                    <Button text="Select All" />
                 </HBox>
             </items>
         </ToolBar>

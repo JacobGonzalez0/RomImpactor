@@ -10,12 +10,16 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import manager.controllers.panels.ImageCropperPanelController;
+import manager.services.ImageService;
+import java.awt.image.BufferedImage;
+import javafx.scene.image.Image;
 
 public class LocalImageWindow {
     @FXML
@@ -32,6 +36,9 @@ public class LocalImageWindow {
     
     @FXML
     private Button backButton, nextButton, selectAllButton;
+
+    @FXML
+    private ImageView croppedImage;
 
     @FXML
     private TextField xField, yField, widthField, heightField;
@@ -115,6 +122,7 @@ public class LocalImageWindow {
                 break;
             case 3:
                 step3.setVisible(true);
+                loadStep3Image(imageCropperPanelController.cropImage());
                 backButton.setDisable(false);
                 nextButton.setDisable(true);
                 break;
@@ -148,4 +156,26 @@ public class LocalImageWindow {
         }
     }  
     
+    /*
+     * Third Step Actions
+     */
+
+    private void loadStep3Image(BufferedImage inputImage){
+        Image image = ImageService.convertToFxImage(inputImage);
+        croppedImage.setImage(image);
+    }
+
+    @FXML
+    private void saveImage(){
+        try {
+            ImageService.convertAndResizeImage(
+                imageCropperPanelController.cropImage(),
+                "test.png",
+                true
+            );
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

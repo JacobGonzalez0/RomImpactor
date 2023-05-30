@@ -34,6 +34,20 @@ public class ImageService {
         saveFxImage(resizedImage, outputFile);
     }
 
+    public static void convertAndResizeImage(BufferedImage originalImage, String outputPath, boolean overwrite) throws IOException {
+        // Check if the output file exists and whether to overwrite it
+        File outputFile = new File(outputPath);
+        if (outputFile.exists() && !overwrite) {
+            throw new IOException("Output file already exists and overwrite flag is set to false.");
+        }
+
+        // Resize the image while maintaining aspect ratio
+        BufferedImage resizedImage = resizeImage(originalImage, 240, 240);
+
+        // Save the FX Image to the output file
+        saveFxImage(resizedImage, outputFile);
+    }
+
     private static BufferedImage resizeImage(BufferedImage image, int maxWidth, int maxHeight) {
         int width = image.getWidth();
         int height = image.getHeight();
