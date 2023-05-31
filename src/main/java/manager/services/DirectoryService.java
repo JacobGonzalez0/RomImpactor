@@ -108,7 +108,8 @@ public class DirectoryService {
                         roms.add(new Rom(
                                 romName,
                                 "", // TODO: grab release date from json
-                                romFile
+                                romFile,
+                                enumName 
                         ));
                     }
         

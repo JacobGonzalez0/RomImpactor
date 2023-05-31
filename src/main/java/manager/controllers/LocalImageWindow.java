@@ -23,7 +23,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import manager.controllers.panels.ImageCropperPanelController;
 import manager.enums.OperatingMode;
+import manager.enums.devices.DeviceSupport;
+import manager.enums.devices.FunkeyDevice;
+import manager.interfaces.DeviceRomType;
+import manager.models.Rom;
+import manager.models.Settings;
 import manager.services.ImageService;
+import manager.services.SettingsService;
+
 import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
 
@@ -61,6 +68,8 @@ public class LocalImageWindow {
     private ImageCropperPanelController imageCropperPanelController;
 
     private OperatingMode operatingMode; 
+
+    private Rom selectedRom;
 
     @FXML
     public void initialize() {
@@ -105,6 +114,10 @@ public class LocalImageWindow {
     public OperatingMode selectOperatingMode(OperatingMode input){
         this.operatingMode = input;
         return input;
+    }
+
+    public void receiveRom(Rom rom){
+        this.selectedRom = rom;
     }
 
     /*
@@ -268,9 +281,33 @@ public class LocalImageWindow {
     @FXML
     private void saveImage(){
         try {
+            Settings settings = SettingsService.loadSettings();
+            DeviceSupport deviceName = DeviceSupport.getByName(settings.getGeneral().getDeviceProfile());
+
+            String relativeFilePath = "";
+            switch (deviceName) {
+                case FUNKEY_S:
+                    FunkeyDevice funkeyDevice = FunkeyDevice.valueOf(selectedRom.getSystem());
+                    relativeFilePath = funkeyDevice.getImageRegexPattern();
+                    break;
+            }
+
+            //implement consoles here
+
+            // Get the base name of the Rom file (without extension)
+            String romBaseName = selectedRom.getRomFile().getName();
+            int pos = romBaseName.lastIndexOf(".");
+            if (pos > 0) {
+                romBaseName = romBaseName.substring(0, pos);
+            }
+
+            // Set the image file name as the base name of the Rom file with .png extension
+            String imageName = romBaseName + ".png";
+            File imageFile = new File(selectedRom.getRomFile().getParentFile(), imageName);
+
             ImageService.convertAndResizeImage(
                 imageCropperPanelController.cropImage(),
-                "test.png",
+                imageFile.getAbsolutePath(),
                 true
             );
         } catch (IOException e) {
@@ -278,4 +315,9 @@ public class LocalImageWindow {
             e.printStackTrace();
         }
     }
+
+
+
+
+
 }

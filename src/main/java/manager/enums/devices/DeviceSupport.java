@@ -13,4 +13,12 @@ public enum DeviceSupport {
         return deviceName;
     }
     
+    public static DeviceSupport getByName(String deviceName) {
+        for (DeviceSupport device : DeviceSupport.values()) {
+            if (device.deviceName.equals(deviceName)) {
+                return device;
+            }
+        }
+        return null;
+    }
 }

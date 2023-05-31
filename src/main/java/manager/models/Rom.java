@@ -9,12 +9,22 @@ public class Rom {
     private String name;
     private String releaseDate;
     private File[] files;
+    private String system;
+
+    public Rom(String name, String releaseDate, File[] files, String system) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.files = files;
+        this.system = system;
+    }
 
     public Rom(String name, String releaseDate, File[] files) {
         this.name = name;
         this.releaseDate = releaseDate;
         this.files = files;
     }
+
+    public Rom(){}
 
     public String getName() {
         return name;
@@ -64,6 +74,14 @@ public class Rom {
             }
         }
         return null;
+    }
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
     }
 }
 

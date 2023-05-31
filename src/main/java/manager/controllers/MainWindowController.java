@@ -56,6 +56,8 @@ public class MainWindowController {
     private double xOffset;
     private double yOffset;
 
+    private Rom selectedRom;
+
     // Initialize method, called after all @FXML annotated members have been injected
     @FXML
     public void initialize() {
@@ -95,6 +97,11 @@ public class MainWindowController {
         // Set the ObservableList as the data source for the ListView
         systemListView.setItems(systemList);
 
+        // Select first item and populate
+        if (!systemList.isEmpty()) {
+            systemListView.getSelectionModel().selectFirst();
+            handleSystemListViewClick(null);
+        }
     }
 
     private void handleMousePressed(MouseEvent event) {
@@ -134,6 +141,13 @@ public class MainWindowController {
 
         // Set the ObservableList as the data source for the ListView
         romListView.setItems(romList);
+
+        // Select first item and populate
+        if (!romList.isEmpty()) {
+            romListView.getSelectionModel().selectFirst();
+            updateRomPreview(romListView.getSelectionModel().getSelectedItem());
+            handleRomListViewClick(null);
+        }
     }
 
     /*
@@ -143,9 +157,12 @@ public class MainWindowController {
      @FXML
      public void handleRomListViewClick(MouseEvent event) {
 
-        updateRomPreview(romListView.getSelectionModel().getSelectedItem());
+        // Update selectedRom whenever a new Rom is clicked
+        selectedRom = romListView.getSelectionModel().getSelectedItem();
 
-        if (event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
+        updateRomPreview(selectedRom);
+
+        if (event != null && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
             // Only trigger the action on a right click event
             
         }
@@ -154,11 +171,14 @@ public class MainWindowController {
 
     @FXML
     public void handleRomListViewKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN ||
+        if (event != null && event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN ||
             event.getCode() == KeyCode.PAGE_UP || event.getCode() == KeyCode.PAGE_DOWN
         ) {
 
-            updateRomPreview(romListView.getSelectionModel().getSelectedItem());
+            // Update selectedRom whenever a new Rom is selected via key press
+            selectedRom = romListView.getSelectionModel().getSelectedItem();
+
+            updateRomPreview(selectedRom);
 
         }
     }
@@ -232,9 +252,6 @@ public class MainWindowController {
         }
     }
 
-
-    // Similar methods for all your buttons...
-
     @FXML
     public void handleChangeDirButton() {
         // Handle changeDirButton action here
@@ -255,6 +272,9 @@ public class MainWindowController {
 
             // Show the options window
             localImageStage.show();
+
+            LocalImageWindow localImageWindowController = loader.getController();
+            localImageWindowController.receiveRom(selectedRom);
 
             // Set listener for options window closing event
             localImageStage.setOnHidden(event -> {
