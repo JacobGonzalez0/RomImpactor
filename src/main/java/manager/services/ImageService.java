@@ -6,12 +6,15 @@ import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.image.WritablePixelFormat;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
@@ -32,6 +35,27 @@ public class ImageService {
 
         // Save the FX Image to the output file
         saveFxImage(resizedImage, outputFile);
+    }
+
+    public static BufferedImage convertToBufferedImage(Image image) {
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
+    
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    
+        PixelReader pixelReader = image.getPixelReader();
+        WritablePixelFormat<ByteBuffer> pixelFormat = WritablePixelFormat.getByteBgraInstance();
+    
+        byte[] buffer = new byte[width * height * 4];
+        pixelReader.getPixels(0, 0, width, height, pixelFormat, buffer, 0, width * 4);
+    
+        int[] pixels = new int[width * height];
+        IntBuffer intBuffer = ByteBuffer.wrap(buffer).asIntBuffer();
+        intBuffer.get(pixels);
+    
+        bufferedImage.setRGB(0, 0, width, height, pixels, 0, width);
+    
+        return bufferedImage;
     }
 
     public static void convertAndResizeImage(BufferedImage originalImage, String outputPath, boolean overwrite) throws IOException {

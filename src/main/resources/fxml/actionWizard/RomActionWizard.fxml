@@ -31,8 +31,7 @@
 
         <!-- Local File Select -->
         <AnchorPane fx:id="localFileSelect" visible="false">
-            <Button fx:id="imageSelectButton" onMouseClicked="#chooseFile" text="Select Image" />
-            <Label fx:id="selectedFileLabel" />
+          
         </AnchorPane>
 
         <!-- ImageCropper -->

@@ -1,3 +1,11 @@
+/*
+Background: #0b192f
+BackgroundLight: #182a46
+Divider: #091a2f
+Buttons/icons: #77afb8
+
+*/
+
 @font-face {
     font-family: 'Roboto';
     src: url('../fonts/Roboto-Regular.ttf');
@@ -11,46 +19,6 @@
 *{
     -fx-font-family: 'Roboto';
     -fx-text-fill: #e3e4fc;
-}
-
-.defaultContainer{
-    -fx-background-color: #0b192f;
-}
-
-.borderBox{
-    -fx-background-color: #182a46;
-    -fx-border-color: #091220;
-    -fx-border-width: 2pt;
-}
-
-.borderBox .label{
-    -fx-font-family: 'Roboto-bold';
-    -fx-font-weight: bold;
-    -fx-font-size: 16pt;
-}
-
-.borderBoxDotted{
-    -fx-background-color: #182a46;
-    -fx-border-color: #091220;
-    -fx-border-width: 2pt;
-    -fx-border-style: dotted;
-}
-
-.borderBoxDotted .label{
-    -fx-font-family: 'Roboto-bold';
-    -fx-font-weight: bold;
-    -fx-font-size: 16pt;
-}
-
-.fontIcon{
-    -fx-icon-size: 48;
-    -fx-icon-color: #e3e4fc;
-}
-
-.label{
-    -fx-font-family: 'Roboto-bold';
-    -fx-font-weight: bold;
-    -fx-font-size: 20pt;
 }
 
 .button {

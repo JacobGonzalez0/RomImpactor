@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -64,6 +65,7 @@ public class RomActionWizard {
     private File selectedImageFile; // Stores the selected image file
 
     private ImageCropperPanelController imageCropperPanelController;
+    private SelectLocalImagePanelController selectLocalImagePanelController;
 
     private OperatingMode operatingMode; 
 
@@ -102,6 +104,8 @@ public class RomActionWizard {
             }
         });
         showCurrentStep();
+
+        
     }
 
     
@@ -186,13 +190,14 @@ public class RomActionWizard {
                         selectMode.setVisible(false);
                         localFileSelect.setVisible(true);
                         backButton.setDisable(true);
-                        nextButton.setDisable(selectedImageFile == null);
+                        nextButton.setDisable(true);
+                        selectLocalImagePanelController = loadFileSelector();
                         break;
                     case 3:
                         imageCropper.setVisible(true);
                         backButton.setDisable(false);
                         nextButton.setDisable(false);
-                        imageCropperPanelController = loadStep2Panel();
+                        imageCropperPanelController = loadImageCropper();
                         imageCropperPanelController.loadImage(selectedImageFile);
                         break;
                     case 4:
@@ -215,7 +220,7 @@ public class RomActionWizard {
                         imageCropper.setVisible(true);
                         backButton.setDisable(false);
                         nextButton.setDisable(false);
-                        imageCropperPanelController = loadStep2Panel();
+                        imageCropperPanelController = loadImageCropper();
                         imageCropperPanelController.loadImage(selectedImageFile);
                         break;
                     case 3:
@@ -241,10 +246,42 @@ public class RomActionWizard {
     }
 
     /*
-     * Second Step Actions
+     * File Select Actions
      */
 
-    private ImageCropperPanelController loadStep2Panel() {
+     private SelectLocalImagePanelController loadFileSelector() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/SelectLocalImagePanel.fxml"));
+            Node step2Panel = loader.load();
+            localFileSelect.getChildren().setAll(step2Panel);
+    
+            // Stretch the loaded panel to fit the step2 pane
+            AnchorPane.setTopAnchor(step2Panel, 0.0);
+            AnchorPane.setBottomAnchor(step2Panel, 0.0);
+            AnchorPane.setLeftAnchor(step2Panel, 0.0);
+            AnchorPane.setRightAnchor(step2Panel, 0.0);
+    
+            SelectLocalImagePanelController controller = loader.getController();
+            controller.setParentController(this);
+
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+            return null;
+        }
+    }
+    
+    public void setSelectedImageFile(File file){
+        this.selectedImageFile = file;
+        nextButton.setDisable(false);
+    }
+
+    /*
+     * Image Cropper Actions
+     */
+
+    private ImageCropperPanelController loadImageCropper() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/ImageCropperPanel.fxml"));
             Node step2Panel = loader.load();
