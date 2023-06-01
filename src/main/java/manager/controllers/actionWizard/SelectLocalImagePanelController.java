@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import manager.services.ImageService;
@@ -23,6 +24,9 @@ import javax.imageio.ImageIO;
 public class SelectLocalImagePanelController {
 
     @FXML
+    private AnchorPane wizardPane;
+
+    @FXML
     private Label filenameLabel;
 
     @FXML
@@ -37,8 +41,9 @@ public class SelectLocalImagePanelController {
     private RomActionWizard parentController;
 
     private static final List<String> SUPPORTED_IMAGE_EXTENSIONS = Arrays.asList(
-            "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"
+            ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"
     );
+
 
     @FXML
     private void initialize() {
@@ -50,6 +55,32 @@ public class SelectLocalImagePanelController {
         dragPane.setOnDragOver(this::handleDragOver);
         dragPane.setOnDragDropped(this::handleDragDropped);
         dragPane.setOnMouseClicked(this::handleMouseClicked);
+
+        dragPane.setFocusTraversable(true);
+        dragPane.setOnKeyPressed(event -> {
+            if (event.isControlDown() && event.getCode() == KeyCode.V) {
+                Clipboard clipboard = Clipboard.getSystemClipboard();
+                if (clipboard.hasImage()) {
+                    setFilenameLabel("Clipboard Image");
+                    imagePreview.setImage(clipboard.getImage());
+                    parentController.setSelectedImageFile(sendImage(clipboard.getImage()));
+                }
+            }
+        });
+        
+        wizardPane.setFocusTraversable(true);
+
+        wizardPane.setOnKeyPressed(event -> {
+            if (event.isControlDown() && event.getCode() == KeyCode.V) {
+                Clipboard clipboard = Clipboard.getSystemClipboard();
+                if (clipboard.hasImage()) {
+                    setFilenameLabel("Clipboard Image");
+                    imagePreview.setImage(clipboard.getImage());
+                    parentController.setSelectedImageFile(sendImage(clipboard.getImage()));
+                }
+            }
+        });
+        
     }
 
     public void setParentController(RomActionWizard controller){
@@ -89,8 +120,7 @@ public class SelectLocalImagePanelController {
         }
     }
 
-    public File sendImage() {
-        Image image = imagePreview.getImage();
+    public File sendImage(Image image) {
     
         if (image != null) {
             try {
