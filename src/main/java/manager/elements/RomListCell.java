@@ -25,7 +25,7 @@ public class RomListCell extends ListCell<Rom> {
             setText(null);
         } else {
             // Load the cell layout from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RomItemCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RomItemCell.fxml"));
             try {
                 HBox cellLayout = loader.load();
                 RomListItemController controller = loader.getController();

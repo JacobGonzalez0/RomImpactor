@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:controller="manager.controllers.OptionsWindowController" maxHeight="320.0" maxWidth="560.0" minHeight="320.0" minWidth="560.0" prefHeight="320.0" prefWidth="560.0" styleClass="root" stylesheets="@styles/optionsWindow.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="manager.controllers.OptionsWindowController" maxHeight="320.0" maxWidth="560.0" minHeight="320.0" minWidth="560.0" prefHeight="320.0" prefWidth="560.0" styleClass="root" stylesheets="@/styles/optionsWindow.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane fx:id="tabPane" prefHeight="320.0" prefWidth="560.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>

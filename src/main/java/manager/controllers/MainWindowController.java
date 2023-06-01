@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import manager.controllers.actionWizard.RomActionWizard;
 import manager.elements.RomListCell;
 import manager.elements.SystemListCell;
 import manager.models.Rom;
@@ -65,8 +66,9 @@ public class MainWindowController {
         topBar.setOnMousePressed(this::handleMousePressed);
         topBar.setOnMouseDragged(this::handleMouseDragged);
 
+        // TODO: implement localizationService
         // Load the resource bundle for the desired language
-        ResourceBundle bundle = ResourceBundle.getBundle("mainWindow", new Locale("en"));
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale("en"));
 
         // Retrieve translations for each UI element from the resource bundle
         optionsMenuItem.setText(bundle.getString("optionsMenuItem"));
@@ -228,7 +230,7 @@ public class MainWindowController {
     public void handleOptionsMenuItem() {
         try {
             // Load the OptionsWindow.fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/OptionsWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OptionsWindow.fxml"));
             Parent root = loader.load();
             
             // Create a new stage for the options window
@@ -261,7 +263,7 @@ public class MainWindowController {
     public void handlelocalImageButton() {
         try {
             // Load the OptionsWindow.fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LocalImageWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/RomActionWizard.fxml"));
             Parent root = loader.load();
 
             // Create a new stage for the options window
@@ -273,7 +275,7 @@ public class MainWindowController {
             // Show the options window
             localImageStage.show();
 
-            LocalImageWindow localImageWindowController = loader.getController();
+            RomActionWizard localImageWindowController = loader.getController();
             localImageWindowController.receiveRom(selectedRom);
 
             // Set listener for options window closing event

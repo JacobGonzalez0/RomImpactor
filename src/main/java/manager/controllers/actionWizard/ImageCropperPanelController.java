@@ -1,4 +1,4 @@
-package manager.controllers.panels;
+package manager.controllers.actionWizard;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

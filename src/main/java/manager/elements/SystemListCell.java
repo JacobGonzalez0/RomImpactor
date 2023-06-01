@@ -25,7 +25,7 @@ public class SystemListCell extends ListCell<SystemListItem> {
             setText(null);
         } else {
             // Load the cell layout from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SystemItemCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SystemItemCell.fxml"));
             try {
                 HBox cellLayout = loader.load();
                 SystemListItemController controller = loader.getController();

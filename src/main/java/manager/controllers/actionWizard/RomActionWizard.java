@@ -1,4 +1,4 @@
-package manager.controllers;
+package manager.controllers.actionWizard;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,11 +21,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import manager.controllers.panels.ImageCropperPanelController;
 import manager.enums.OperatingMode;
 import manager.enums.devices.DeviceSupport;
 import manager.enums.devices.FunkeyDevice;
-import manager.interfaces.DeviceRomType;
 import manager.models.Rom;
 import manager.models.Settings;
 import manager.services.ImageService;
@@ -34,7 +32,7 @@ import manager.services.SettingsService;
 import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
 
-public class LocalImageWindow {
+public class RomActionWizard {
     @FXML
     private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview;
 
@@ -248,7 +246,7 @@ public class LocalImageWindow {
 
     private ImageCropperPanelController loadStep2Panel() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ImageCropperPanel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/ImageCropperPanel.fxml"));
             Node step2Panel = loader.load();
             imageCropper.getChildren().setAll(step2Panel);
 

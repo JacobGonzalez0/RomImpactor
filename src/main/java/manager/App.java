@@ -29,7 +29,7 @@ public class App extends Application
         windowShape.setFill(Color.WHITE);
     
         // Load the FXML file
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
         Parent root = loader.load();
     
         // Retrieve the controller from FXMLLoader
