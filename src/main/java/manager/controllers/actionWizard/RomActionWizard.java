@@ -317,11 +317,11 @@ public class RomActionWizard {
     private void saveImage(){
         try {
             Settings settings = SettingsService.loadSettings();
-            DeviceSupport deviceName = DeviceSupport.getByName(settings.getGeneral().getDeviceProfile());
+            String deviceName = settings.getGeneral().getDeviceProfile();
 
             String relativeFilePath = "";
             switch (deviceName) {
-                case FUNKEY_S:
+                case "FUNKEY_S":
                     FunkeyDevice funkeyDevice = FunkeyDevice.valueOf(selectedRom.getSystem());
                     relativeFilePath = funkeyDevice.getImageRegexPattern();
                     break;

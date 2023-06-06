@@ -6,7 +6,7 @@
         "name": "Launch App",
         "request": "launch",
         "mainClass": "manager.App",
-        "vmArgs": "--module-path \"C:/Program Files/OpenJDK/javafx-sdk-17.0.7/lib\" --add-modules javafx.controls,javafx.fxml"
+        "vmArgs": "--module-path \"C:/SDK/Java/javafx-sdk-17.0.7/lib\" --add-modules javafx.controls,javafx.fxml"
       }
     ]
   }

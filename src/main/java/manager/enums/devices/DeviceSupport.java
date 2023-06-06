@@ -15,10 +15,10 @@ public enum DeviceSupport {
     
     public static DeviceSupport getByName(String deviceName) {
         for (DeviceSupport device : DeviceSupport.values()) {
-            if (device.deviceName.equals(deviceName)) {
+            if (device.getConsoleName().equals(deviceName)) {
                 return device;
             }
         }
         return null;
-    }
+    }    
 }
