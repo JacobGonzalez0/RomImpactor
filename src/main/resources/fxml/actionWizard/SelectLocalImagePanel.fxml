@@ -11,7 +11,7 @@
    <children>
       <Pane fx:id="fileSelectPane" layoutX="35.0" layoutY="356.0" prefHeight="60.0" prefWidth="571.0" styleClass="borderBox">
          <children>
-            <Button fx:id="fileSelectButton" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" text="Load Image" />
+            <Button fx:id="fileSelectButton" onMouseClicked="#handleFileSelect" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" text="Load Image" />
             <Label fx:id="filenameLabel" layoutX="134.0" layoutY="18.0" text="Filename" />
          </children>
       </Pane>

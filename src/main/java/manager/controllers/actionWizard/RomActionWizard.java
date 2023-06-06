@@ -8,7 +8,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import manager.enums.OperatingMode;
-import manager.enums.devices.DeviceSupport;
 import manager.enums.devices.FunkeyDevice;
 import manager.models.Rom;
 import manager.models.Settings;
@@ -142,34 +140,49 @@ public class RomActionWizard {
         }
     }
 
-    /*
-     * First Step Actions
-     */
-
-    @FXML
-    public void chooseFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Image File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-        Stage stage = (Stage) wizardPane.getScene().getWindow();
-        selectedImageFile = fileChooser.showOpenDialog(stage);
-        if (selectedImageFile != null) {
-            selectedFileLabel.setText(selectedImageFile.getAbsolutePath());
-            nextButton.setDisable(false); // Enable Next button if an image is selected
+    private void setVisible(String panel) {
+        switch (panel) {
+            case "selectMode":
+                selectMode.setVisible(true);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(false);
+                break;
+            case "localFileSelect":
+                selectMode.setVisible(false);
+                localFileSelect.setVisible(true);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(false);
+                break;
+            case "imageCropper":
+                selectMode.setVisible(false);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(true);
+                finalPreview.setVisible(false);
+                break;
+            case "wizardPane":
+                selectMode.setVisible(false);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(false);
+                break;
+            case "finalPreview":
+                selectMode.setVisible(false);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(true);
+                break;
+            default:
+                // Handle unrecognized panel
+                break;
         }
-    }
+    }    
     
     private void showCurrentStep() {
-        selectMode.setVisible(false);
-        imageCropper.setVisible(false);
-        finalPreview.setVisible(false);
+
         
         if (operatingMode == null) {
-            System.out.println("no Operating mode");
-            selectMode.setVisible(true);
+            setVisible("selectMode");
             backButton.setDisable(false);
             nextButton.setDisable(false); // Disable Next button if no image is selected
             return;
@@ -181,27 +194,23 @@ public class RomActionWizard {
                 switch (currentStep) 
                 {
                     case 1: //Select Mode
-                        selectMode.setVisible(true);
-                        localFileSelect.setVisible(false);
+                        setVisible("selectMode");
                         backButton.setDisable(false);
                         nextButton.setDisable(false); // Disable Next button if no image is selected
                         break;
-                    case 2:
-                        selectMode.setVisible(false);
-                        localFileSelect.setVisible(true);
+                    case 2: // Local file select
+                        setVisible("localFileSelect");
                         backButton.setDisable(true);
                         nextButton.setDisable(true);
                         selectLocalImagePanelController = loadFileSelector();
                         break;
                     case 3:
-                        imageCropper.setVisible(true);
-                        backButton.setDisable(false);
-                        nextButton.setDisable(false);
+                        setVisible("imageCropper");
                         imageCropperPanelController = loadImageCropper();
                         imageCropperPanelController.loadImage(selectedImageFile);
                         break;
                     case 4:
-                        finalPreview.setVisible(true);
+                        setVisible("finalPreview");
                         loadStep3Image(imageCropperPanelController.cropImage());
                         backButton.setDisable(false);
                         nextButton.setDisable(true);

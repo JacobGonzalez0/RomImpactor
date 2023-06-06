@@ -44,6 +44,11 @@ public class SelectLocalImagePanelController {
             ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"
     );
 
+    private static final List<String> SUPPORTED_IMAGE_EXTENSIONS_SELECT = Arrays.asList(
+        "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"
+);
+
+
 
     @FXML
     private void initialize() {
@@ -110,7 +115,7 @@ public class SelectLocalImagePanelController {
     private void handleFileSelect() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", SUPPORTED_IMAGE_EXTENSIONS)
+                new FileChooser.ExtensionFilter("Image Files", SUPPORTED_IMAGE_EXTENSIONS_SELECT)
         );
 
         File selectedFile = fileChooser.showOpenDialog(fileSelectButton.getScene().getWindow());
@@ -124,7 +129,7 @@ public class SelectLocalImagePanelController {
     
         if (image != null) {
             try {
-                BufferedImage bufferedImage = ImageService.convertToBufferedImage(image);
+                BufferedImage bufferedImage = ImageService.convertToBufferedImage(image, true);
     
                 // Create a temporary file
                 File outputFile = File.createTempFile("image", ".png");

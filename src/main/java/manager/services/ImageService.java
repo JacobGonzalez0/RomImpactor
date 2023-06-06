@@ -37,26 +37,44 @@ public class ImageService {
         saveFxImage(resizedImage, outputFile);
     }
 
-    public static BufferedImage convertToBufferedImage(Image image) {
+    public static BufferedImage convertToBufferedImage(Image image){
+        return convertToBufferedImage(image, false);
+    }
+
+    public static BufferedImage convertToBufferedImage(Image image, boolean premultiplied) {
         int width = (int) image.getWidth();
         int height = (int) image.getHeight();
     
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     
         PixelReader pixelReader = image.getPixelReader();
-        WritablePixelFormat<ByteBuffer> pixelFormat = WritablePixelFormat.getByteBgraInstance();
+        WritablePixelFormat<ByteBuffer> pixelFormat = premultiplied ?
+                WritablePixelFormat.getByteBgraPreInstance() :
+                WritablePixelFormat.getByteBgraInstance();
     
         byte[] buffer = new byte[width * height * 4];
         pixelReader.getPixels(0, 0, width, height, pixelFormat, buffer, 0, width * 4);
     
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
         int[] pixels = new int[width * height];
-        IntBuffer intBuffer = ByteBuffer.wrap(buffer).asIntBuffer();
-        intBuffer.get(pixels);
+        for (int i = 0; i < pixels.length; i++) {
+            byte b = byteBuffer.get();
+            byte g = byteBuffer.get();
+            byte r = byteBuffer.get();
+            byte a = byteBuffer.get();
+    
+            int alpha = (a & 0xff);
+            int red = (r & 0xff) * (premultiplied ? alpha : 255) / 255;
+            int green = (g & 0xff) * (premultiplied ? alpha : 255) / 255;
+            int blue = (b & 0xff) * (premultiplied ? alpha : 255) / 255;
+    
+            pixels[i] = (alpha << 24) | (red << 16) | (green << 8) | blue;
+        }
     
         bufferedImage.setRGB(0, 0, width, height, pixels, 0, width);
     
         return bufferedImage;
-    }
+    }    
 
     public static void convertAndResizeImage(BufferedImage originalImage, String outputPath, boolean overwrite) throws IOException {
         // Check if the output file exists and whether to overwrite it
