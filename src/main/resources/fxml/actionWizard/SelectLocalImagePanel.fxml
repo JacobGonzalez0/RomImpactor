@@ -4,23 +4,30 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="640.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SelectLocalImagePanelController">
+<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SelectLocalImagePanelController">
    <children>
-      <Pane fx:id="fileSelectPane" layoutX="35.0" layoutY="356.0" prefHeight="60.0" prefWidth="571.0" styleClass="borderBox">
+      <AnchorPane fx:id="dragPane" prefHeight="${wizardPane.height - 160}" prefWidth="${wizardPane.width - 40}" styleClass="borderBoxDotted"  AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="36.0">
          <children>
-            <Button fx:id="fileSelectButton" onMouseClicked="#handleFileSelect" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" text="Load Image" />
-            <Label fx:id="filenameLabel" layoutX="134.0" layoutY="18.0" text="Filename" />
+            <StackPane layoutX="0" layoutY="0" prefWidth="${dragPane.width}" prefHeight="${dragPane.height}">
+               <VBox alignment="CENTER">
+                  <FontIcon fx:id="fontIcon" iconLiteral="far-file-image" styleClass="fontIcon" />
+                  <Label fx:id="dragBoxLabel" text="Drag and drop here"  />
+               </VBox>
+            </StackPane>
+      <ImageView fx:id="imagePreview" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
          </children>
-      </Pane>
-      <Pane fx:id="dragPane" layoutX="35.0" layoutY="40.0" prefHeight="297.0" prefWidth="571.0" styleClass="borderBoxDotted">
+      </AnchorPane>
+      <!-- Spacer -->
+      <AnchorPane fx:id="fileSelectPane" layoutX="36.0" layoutY="356.0" prefHeight="64.0" prefWidth="${wizardPane.width - 35}" styleClass="borderBox"  AnchorPane.leftAnchor="20.0" AnchorPane.bottomAnchor="44.0">
          <children>
-            <Label fx:id="dragBoxLabel" layoutX="194.0" layoutY="163.0" text="Drag and drop here" />
-            <FontIcon fx:id="fontIcon" iconLiteral="far-file-image" layoutX="268.0" layoutY="143.0" styleClass="fontIcon" />
-            <ImageView fx:id="imagePreview" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="fileSelectButton" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#handleFileSelect" text="Load Image" AnchorPane.leftAnchor="14.0" />
+            <Label fx:id="filenameLabel" layoutX="134.0" layoutY="18.0" text="Filename" AnchorPane.leftAnchor="134.0" />
          </children>
-      </Pane>
+      </AnchorPane>
    </children>
 </AnchorPane>

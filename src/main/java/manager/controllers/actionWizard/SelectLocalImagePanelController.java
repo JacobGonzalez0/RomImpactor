@@ -54,8 +54,7 @@ public class SelectLocalImagePanelController {
     private void initialize() {
         // Set up event handlers for file selection and drag-and-drop
 
-        imagePreview.fitWidthProperty().bind(dragPane.widthProperty().subtract(40));
-        imagePreview.fitHeightProperty().bind(dragPane.heightProperty().subtract(40));
+        
 
         dragPane.setOnDragOver(this::handleDragOver);
         dragPane.setOnDragDropped(this::handleDragDropped);
