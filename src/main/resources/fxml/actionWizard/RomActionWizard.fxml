@@ -34,7 +34,7 @@
         </AnchorPane>
 
         <!-- Local File Select -->
-        <AnchorPane fx:id="localFileSelect" visible="false">
+        <AnchorPane fx:id="localFileSelect" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           
         </AnchorPane>
 
@@ -43,10 +43,8 @@
         </AnchorPane>
 
         <!-- Step 3 -->
-        <AnchorPane fx:id="finalPreview" styleClass="defaultContainer" visible="false">
-            <!-- Define the UI components for Step 3 -->
-            <Button onMouseClicked="#saveImage" text="Step 3" />
-            <ImageView fx:id="croppedImage" layoutY="100" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" preserveRatio="true" styleClass="imageView" />
+        <AnchorPane fx:id="finalPreview" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           
         </AnchorPane>
 
         <AnchorPane fx:id="WindowActionButtons" id="WindowActionButtons" layoutX="0" layoutY="0" minHeight="32.0" minWidth="0.0" prefHeight="32.0" prefWidth="${wizardPane.width}">
