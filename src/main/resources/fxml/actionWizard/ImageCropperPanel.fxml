@@ -16,7 +16,7 @@
             <ImageView fx:id="imageView" minHeight="${imagePane.height}" minWidth="${imagePane.width}" preserveRatio="true" styleClass="imageView">
             </ImageView>
         </StackPane>
-        <ToolBar minWidth="${wizardPane.width}" prefHeight="32.0" prefWidth="400" styleClass="toolbar" translateX="-8.0" VBox.vgrow="NEVER">
+        <ToolBar minWidth="${wizardPane.width}" prefHeight="32.0" prefWidth="400" styleClass="toolbar"  VBox.vgrow="NEVER">
             <items>
                 <HBox alignment="CENTER" minWidth="${wizardPane.width + 20}" prefHeight="32.0" styleClass="hbox">
                     <Spinner fx:id="xCordSpinner" styleClass="horizontal-spinner" editable="true" prefHeight="32.0" prefWidth="80.0" />

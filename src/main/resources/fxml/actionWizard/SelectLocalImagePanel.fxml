@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SelectLocalImagePanelController">
    <children>
-      <AnchorPane fx:id="dragPane" prefHeight="${wizardPane.height - 160}" prefWidth="${wizardPane.width - 40}" styleClass="borderBoxDotted"  AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="36.0">
+      <AnchorPane fx:id="dragPane" prefHeight="${wizardPane.height - 160}" prefWidth="${wizardPane.width - 42}" styleClass="borderBoxDotted"  AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="36.0">
          <children>
             <StackPane layoutX="0" layoutY="0" prefWidth="${dragPane.width}" prefHeight="${dragPane.height}">
                <VBox alignment="CENTER">
@@ -19,10 +19,11 @@
                   <Label fx:id="dragBoxLabel" text="Drag and drop here"  />
                </VBox>
             </StackPane>
-      <ImageView fx:id="imagePreview" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+            <StackPane layoutX="0" layoutY="0" prefWidth="${dragPane.width}" prefHeight="${dragPane.height}">
+               <ImageView fx:id="imagePreview" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" fitWidth="${wizardPane.width - 60}" fitHeight="${wizardPane.height - 200}"/>
+            </StackPane>
          </children>
       </AnchorPane>
-      <!-- Spacer -->
       <AnchorPane fx:id="fileSelectPane" layoutX="36.0" layoutY="356.0" prefHeight="64.0" prefWidth="${wizardPane.width - 35}" styleClass="borderBox"  AnchorPane.leftAnchor="20.0" AnchorPane.bottomAnchor="44.0">
          <children>
             <Button fx:id="fileSelectButton" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#handleFileSelect" text="Load Image" AnchorPane.leftAnchor="14.0" />
