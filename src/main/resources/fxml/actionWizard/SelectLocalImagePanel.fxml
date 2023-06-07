@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="640.0" styleClass="defaultContainer" stylesheets="@/styles/romActionWizard.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SelectLocalImagePanelController">
+<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="640.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SelectLocalImagePanelController">
    <children>
       <Pane fx:id="fileSelectPane" layoutX="35.0" layoutY="356.0" prefHeight="60.0" prefWidth="571.0" styleClass="borderBox">
          <children>

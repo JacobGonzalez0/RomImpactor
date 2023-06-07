@@ -1,0 +1,219 @@
+@font-face {
+font-family: 'Roboto';
+src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+font-family: 'Roboto-bold';
+src: url('../fonts/Roboto-Bold.ttf');
+}
+
+*,
+.defaultContainer,
+.label {
+-fx-font-family: 'Roboto';
+-fx-text-fill: #e3e4fc;
+}
+
+.imageView,
+.imagePane,
+.vbox,
+.wizardPane,
+.root,
+.default-pane,
+.split-pane,
+.menu-bar {
+-fx-background-color: #0b192f;
+}
+
+.toolbar,
+#WindowActionButtons {
+-fx-background-color: #182a46;
+-fx-base: #182a46;
+}
+
+.hbox {
+-fx-spacing: 10px;
+}
+
+.button,
+.secondaryButton {
+-fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #845db1, #6A0DAD);
+-fx-background-radius: 20;
+-fx-background-insets: 0;
+-fx-transition-duration: 0.3s;
+-fx-transition-property: -fx-background-color;
+-fx-text-fill: #e3e4fc;
+-fx-font-size: 12pt;
+-fx-font-weight: bold;
+-fx-text-transform: uppercase;
+}
+
+.button:hover,
+.secondaryButton:hover {
+-fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #3d0e66, #24083d);
+-fx-transition-timing-function: linear;
+}
+
+.button .text {
+-fx-fill: rgb(255, 255, 255);
+-fx-stroke: rgb(0, 0, 0);
+-fx-stroke-width: .2px;
+}
+
+.smallbutton {
+-fx-font-size: 9pt;
+}
+
+.button:hover,
+.secondaryButton:hover,
+.minimize-button:hover,
+.maximize-button:hover,
+.close-button:hover {
+-fx-background-radius: 150;
+}
+
+.minimize-button {
+-fx-background-color: #883cdf;
+}
+
+.maximize-button {
+-fx-background-color: #ff6d4f;
+}
+
+.close-button {
+-fx-background-color: #f926ba;
+}
+
+.title,
+.romInfoTitle {
+-fx-font-family: 'Roboto-bold';
+-fx-font-size: 18;
+-fx-font-weight: bold;
+}
+
+.accent {
+-fx-background-color: #b361fa;
+}
+
+.list-view,
+.list-cell {
+-fx-background-color: #182a46;
+-fx-background-radius: 10;
+-fx-background-insets: 0;
+}
+
+.list-cell:nth-child(even) {
+-fx-background-color: #355074;
+}
+
+.list-cell:focused {
+-fx-background-color: #4d8bf1;
+}
+
+.romInfoSubTitle {
+-fx-font-family: 'Roboto';
+-fx-font-size: 10pt;
+}
+
+.tab-header-background,
+.tab-pane .tab-header-area .tab,
+.tab-pane .tab-header-area .tab:selected {
+-fx-background-color: #182a46;
+}
+
+.tab-label {
+-fx-border-width: 2;
+-fx-text-fill: #e3e4fc;
+-fx-font-family: 'Roboto-bold';
+-fx-font-weight: bold;
+}
+
+.tab-pane .tab-header-area .tab {
+-fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #9c1774, #77025a);
+-fx-background-radius: 15 15px 0px 0;
+-fx-padding: 5 20;
+-fx-translate-y: 1px;
+}
+
+.tab-pane .tab-header-area .tab:selected {
+-fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #9c1774, #77025a);
+-fx-background-radius: 15 15px 0px 0;
+-fx-translate-y: 1px;
+}
+
+.tab-pane .tab-header-area .tab:last-child {
+-fx-background-radius: 0;
+}
+
+.apiCheckbox {
+-fx-padding: 0 5 0 0;
+-fx-text-fill: #e3e4fc;
+-fx-font-family: 'Roboto-bold';
+-fx-font-weight: bold;
+}
+
+.borderBox,
+.borderBoxDotted {
+-fx-background-color: #182a46;
+-fx-border-color: #091220;
+-fx-border-width: 2pt;
+}
+
+.borderBox .label,
+.borderBoxDotted .label,
+.romInfoTitle,
+.label {
+-fx-font-family: 'Roboto-bold';
+-fx-font-weight: bold;
+-fx-font-size: 16pt;
+}
+
+.borderBoxDotted {
+-fx-border-style: dotted;
+}
+
+.fontIcon {
+-fx-icon-size: 48;
+-fx-icon-color: #e3e4fc;
+}
+
+#RomInfo {
+-fx-background-color: #182a46;
+-fx-background-radius: 10;
+-fx-background-insets: 0;
+}
+
+.list-cell {
+-fx-background-color: #182a46;
+-fx-background-radius: 10;
+}
+
+.list-cell:nth-child(even) {
+-fx-background-color: #355074;
+}
+
+.list-cell:focused {
+-fx-background-color: #4d8bf1;
+}
+
+.romInfoTitle {
+-fx-font-family: "Roboto-bold";
+-fx-font-weight: Bold;
+-fx-font-size: 14pt;
+}
+
+.romInfoSubTitle {
+-fx-font-family: "Roboto";
+-fx-font-size: 10pt;
+}
+
+.label {
+-fx-text-fill: #e3e4fc;
+-fx-font-family: 'Roboto-bold';
+-fx-font-weight: bold;
+-fx-font-size: 12pt;
+-fx-fill: rgb(255, 255, 255);
+-fx-stroke: rgb(0, 0, 0);
+-fx-stroke-width: .2px;
+}

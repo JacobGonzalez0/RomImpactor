@@ -27,6 +27,7 @@ import manager.models.Rom;
 import manager.models.Settings;
 import manager.services.ImageService;
 import manager.services.SettingsService;
+import manager.controllers.actionWizard.FinalImagePreviewPanel;
 
 import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
@@ -45,7 +46,7 @@ public class RomActionWizard {
     private StackPane imagePane;
     
     @FXML
-    private Button backButton, nextButton, selectAllButton;
+    private Button backButton, nextButton, selectAllButton, saveButton;
 
     @FXML
     private ImageView croppedImage;
@@ -68,6 +69,8 @@ public class RomActionWizard {
     private OperatingMode operatingMode; 
 
     private Rom selectedRom;
+
+    private FinalImagePreviewPanel finalImagePreviewPanel;
 
     @FXML
     public void initialize() {
@@ -103,7 +106,8 @@ public class RomActionWizard {
         });
         showCurrentStep();
 
-        
+        backButton.setVisible(false);
+        saveButton.setVisible(false);
     }
 
     
@@ -141,6 +145,7 @@ public class RomActionWizard {
     }
 
     private void setVisible(String panel) {
+        saveButton.setVisible(false);
         switch (panel) {
             case "selectMode":
                 selectMode.setVisible(true);
@@ -149,12 +154,14 @@ public class RomActionWizard {
                 finalPreview.setVisible(false);
                 break;
             case "localFileSelect":
+                loadFileSelector();
                 selectMode.setVisible(false);
                 localFileSelect.setVisible(true);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
                 break;
             case "imageCropper":
+                loadImageCropper().loadImage(selectedImageFile);
                 selectMode.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(true);
@@ -167,10 +174,12 @@ public class RomActionWizard {
                 finalPreview.setVisible(false);
                 break;
             case "finalPreview":
+                loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);;
                 selectMode.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(true);
+                saveButton.setVisible(true);
                 break;
             default:
                 // Handle unrecognized panel
@@ -196,24 +205,25 @@ public class RomActionWizard {
                     case 1: //Select Mode
                         setVisible("selectMode");
                         backButton.setDisable(false);
+                        backButton.setVisible(false);
                         nextButton.setDisable(false); // Disable Next button if no image is selected
                         break;
                     case 2: // Local file select
                         setVisible("localFileSelect");
-                        backButton.setDisable(true);
-                        nextButton.setDisable(true);
-                        selectLocalImagePanelController = loadFileSelector();
+                        backButton.setDisable(false);
+                        backButton.setVisible(true);
+                        nextButton.setDisable(true);  
                         break;
                     case 3:
                         setVisible("imageCropper");
-                        imageCropperPanelController = loadImageCropper();
-                        imageCropperPanelController.loadImage(selectedImageFile);
+                        backButton.setDisable(false);
+                        nextButton.setDisable(false);  
                         break;
                     case 4:
                         setVisible("finalPreview");
-                        loadStep3Image(imageCropperPanelController.cropImage());
                         backButton.setDisable(false);
-                        nextButton.setDisable(true);
+                        nextButton.setDisable(false);
+                        nextButton.setVisible(false);
                         break;
                 }
                 break;
@@ -234,7 +244,6 @@ public class RomActionWizard {
                         break;
                     case 3:
                         finalPreview.setVisible(true);
-                        loadStep3Image(imageCropperPanelController.cropImage());
                         backButton.setDisable(false);
                         nextButton.setDisable(true);
                         break;
@@ -261,16 +270,17 @@ public class RomActionWizard {
      private SelectLocalImagePanelController loadFileSelector() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/SelectLocalImagePanel.fxml"));
-            Node step2Panel = loader.load();
-            localFileSelect.getChildren().setAll(step2Panel);
+            Node node = loader.load();
+            localFileSelect.getChildren().setAll(node);
     
             // Stretch the loaded panel to fit the step2 pane
-            AnchorPane.setTopAnchor(step2Panel, 0.0);
-            AnchorPane.setBottomAnchor(step2Panel, 0.0);
-            AnchorPane.setLeftAnchor(step2Panel, 0.0);
-            AnchorPane.setRightAnchor(step2Panel, 0.0);
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
     
             SelectLocalImagePanelController controller = loader.getController();
+            this.selectLocalImagePanelController = controller;
             controller.setParentController(this);
 
             return controller;
@@ -293,17 +303,19 @@ public class RomActionWizard {
     private ImageCropperPanelController loadImageCropper() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/ImageCropperPanel.fxml"));
-            Node step2Panel = loader.load();
-            imageCropper.getChildren().setAll(step2Panel);
+            Node node = loader.load();
+            imageCropper.getChildren().setAll(node);
 
             // stretch the loaded panel to fit the step2 pane
-            AnchorPane.setTopAnchor(step2Panel, 0.0);
-            AnchorPane.setBottomAnchor(step2Panel, 0.0);
-            AnchorPane.setLeftAnchor(step2Panel, 0.0);
-            AnchorPane.setRightAnchor(step2Panel, 0.0);
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
+            
             
             ImageCropperPanelController controller = loader.getController();
-            // You can now access methods or variables of the Step2PanelController
+            this.imageCropperPanelController = controller;
+           
             
             return controller;
         } catch (IOException e) {
@@ -317,51 +329,37 @@ public class RomActionWizard {
      * Third Step Actions
      */
 
-    private void loadStep3Image(BufferedImage inputImage){
-        Image image = ImageService.convertToFxImage(inputImage);
-        croppedImage.setImage(image);
-    }
+     private FinalImagePreviewPanel loadFinalImagePreview() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/FinalImagePreviewPanel.fxml"));
+            Node node = loader.load();
+            finalPreview.getChildren().setAll(node);
+
+            // stretch the loaded panel to fit the step2 pane
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
+            
+            FinalImagePreviewPanel controller = loader.getController();
+            this.finalImagePreviewPanel = controller;
+            // You can now access methods or variables of the Step2PanelController
+            
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+            return null;
+        }
+    } 
 
     @FXML
     private void saveImage(){
-        try {
-            Settings settings = SettingsService.loadSettings();
-            String deviceName = settings.getGeneral().getDeviceProfile();
-
-            String relativeFilePath = "";
-            switch (deviceName) {
-                case "FUNKEY_S":
-                    FunkeyDevice funkeyDevice = FunkeyDevice.valueOf(selectedRom.getSystem());
-                    relativeFilePath = funkeyDevice.getImageRegexPattern();
-                    break;
-            }
-
-            //implement consoles here
-
-            // Get the base name of the Rom file (without extension)
-            String romBaseName = selectedRom.getRomFile().getName();
-            int pos = romBaseName.lastIndexOf(".");
-            if (pos > 0) {
-                romBaseName = romBaseName.substring(0, pos);
-            }
-
-            // Set the image file name as the base name of the Rom file with .png extension
-            String imageName = romBaseName + ".png";
-            File imageFile = new File(selectedRom.getRomFile().getParentFile(), imageName);
-
-            ImageService.convertAndResizeImage(
-                imageCropperPanelController.cropImage(),
-                imageFile.getAbsolutePath(),
-                true
-            );
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if(finalImagePreviewPanel.saveImage()){
+            Stage stage = (Stage) wizardPane.getScene().getWindow();
+            stage.close();
         }
     }
-
-
-
 
 
 }

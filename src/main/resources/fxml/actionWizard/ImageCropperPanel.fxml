@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="wizardPane" styleClass="wizardPane" stylesheets="@/styles/imageCropperPanel.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.ImageCropperPanelController">
+<AnchorPane fx:id="wizardPane" styleClass="wizardPane" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.ImageCropperPanelController">
     <VBox fx:id="vbox" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" prefHeight="400" prefWidth="600" spacing="10.0" styleClass="vbox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <StackPane fx:id="imagePane" minHeight="${wizardPane.height - 60}" minWidth="${wizardPane.width}" styleClass="imagePane" VBox.vgrow="ALWAYS">
             <ImageView fx:id="imageView" minHeight="${imagePane.height}" minWidth="${imagePane.width}" preserveRatio="true" styleClass="imageView">
@@ -18,7 +18,7 @@
         </StackPane>
         <ToolBar minWidth="${wizardPane.width}" prefHeight="32.0" prefWidth="400" styleClass="toolbar" translateX="-8.0" VBox.vgrow="NEVER">
             <items>
-                <HBox alignment="CENTER" minWidth="${wizardPane.width}" prefHeight="32.0" styleClass="hbox">
+                <HBox alignment="CENTER" minWidth="${wizardPane.width + 20}" prefHeight="32.0" styleClass="hbox">
                     <Spinner fx:id="xCordSpinner" styleClass="horizontal-spinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
                     <Spinner fx:id="yCordSpinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
                     <Spinner fx:id="widthSpinner" styleClass="horizontal-spinner" editable="true" prefHeight="32.0" prefWidth="80.0" />
