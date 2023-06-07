@@ -14,7 +14,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import manager.controllers.actionWizard.RomActionWizard;
 import manager.elements.RomListCell;
 import manager.elements.SystemListCell;
@@ -258,35 +261,41 @@ public class MainWindowController {
     public void handleChangeDirButton() {
         // Handle changeDirButton action here
     }
-
     @FXML
     public void handlelocalImageButton() {
         try {
-            // Load the OptionsWindow.fxml file
+            // Load the RomActionWizard.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/RomActionWizard.fxml"));
             Parent root = loader.load();
-
+    
+            // Create a custom shape for the stage
+            Rectangle windowShape = new Rectangle(700, 480);
+            windowShape.setArcWidth(20);
+            windowShape.setArcHeight(20);
+            root.setClip(windowShape);
+    
             // Create a new stage for the options window
             Stage localImageStage = new Stage();
+            localImageStage.initStyle(StageStyle.TRANSPARENT);
             localImageStage.setTitle("Local Image Wizard");
-            localImageStage.setScene(new Scene(root));
-            
-
+            localImageStage.setScene(new Scene(root, Color.TRANSPARENT));
+    
             // Show the options window
             localImageStage.show();
-
+    
             RomActionWizard localImageWindowController = loader.getController();
+            localImageWindowController.setPrimaryStage(localImageStage);
             localImageWindowController.receiveRom(selectedRom);
-
+    
             // Set listener for options window closing event
             localImageStage.setOnHidden(event -> {
-                // Perform saveSettings() operation when the options window is closed
-                // localImageController.saveSettings();
+                handleSystemListViewClick(null);
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
 
     
 }

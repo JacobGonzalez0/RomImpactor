@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -34,7 +35,7 @@ import javafx.scene.image.Image;
 
 public class RomActionWizard {
     @FXML
-    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview;
+    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons;
 
     @FXML
     private Label selectedFileLabel;
@@ -72,8 +73,17 @@ public class RomActionWizard {
 
     private FinalImagePreviewPanel finalImagePreviewPanel;
 
+    private double xOffset;
+    private double yOffset;
+
+    private Stage primaryStage;
+
     @FXML
     public void initialize() {
+        // Add event listeners for drag functionality
+        WindowActionButtons.setOnMousePressed(this::handleMousePressed);
+        WindowActionButtons.setOnMouseDragged(this::handleMouseDragged);
+
         operatingModeSelection = new ToggleGroup();
 
         localImageSelect.setToggleGroup(operatingModeSelection);
@@ -122,6 +132,39 @@ public class RomActionWizard {
 
     public void receiveRom(Rom rom){
         this.selectedRom = rom;
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    /*
+     * Window Action buttons
+     */
+
+    @FXML
+    public void handleMinimizeButton() {
+        primaryStage.setIconified(true);  // Minimize the window
+    }
+
+    @FXML
+    public void handleCloseMenuItem() {
+        primaryStage.close();  // Close the window
+    }
+
+    @FXML
+    public void handleCloseButton() {
+        primaryStage.close();  // Close the window
+    }
+
+    private void handleMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+
+    private void handleMouseDragged(MouseEvent event) {
+        primaryStage.setX(event.getScreenX() - xOffset);
+        primaryStage.setY(event.getScreenY() - yOffset);
     }
 
     /*
@@ -218,6 +261,8 @@ public class RomActionWizard {
                         setVisible("imageCropper");
                         backButton.setDisable(false);
                         nextButton.setDisable(false);  
+                        saveButton.setVisible(false);
+                        nextButton.setVisible(true);
                         break;
                     case 4:
                         setVisible("finalPreview");

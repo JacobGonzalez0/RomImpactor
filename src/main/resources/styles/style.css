@@ -32,6 +32,10 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-base: #182a46;
 }
 
+#WindowActionButtons{
+    -fx-background-color: #0b192f;
+}
+
 .hbox {
 -fx-spacing: 10px;
 }
