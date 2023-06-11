@@ -217,7 +217,7 @@ public class RomActionWizard {
                 finalPreview.setVisible(false);
                 break;
             case "finalPreview":
-                // loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);;
+                loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);;
                 selectMode.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
@@ -406,5 +406,6 @@ public class RomActionWizard {
         }
     }
 
+    
 
 }
