@@ -98,8 +98,6 @@ class RubberBandSelection {
         anchorPane.getChildren().add(rect);
 
         // Offset from the anchor panel its contained in
-        offsetX = 58;
-        offsetY = -86;
         dragging = false;
 
         nwHandle = new Rectangle(HANDLE_SIZE, HANDLE_SIZE);
@@ -123,6 +121,12 @@ class RubberBandSelection {
                 ratioX = newImage.getWidth() / imageView.getBoundsInLocal().getWidth();
                 ratioY = newImage.getHeight() / imageView.getBoundsInLocal().getHeight();
             }
+        });
+    
+        imageView.boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            Point2D topLeft = imageView.localToScene(newBounds.getMinX(), newBounds.getMinY());
+            offsetX = (topLeft.getX() - anchorPane.getLayoutX()) /2;
+            offsetY = (topLeft.getY() - anchorPane.getLayoutY()) /2;
         });
 
         anchorPane.setOnMousePressed(event -> {
