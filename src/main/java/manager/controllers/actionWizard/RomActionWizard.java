@@ -232,9 +232,8 @@ public class RomActionWizard {
                 saveButton.setVisible(true);
                 break;
             case "gameSearch":
-
                 try {
-                    loadSearchGame().receiveQuery("Duke Nukem");
+                    loadSearchGame().receiveQuery("Duke Nukem Advance");
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

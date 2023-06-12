@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="wizardPane" styleClass="defaultContainer"  stylesheets="@/styles/style.css" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchGamePanelController">
+<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchGamePanelController">
     <children>
-        <ListView fx:id="GameSearchResults" layoutX="28.0" layoutY="31.0" prefHeight="384.0" prefWidth="249.0" AnchorPane.leftAnchor="32.0">
+        <ListView fx:id="GameSearchResults" layoutX="28.0" layoutY="31.0" onMouseClicked="#handleGameListViewClick" prefHeight="384.0" prefWidth="249.0" AnchorPane.leftAnchor="32.0">
             <cellFactory>
                     
             </cellFactory>
         </ListView>
         <VBox layoutX="315.0" layoutY="31.0" prefHeight="377.0" prefWidth="366.0" AnchorPane.rightAnchor="32.0">
             <children>
-                <StackPane prefHeight="384.0" prefWidth="360.0">
+                <StackPane fx:id="imagePane" prefHeight="384.0" prefWidth="360.0">
                     <children>
-                        <ImageView fx:id="myImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imagePreview" fitHeight="384.0" fitWidth="360.0" maxHeight="${imagePane.height}" maxWidth="${imagePane.width}" minHeight="${imagePane.height}" minWidth="${imagePane.width}" preserveRatio="true" StackPane.alignment="CENTER" />
                     </children>
                 </StackPane>
                 <Pane prefHeight="200.0" prefWidth="200.0">
@@ -31,4 +31,3 @@
         </VBox>
     </children>
 </AnchorPane>
-
