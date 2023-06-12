@@ -35,7 +35,7 @@ import javafx.scene.image.Image;
 
 public class RomActionWizard {
     @FXML
-    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons;
+    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons, gameSearch;
 
     @FXML
     private Label selectedFileLabel;
@@ -78,6 +78,8 @@ public class RomActionWizard {
 
     private Stage primaryStage;
 
+    private SearchGamePanelController searchGamePanelController;
+
     @FXML
     public void initialize() {
         // Add event listeners for drag functionality
@@ -91,6 +93,7 @@ public class RomActionWizard {
         localRomPatcher.setToggleGroup(operatingModeSelection);
         onlineRomPatcher.setToggleGroup(operatingModeSelection);
 
+       
         operatingModeSelection.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> ov,
@@ -192,6 +195,7 @@ public class RomActionWizard {
         switch (panel) {
             case "selectMode":
                 selectMode.setVisible(true);
+                gameSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
@@ -199,6 +203,7 @@ public class RomActionWizard {
             case "localFileSelect":
                 loadFileSelector();
                 selectMode.setVisible(false);
+                gameSearch.setVisible(false);
                 localFileSelect.setVisible(true);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
@@ -206,6 +211,7 @@ public class RomActionWizard {
             case "imageCropper":
                 loadImageCropper().loadImage(selectedImageFile);
                 selectMode.setVisible(false);
+                gameSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(true);
                 finalPreview.setVisible(false);
@@ -219,9 +225,25 @@ public class RomActionWizard {
             case "finalPreview":
                 loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);;
                 selectMode.setVisible(false);
+                gameSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(true);
+                saveButton.setVisible(true);
+                break;
+            case "gameSearch":
+
+                try {
+                    loadSearchGame().receiveQuery("Duke Nukem");
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                };
+                selectMode.setVisible(false);
+                gameSearch.setVisible(true);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(false);
                 saveButton.setVisible(true);
                 break;
             default:
@@ -276,18 +298,25 @@ public class RomActionWizard {
                 switch (currentStep) 
                 {
                     case 1: 
-                        selectMode.setVisible(true);
-                        backButton.setDisable(true);
-                        nextButton.setDisable(selectedImageFile == null); // Disable Next button if no image is selected
+                        setVisible("selectMode");
+                        backButton.setDisable(false);
+                        backButton.setVisible(false);
+                        nextButton.setDisable(false); 
                         break;
                     case 2:
+                        setVisible("gameSearch");
+                        backButton.setDisable(false);
+                        backButton.setVisible(true);
+                        nextButton.setDisable(true); ;
+                        break;
+                    case 3:
                         imageCropper.setVisible(true);
                         backButton.setDisable(false);
                         nextButton.setDisable(false);
                         imageCropperPanelController = loadImageCropper();
                         imageCropperPanelController.loadImage(selectedImageFile);
                         break;
-                    case 3:
+                    case 4:
                         finalPreview.setVisible(true);
                         backButton.setDisable(false);
                         nextButton.setDisable(true);
@@ -397,6 +426,35 @@ public class RomActionWizard {
             return null;
         }
     } 
+
+    /*
+     * Game Search Actions
+     */
+
+    private SearchGamePanelController loadSearchGame() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/SearchGamePanel.fxml"));
+            Node node = loader.load();
+            gameSearch.getChildren().setAll(node);
+
+            // stretch the loaded panel to fit the step2 pane
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
+            
+            
+            SearchGamePanelController controller = loader.getController();
+            this.searchGamePanelController = controller;
+           
+            
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+            return null;
+        }
+    }  
 
     @FXML
     private void saveImage(){

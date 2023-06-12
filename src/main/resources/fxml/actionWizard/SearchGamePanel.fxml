@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="wizardPane" styleClass="defaultContainer"  stylesheets="@/styles/style.css" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchGamePanel">
+<AnchorPane fx:id="wizardPane" styleClass="defaultContainer"  stylesheets="@/styles/style.css" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchGamePanelController">
     <children>
         <ListView fx:id="GameSearchResults" layoutX="28.0" layoutY="31.0" prefHeight="384.0" prefWidth="249.0" AnchorPane.leftAnchor="32.0">
             <cellFactory>

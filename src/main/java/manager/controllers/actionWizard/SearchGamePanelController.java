@@ -18,7 +18,7 @@ import manager.models.SystemListItem;
 import manager.services.searchproviders.CoverArtProjectUtil;
 import manager.elements.GameResultCell;
 
-public class SearchGamePanel {
+public class SearchGamePanelController {
 
     @FXML
     private AnchorPane wizardPane;
@@ -42,16 +42,18 @@ public class SearchGamePanel {
 
     public void receiveQuery(String query) throws IOException{
         // Create an ObservableList to hold the data
-        ObservableList<GameSearchResult> systemList = FXCollections.observableArrayList();
+        ObservableList<GameSearchResult> gameList = FXCollections.observableArrayList();
                         
         List<GameSearchResult> gameItems = searchProvider.searchGames(query);
 
         for(GameSearchResult i : gameItems){
-            systemList.add(i);
+            gameList.add(i);
         }
 
         // Set the custom cell factory for the ListView
         GameSearchResults.setCellFactory(listView -> new GameResultCell());
+
+        GameSearchResults.setItems(gameList);
     }
 
 

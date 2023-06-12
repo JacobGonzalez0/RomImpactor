@@ -26,7 +26,7 @@ public class GameResultCell extends ListCell<GameSearchResult> {
             setText(null);
         } else {
             // Load the cell layout from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/elements/RomItemCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/elements/GameResultCell.fxml"));
             try {
                 HBox cellLayout = loader.load();
                 GameResultItemController controller = loader.getController();
