@@ -3,6 +3,13 @@
     "configurations": [
       {
         "type": "java",
+        "name": "CoverArtProjectUtil",
+        "request": "launch",
+        "mainClass": "manager.services.searchproviders.CoverArtProjectUtil",
+        "projectName": "manager"
+      },
+      {
+        "type": "java",
         "name": "Launch App",
         "request": "launch",
         "mainClass": "manager.App",

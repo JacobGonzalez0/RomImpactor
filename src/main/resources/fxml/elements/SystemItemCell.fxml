@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox stylesheets="@/styles/systemItemCell.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.SystemListItemController">
+<HBox stylesheets="@/styles/systemItemCell.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.elements.SystemListItemController">
     <StackPane maxHeight="60.0" maxWidth="50.0" minHeight="50.0" minWidth="60.0" styleClass="imageContainer">
         <ImageView id="imageView" fx:id="imageView" fitHeight="50" fitWidth="50" preserveRatio="true" HBox.hgrow="NEVER" />
       <HBox.margin>

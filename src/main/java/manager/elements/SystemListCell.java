@@ -3,7 +3,7 @@ package manager.elements;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
-import manager.controllers.SystemListItemController;
+import manager.controllers.elements.SystemListItemController;
 import manager.models.SystemListItem;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class SystemListCell extends ListCell<SystemListItem> {
             setText(null);
         } else {
             // Load the cell layout from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SystemItemCell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/elements/SystemItemCell.fxml"));
             try {
                 HBox cellLayout = loader.load();
                 SystemListItemController controller = loader.getController();

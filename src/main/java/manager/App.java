@@ -1,5 +1,7 @@
 package manager;
 
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +11,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import manager.controllers.MainWindowController;
+import manager.interfaces.SearchProvider;
+import manager.models.GameSearchResult;
+import manager.services.searchproviders.CoverArtProjectUtil;
 
 /**
  * Hello world!
@@ -47,6 +52,7 @@ public class App extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
     
+        
     }
     
     public static void main( String[] args )
