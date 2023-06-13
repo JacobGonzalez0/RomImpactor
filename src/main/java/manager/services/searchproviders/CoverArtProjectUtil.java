@@ -122,24 +122,24 @@ public class CoverArtProjectUtil implements SearchProvider{
                 Elements lis = ul.select("li");
 
                 for(int i = 1; i < lis.size(); i++){
-
-                }
-                for (Element li : lis) {
-
-                    Element link = li.select("a[href*=view.php?cover_id=]").get(0);
+                    Element link = lis.get(i).selectFirst("a[href*=view.php?cover_id=]");
                     Pattern p = Pattern.compile("cover_id=(\\d+)");
-                    Matcher m = p.matcher(li.attr("href"));
-
-                    int coverId = Integer.parseInt(m.group(1));
-
-                    String coverName = link.text();
-                    CoverSearchResult item = new CoverSearchResult();
-                    item.setId(coverId);
-                    item.setImage(downloadImage(coverId));
-                    item.setName(coverName);
-
-                    results.add(item);
+                    Matcher m = p.matcher(link.attr("href"));
+                
+                    if (m.find()) {
+                        int coverId = Integer.parseInt(m.group(1));
+                        String coverName = link.text();
+                
+                        CoverSearchResult item = new CoverSearchResult();
+                        item.setId(coverId);
+                        item.setImage(downloadImage(coverId));
+                        item.setName(coverName);
+                
+                        results.add(item);
+                    }
                 }
+                
+               
             }
         }
 

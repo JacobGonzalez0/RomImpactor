@@ -91,4 +91,8 @@ public class SearchGamePanelController {
 
         }
     }
+
+    public GameSearchResult sendQuery(){
+        return GameSearchResults.getSelectionModel().getSelectedItem();
+    }
 }

@@ -35,7 +35,7 @@ import javafx.scene.image.Image;
 
 public class RomActionWizard {
     @FXML
-    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons, gameSearch;
+    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons, gameSearch, coverSearch;
 
     @FXML
     private Label selectedFileLabel;
@@ -79,6 +79,8 @@ public class RomActionWizard {
     private Stage primaryStage;
 
     private SearchGamePanelController searchGamePanelController;
+
+    private SearchCoverPanelController coverGamePanelController;
 
     @FXML
     public void initialize() {
@@ -184,7 +186,7 @@ public class RomActionWizard {
     
     @FXML
     public void goNext(ActionEvent event) {
-        if (currentStep < 4) { // Assuming there are three steps in total
+        if (currentStep < 5) { 
             currentStep++;
             showCurrentStep();
         }
@@ -196,6 +198,7 @@ public class RomActionWizard {
             case "selectMode":
                 selectMode.setVisible(true);
                 gameSearch.setVisible(false);
+                coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
@@ -204,6 +207,7 @@ public class RomActionWizard {
                 loadFileSelector();
                 selectMode.setVisible(false);
                 gameSearch.setVisible(false);
+                coverSearch.setVisible(false);
                 localFileSelect.setVisible(true);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
@@ -212,6 +216,7 @@ public class RomActionWizard {
                 loadImageCropper().loadImage(selectedImageFile);
                 selectMode.setVisible(false);
                 gameSearch.setVisible(false);
+                coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(true);
                 finalPreview.setVisible(false);
@@ -223,9 +228,10 @@ public class RomActionWizard {
                 finalPreview.setVisible(false);
                 break;
             case "finalPreview":
-                loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);;
+                loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);
                 selectMode.setVisible(false);
                 gameSearch.setVisible(false);
+                coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(true);
@@ -240,6 +246,22 @@ public class RomActionWizard {
                 };
                 selectMode.setVisible(false);
                 gameSearch.setVisible(true);
+                coverSearch.setVisible(false);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(false);
+                saveButton.setVisible(true);
+                break;
+            case "coverSearch":
+                try {
+                    loadSearchCover().receiveQuery(searchGamePanelController.sendQuery());
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                };
+                selectMode.setVisible(false);
+                gameSearch.setVisible(true);
+                coverSearch.setVisible(true);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
@@ -253,7 +275,7 @@ public class RomActionWizard {
     
     private void showCurrentStep() {
 
-        
+        System.out.println(currentStep);
         if (operatingMode == null) {
             setVisible("selectMode");
             backButton.setDisable(false);
@@ -289,6 +311,7 @@ public class RomActionWizard {
                         setVisible("finalPreview");
                         backButton.setDisable(false);
                         nextButton.setDisable(false);
+                        saveButton.setVisible(true);
                         nextButton.setVisible(false);
                         break;
                 }
@@ -300,25 +323,38 @@ public class RomActionWizard {
                         setVisible("selectMode");
                         backButton.setDisable(false);
                         backButton.setVisible(false);
-                        nextButton.setDisable(false); 
+                        nextButton.setDisable(false);  
+                        saveButton.setVisible(false);
+                        nextButton.setVisible(true); 
                         break;
                     case 2:
                         setVisible("gameSearch");
                         backButton.setDisable(false);
                         backButton.setVisible(true);
-                        nextButton.setDisable(true); ;
+                        nextButton.setDisable(false);  
+                        saveButton.setVisible(false);
+                        nextButton.setVisible(true);
                         break;
                     case 3:
-                        imageCropper.setVisible(true);
+                        setVisible("coverSearch");
                         backButton.setDisable(false);
-                        nextButton.setDisable(false);
-                        imageCropperPanelController = loadImageCropper();
-                        imageCropperPanelController.loadImage(selectedImageFile);
+                        nextButton.setDisable(false);  
+                        saveButton.setVisible(false);
+                        nextButton.setVisible(true);
                         break;
                     case 4:
-                        finalPreview.setVisible(true);
+                        setVisible("imageCropper");
                         backButton.setDisable(false);
-                        nextButton.setDisable(true);
+                        nextButton.setDisable(false);  
+                        saveButton.setVisible(false);
+                        nextButton.setVisible(true);
+                        break;
+                    case 5:
+                        setVisible("finalPreview");
+                        backButton.setDisable(false);
+                        nextButton.setDisable(false);
+                        saveButton.setVisible(true);
+                        nextButton.setVisible(false);
                         break;
                 }
             default:
@@ -453,7 +489,35 @@ public class RomActionWizard {
             // Handle the exception appropriately
             return null;
         }
-    }  
+    } 
+    /*
+     * Cover Search Actions
+     */
+
+     private SearchCoverPanelController loadSearchCover() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/SearchCoverPanel.fxml"));
+            Node node = loader.load();
+            gameSearch.getChildren().setAll(node);
+
+            // stretch the loaded panel to fit the step2 pane
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
+            
+            
+            SearchCoverPanelController controller = loader.getController();
+            this.coverGamePanelController = controller;
+            controller.setParentController(this);
+            
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+            return null;
+        }
+    } 
 
     @FXML
     private void saveImage(){

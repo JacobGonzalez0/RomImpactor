@@ -190,4 +190,12 @@ public class ImageService {
     private static void saveFxImage(BufferedImage image, File file) throws IOException {
         ImageIO.write(image, "png", file);
     }
+
+    public static File createTempFileFromBufferedImage(BufferedImage image, String formatName) throws IOException {
+        File tempFile = File.createTempFile("tempImageFile", "." + formatName);
+        ImageIO.write(image, formatName, tempFile);
+        tempFile.deleteOnExit(); // the file will be deleted when the JVM exits
+        return tempFile;
+    }
+    
 }

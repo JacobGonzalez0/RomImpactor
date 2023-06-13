@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchGamePanelController">
+<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchCoverPanelController">
     <children>
-        <ListView fx:id="GameSearchResults" layoutX="28.0" layoutY="31.0" onMouseClicked="#handleGameListViewClick" prefHeight="384.0" prefWidth="249.0" AnchorPane.leftAnchor="32.0">
+        <ListView fx:id="CoverSearchResults" layoutX="28.0" layoutY="31.0" onMouseClicked="#handleGameListViewClick" prefHeight="384.0" prefWidth="249.0" AnchorPane.leftAnchor="32.0">
             <cellFactory>
                     
             </cellFactory>
@@ -24,7 +24,7 @@
                 </StackPane>
                 <Pane prefHeight="200.0" prefWidth="200.0">
                     <children>
-                        <Label fx:id="gameNameLabel" layoutX="14.0" layoutY="14.0" text="Game Name: " />
+                        <Label fx:id="coverNameLabel" layoutX="14.0" layoutY="14.0" text="Game Name: " />
                     </children>
                 </Pane>
             </children>
