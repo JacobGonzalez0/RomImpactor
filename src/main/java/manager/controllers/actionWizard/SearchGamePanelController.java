@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import manager.elements.GameResultCell;
 import manager.interfaces.SearchProvider;
 import manager.models.GameSearchResult;
@@ -44,14 +45,30 @@ public class SearchGamePanelController {
     // Add your controller logic here
     @FXML
     public void initialize() {
-        searchProvider = new CoverArtProjectUtil();
+        
     }
 
-    public void receiveQuery(String query) throws IOException{
+    public void receiveQuery(Pair<manager.enums.SearchProvider, String> query) throws IOException{
+
+        manager.enums.SearchProvider provider = query.getKey();
+        switch(provider){
+            case CAP:
+                searchProvider = new CoverArtProjectUtil();
+                break;
+            case SGDB:
+                searchProvider = new CoverArtProjectUtil();
+                break;
+            case IGDB:
+                searchProvider = new CoverArtProjectUtil();
+                break;
+            default:
+                break;
+        }
+        
         // Create an ObservableList to hold the data
         ObservableList<GameSearchResult> gameList = FXCollections.observableArrayList();
                         
-        List<GameSearchResult> gameItems = searchProvider.searchGames(query);
+        List<GameSearchResult> gameItems = searchProvider.searchGames(query.getValue());
 
         for(GameSearchResult i : gameItems){
             gameList.add(i);

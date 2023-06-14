@@ -221,3 +221,13 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-stroke: rgb(0, 0, 0);
 -fx-stroke-width: .2px;
 }
+
+.descriptionLabel{
+    -fx-text-fill: #e3e4fc;
+    -fx-font-family: 'Roboto-bold';
+    -fx-font-weight: bold;
+    -fx-font-size: 12pt;
+    -fx-fill: rgb(255, 255, 255);
+    -fx-stroke: rgb(0, 0, 0);
+    -fx-stroke-width: .2px;
+}

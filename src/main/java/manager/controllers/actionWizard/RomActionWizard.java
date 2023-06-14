@@ -22,7 +22,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import manager.enums.OperatingMode;
+import manager.enums.SearchProvider;
 import manager.enums.devices.FunkeyDevice;
 import manager.models.Rom;
 import manager.models.Settings;
@@ -35,7 +37,7 @@ import javafx.scene.image.Image;
 
 public class RomActionWizard {
     @FXML
-    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons, gameSearch, coverSearch;
+    private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons, gameSearch, coverSearch, providerSelect;
 
     @FXML
     private Label selectedFileLabel;
@@ -81,6 +83,8 @@ public class RomActionWizard {
     private SearchGamePanelController searchGamePanelController;
 
     private SearchCoverPanelController coverGamePanelController;
+
+    private SearchProviderPanelController searchProviderPanelController;
 
     @FXML
     public void initialize() {
@@ -186,7 +190,7 @@ public class RomActionWizard {
     
     @FXML
     public void goNext(ActionEvent event) {
-        if (currentStep < 5) { 
+        if (currentStep < 10) { 
             currentStep++;
             showCurrentStep();
         }
@@ -197,6 +201,7 @@ public class RomActionWizard {
         switch (panel) {
             case "selectMode":
                 selectMode.setVisible(true);
+                providerSelect.setVisible(false);
                 gameSearch.setVisible(false);
                 coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
@@ -206,6 +211,7 @@ public class RomActionWizard {
             case "localFileSelect":
                 loadFileSelector();
                 selectMode.setVisible(false);
+                providerSelect.setVisible(false);
                 gameSearch.setVisible(false);
                 coverSearch.setVisible(false);
                 localFileSelect.setVisible(true);
@@ -215,6 +221,7 @@ public class RomActionWizard {
             case "imageCropper":
                 loadImageCropper().loadImage(selectedImageFile);
                 selectMode.setVisible(false);
+                providerSelect.setVisible(false);
                 gameSearch.setVisible(false);
                 coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
@@ -230,6 +237,7 @@ public class RomActionWizard {
             case "finalPreview":
                 loadFinalImagePreview().receiveData(imageCropperPanelController.cropImage(), selectedRom);
                 selectMode.setVisible(false);
+                providerSelect.setVisible(false);
                 gameSearch.setVisible(false);
                 coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
@@ -239,12 +247,17 @@ public class RomActionWizard {
                 break;
             case "gameSearch":
                 try {
-                    loadSearchGame().receiveQuery("Duke Nukem Advance");
+                    Pair<SearchProvider, String> pair = searchProviderPanelController.sendQuery();
+
+                    selectedRom = searchProviderPanelController.getRom();
+
+                    loadSearchGame().receiveQuery(pair);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 };
                 selectMode.setVisible(false);
+                providerSelect.setVisible(false);
                 gameSearch.setVisible(true);
                 coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
@@ -260,8 +273,20 @@ public class RomActionWizard {
                     e.printStackTrace();
                 };
                 selectMode.setVisible(false);
-                gameSearch.setVisible(true);
+                providerSelect.setVisible(false);
+                gameSearch.setVisible(false);
                 coverSearch.setVisible(true);
+                localFileSelect.setVisible(false);
+                imageCropper.setVisible(false);
+                finalPreview.setVisible(false);
+                saveButton.setVisible(true);
+                break;
+            case "providerSelect":
+                loadProviderSelect().receiveRom(selectedRom);
+                selectMode.setVisible(false);
+                providerSelect.setVisible(true);
+                gameSearch.setVisible(false);
+                coverSearch.setVisible(false);
                 localFileSelect.setVisible(false);
                 imageCropper.setVisible(false);
                 finalPreview.setVisible(false);
@@ -327,7 +352,15 @@ public class RomActionWizard {
                         saveButton.setVisible(false);
                         nextButton.setVisible(true); 
                         break;
-                    case 2:
+                    case 2: 
+                        setVisible("providerSelect");
+                        backButton.setDisable(false);
+                        backButton.setVisible(true);
+                        nextButton.setDisable(false);  
+                        saveButton.setVisible(false);
+                        nextButton.setVisible(true); 
+                        break;
+                    case 3:
                         setVisible("gameSearch");
                         backButton.setDisable(false);
                         backButton.setVisible(true);
@@ -335,21 +368,21 @@ public class RomActionWizard {
                         saveButton.setVisible(false);
                         nextButton.setVisible(true);
                         break;
-                    case 3:
+                    case 4:
                         setVisible("coverSearch");
                         backButton.setDisable(false);
                         nextButton.setDisable(false);  
                         saveButton.setVisible(false);
                         nextButton.setVisible(true);
                         break;
-                    case 4:
+                    case 5:
                         setVisible("imageCropper");
                         backButton.setDisable(false);
                         nextButton.setDisable(false);  
                         saveButton.setVisible(false);
                         nextButton.setVisible(true);
                         break;
-                    case 5:
+                    case 6:
                         setVisible("finalPreview");
                         backButton.setDisable(false);
                         nextButton.setDisable(false);
@@ -498,7 +531,7 @@ public class RomActionWizard {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/SearchCoverPanel.fxml"));
             Node node = loader.load();
-            gameSearch.getChildren().setAll(node);
+            coverSearch.getChildren().setAll(node);
 
             // stretch the loaded panel to fit the step2 pane
             AnchorPane.setTopAnchor(node, 0.0);
@@ -511,6 +544,34 @@ public class RomActionWizard {
             this.coverGamePanelController = controller;
             controller.setParentController(this);
             
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+            return null;
+        }
+    } 
+
+    /*
+     * Provider Select Actions
+     */
+
+     private SearchProviderPanelController loadProviderSelect() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/SearchProviderPanel.fxml"));
+            Node node = loader.load();
+            providerSelect.getChildren().setAll(node);
+
+            // stretch the loaded panel to fit the step2 pane
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
+            
+            
+            SearchProviderPanelController controller = loader.getController();
+            this.searchProviderPanelController = controller;
+
             return controller;
         } catch (IOException e) {
             e.printStackTrace();

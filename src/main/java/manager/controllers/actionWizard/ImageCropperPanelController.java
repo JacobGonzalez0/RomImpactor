@@ -178,9 +178,6 @@ class RubberBandSelection {
                 double newY = imageViewLoc.getY();
                 double deltaX = newX - previousXClick;
                 double deltaY = newY - previousYClick;
-        
-                System.out.println("Dx"+deltaX);
-                System.out.println("Dy"+deltaY);
 
                 if (target == nwHandle) {
                     System.out.println("nw");

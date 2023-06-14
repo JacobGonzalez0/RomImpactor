@@ -33,6 +33,11 @@
             </Pane>
         </AnchorPane>
 
+         <!-- Search Provider Select -->
+        <AnchorPane fx:id="providerSelect" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          
+        </AnchorPane>
+
         <!-- Game Search Select -->
         <AnchorPane fx:id="gameSearch" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           

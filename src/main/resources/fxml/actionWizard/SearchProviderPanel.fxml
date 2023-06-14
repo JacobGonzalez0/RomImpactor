@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.SearchProviderPanelController">
+   <AnchorPane layoutX="28.0" layoutY="35.0" prefHeight="395.0" prefWidth="308.0" styleClass="borderBox" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="35.0">
+      <children>
+          <TextField fx:id="gameName" layoutX="52.0" layoutY="155.0" prefHeight="25.0" prefWidth="229.0" promptText="Search Query" AnchorPane.leftAnchor="40.0" />
+          <ChoiceBox fx:id="choiceBox" layoutX="52.0" layoutY="221.0" prefHeight="15.0" prefWidth="229.0" AnchorPane.leftAnchor="40.0">
+    </ChoiceBox>
+         <CheckBox fx:id="renameRom" layoutX="52.0" layoutY="189.0" mnemonicParsing="false" text="Rename rom with Search Query" AnchorPane.leftAnchor="40.0" />
+      </children>
+   </AnchorPane>
+   <AnchorPane layoutX="375.0" layoutY="44.0" prefHeight="395.0" prefWidth="295.0" styleClass="borderBox" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+      <children>
+         <Label fx:id="name" layoutX="14.0" layoutY="23.0" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="25.0" />
+         <Label fx:id="description" layoutX="14.0" layoutY="60.0" styleClass="descriptionLabel" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="75.0" />
+      </children>
+   </AnchorPane>
+</AnchorPane>
