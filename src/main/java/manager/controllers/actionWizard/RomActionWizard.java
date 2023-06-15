@@ -50,7 +50,7 @@ public class RomActionWizard {
     private StackPane imagePane;
     
     @FXML
-    private Button backButton, nextButton, selectAllButton, saveButton;
+    private Button backButton, nextButton, saveButton;
 
     @FXML
     private ImageView croppedImage;
@@ -571,7 +571,8 @@ public class RomActionWizard {
             
             SearchProviderPanelController controller = loader.getController();
             this.searchProviderPanelController = controller;
-
+            controller.setParentController(this);
+            
             return controller;
         } catch (IOException e) {
             e.printStackTrace();
@@ -590,6 +591,36 @@ public class RomActionWizard {
 
     }
 
+     /*
+     * Setters/Getters
+     */
     
+     public Button getBackButton() {
+        return backButton;
+    }
+
+
+    public void setBackButton(Button backButton) {
+        this.backButton = backButton;
+    }
+
+
+    public Button getNextButton() {
+        return nextButton;
+    }
+
+
+    public void setNextButton(Button nextButton) {
+        this.nextButton = nextButton;
+    }
+
+    public Button getSaveButton() {
+        return saveButton;
+    }
+
+
+    public void setSaveButton(Button saveButton) {
+        this.saveButton = saveButton;
+    }
 
 }
