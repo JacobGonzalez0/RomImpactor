@@ -237,5 +237,45 @@ src: url('../fonts/Roboto-Bold.ttf');
 
 #description {
     -fx-text-fill: #e3e4fc; /* Make the text color dark gray */
-    -fx-font-size: 12px; /* Make the text size 12 points */
+    -fx-font-size: 11px; /* Make the text size 12 points */
 }
+
+* {
+	-fx-primary-color: #007acc;
+	-fx-secondary-color: #4B6EAF;
+	-fx-grey-color: #b9b9b9;
+    -fx-font-family: 'Roboto';
+    -fx-font-weight: initial;
+	-fx-focus-color: -fx-secondary-color;
+}
+
+.text-field {
+	-fx-accent: -fx-primary-color;
+	-fx-background-color: -fx-grey-color, #1b2755;
+    -fx-text-fill: #e3e4fc;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-background-color: #0e192b;
+	-fx-background-radius: 5;
+}
+.text-field:focused {
+	-fx-background-color: -fx-primary-color, white;
+}
+
+/* // Background color of the whole context menu */
+.choice-box .context-menu { -fx-background-color: #0e192b; }
+/* // Focused item background color in the list */
+.choice-box .menu-item:focused { -fx-background-color: #6A0DAD; }
+/* // Text color of non-focused items in the list */
+.choice-box .menu-item > .label { -fx-text-fill: #e3e4fc; }
+/* // Text color of focused item in the list */
+.choice-box .menu-item:focused > .label { -fx-text-fill: #e3e4fc; }
+
+/* // Background color of the control itself */
+.choice-box {
+  -fx-background-color: #0e192b;
+  -fx-mark-color: #6A0DAD;  /* arrow color */
+}
+
+/* // Selected item text color on the control itself */
+.choice-box > .label { -fx-text-fill: white; }
