@@ -109,7 +109,7 @@ public class ImageCropperPanelController {
         return bufferedImage;
     }
     
-    void updateSpinners() {
+    public void updateSpinners() {
         Rectangle rect = rubberBandSelection.getRectangle();
         xCordSpinner.getValueFactory().setValue((int) (rect.getX() ));
         yCordSpinner.getValueFactory().setValue((int) (rect.getY() )) ;
@@ -117,13 +117,28 @@ public class ImageCropperPanelController {
         heightSpinner.getValueFactory().setValue((int) rect.getHeight());
     }
 
+    @FXML
+    public void selectAll() {
+        // Get the current rectangle
+        Rectangle rect = rubberBandSelection.getRectangle();
+    
+        // Set the rectangle to the size of the AnchorPane
+        rect.setX(0);
+        rect.setY(0);
+        rect.setWidth(wizardPane.getWidth());
+        rect.setHeight(wizardPane.getHeight());
+    
+        // Update the rectangle in the RubberBandSelection instance
+        rubberBandSelection.setRectangle(rect);
+    }
+    
+
     private void setupSpinners() {
-        int imageWidth = (int) imageView.imageProperty().getValue().getWidth();
-        int imageHeight = (int) imageView.imageProperty().getValue().getHeight();
-        configureSpinner(xCordSpinner, 0, 0, imageWidth);
-        configureInverseSpinner(yCordSpinner, 0, 0, imageHeight);
-        configureSpinner(widthSpinner, 0, 0, imageWidth);
-        configureInverseSpinner(heightSpinner, 0, 0, imageHeight);
+
+        configureSpinner(xCordSpinner, 0, 0, Integer.MAX_VALUE);
+        configureInverseSpinner(yCordSpinner, 0, 0,  Integer.MAX_VALUE);
+        configureSpinner(widthSpinner, 0, 0,  Integer.MAX_VALUE);
+        configureInverseSpinner(heightSpinner, 0, 0,  Integer.MAX_VALUE);
     }
 
     private void configureSpinner(Spinner<Integer> spinner, int initialValue, int min, int max) {
@@ -359,23 +374,35 @@ class RubberBandSelection {
 
     public Image cropImage(Image image, Rectangle rect) {
         PixelReader reader = image.getPixelReader();
-
-        
-        ratioX = image.getWidth() / imageView.getBoundsInLocal().getWidth();
-        ratioY = image.getHeight() / imageView.getBoundsInLocal().getHeight();
-        
-       
-
-        int x = (int) (((rect.getX() - offsetX) * ratioX) ) ;
-        int y = (int) (((rect.getY() ) * ratioY) );
+    
+        double ratioX = image.getWidth() / imageView.getBoundsInLocal().getWidth();
+        double ratioY = image.getHeight() / imageView.getBoundsInLocal().getHeight();
+    
+        int x = (int) (((rect.getX() - offsetX) * ratioX));
+        int y = (int) (((rect.getY()) * ratioY));
         int width = (int) (rect.getWidth() * ratioX);
         int height = (int) (rect.getHeight() * ratioY);
     
-        System.out.println(x + " " + y + " ");
-        System.out.println(width + " " + height + " ");
-        WritableImage newImage = new WritableImage(reader, x , y, width, height);
+        // Check if the cropping rectangle exceeds the image boundaries
+        if (x < 0) {
+            width += x; // Reduce the width by the amount we are out of bounds
+            x = 0; // Set x to the left edge of the image
+        }
+        if (y < 0) {
+            height += y; // Reduce the height by the amount we are out of bounds
+            y = 0; // Set y to the top edge of the image
+        }
+        if (x + width > image.getWidth()) {
+            width = (int) image.getWidth() - x; // Adjust the width to fit within the image
+        }
+        if (y + height > image.getHeight()) {
+            height = (int) image.getHeight() - y; // Adjust the height to fit within the image
+        }
+
+        WritableImage newImage = new WritableImage(reader, x, y, width, height);
         return newImage;
     }
+    
     
 
     private void adjustHandles() {

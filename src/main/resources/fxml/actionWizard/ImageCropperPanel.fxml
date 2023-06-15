@@ -41,7 +41,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Spinner>
-                 <Button text="Select All" />
+                 <Button onAction="#selectAll" text="Select All" />
              </HBox>
          </items>
      </ToolBar>
