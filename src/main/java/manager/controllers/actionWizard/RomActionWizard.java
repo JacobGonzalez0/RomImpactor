@@ -300,7 +300,6 @@ public class RomActionWizard {
     
     private void showCurrentStep() {
 
-        System.out.println(currentStep);
         if (operatingMode == null) {
             setVisible("selectMode");
             backButton.setDisable(false);

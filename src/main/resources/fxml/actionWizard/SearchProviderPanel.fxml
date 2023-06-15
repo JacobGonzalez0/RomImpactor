@@ -15,10 +15,11 @@
          <CheckBox fx:id="renameRom" layoutX="52.0" layoutY="189.0" mnemonicParsing="false" text="Rename rom with Search Query" AnchorPane.leftAnchor="40.0" />
       </children>
    </AnchorPane>
-   <AnchorPane layoutX="375.0" layoutY="44.0" prefHeight="395.0" prefWidth="295.0" styleClass="borderBox" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+   <AnchorPane fx:id="rightPanel" layoutX="375.0" layoutY="44.0" prefHeight="395.0" prefWidth="295.0" styleClass="borderBox" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
       <children>
-         <Label fx:id="name" layoutX="14.0" layoutY="23.0" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="25.0" />
-         <Label fx:id="description" layoutX="14.0" layoutY="60.0" styleClass="descriptionLabel" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="75.0" />
+            <Label fx:id="name" layoutX="20.0" layoutY="23.0" text="Label" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="25.0" wrapText="true" />
+            <Label fx:id="description" layoutX="20.0" layoutY="60.0" maxWidth="${rightPanel.width - 40}" styleClass="descriptionLabel" text="Label" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="75.0" wrapText="true" />
       </children>
    </AnchorPane>
 </AnchorPane>
+

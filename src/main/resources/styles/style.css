@@ -231,3 +231,11 @@ src: url('../fonts/Roboto-Bold.ttf');
     -fx-stroke: rgb(0, 0, 0);
     -fx-stroke-width: .2px;
 }
+
+#name, #description {
+}
+
+#description {
+    -fx-text-fill: #e3e4fc; /* Make the text color dark gray */
+    -fx-font-size: 12px; /* Make the text size 12 points */
+}

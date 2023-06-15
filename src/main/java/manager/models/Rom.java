@@ -26,6 +26,22 @@ public class Rom {
 
     public Rom(){}
 
+    public void updateName() {
+        if (files != null && name != null) {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i] != null) {
+                    String filePath = files[i].getPath();
+                    File renamedFile = new File(filePath.replace(files[i].getName(), name));
+                    if (files[i].renameTo(renamedFile)) {
+                        files[i] = renamedFile;
+                    } else {
+                        System.out.println("Failed to rename file: " + files[i].getName());
+                    }
+                }
+            }
+        }
+    }
+
     public String getName() {
         return name;
     }
