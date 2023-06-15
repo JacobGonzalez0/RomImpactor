@@ -582,9 +582,11 @@ public class RomActionWizard {
     @FXML
     private void saveImage(){
         if(finalImagePreviewPanel.saveImage()){
+            selectedRom.updateName();
             Stage stage = (Stage) wizardPane.getScene().getWindow();
             stage.close();
         }
+
     }
 
     

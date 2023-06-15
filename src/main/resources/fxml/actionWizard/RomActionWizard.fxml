@@ -11,7 +11,7 @@
 
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="wizardPane" prefHeight="480.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.RomActionWizard">
+<AnchorPane fx:id="wizardPane" prefHeight="528.0" prefWidth="700.0" styleClass="defaultContainer" stylesheets="@/styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.actionWizard.RomActionWizard">
     <children>
         
         <!-- Select Operating Mode -->
@@ -34,31 +34,31 @@
         </AnchorPane>
 
          <!-- Search Provider Select -->
-        <AnchorPane fx:id="providerSelect" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="providerSelect" minHeight="${wizardPane.height - 32}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
           
         </AnchorPane>
 
         <!-- Game Search Select -->
-        <AnchorPane fx:id="gameSearch" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="gameSearch" minHeight="${wizardPane.height - 32}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
           
         </AnchorPane>
 
         <!-- Cover Search Select -->
-        <AnchorPane fx:id="coverSearch" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="coverSearch" minHeight="${wizardPane.height - 32}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
           
         </AnchorPane>
 
         <!-- Local File Select -->
-        <AnchorPane fx:id="localFileSelect" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="localFileSelect" minHeight="${wizardPane.height - 32}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
           
         </AnchorPane>
 
         <!-- ImageCropper -->
-        <AnchorPane fx:id="imageCropper" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="imageCropper" minHeight="${wizardPane.height - 32}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
         </AnchorPane>
 
         <!-- Step 3 -->
-        <AnchorPane fx:id="finalPreview" minHeight="${wizardPane.height}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="finalPreview" minHeight="${wizardPane.height - 32}" minWidth="${wizardPane.width}" styleClass="defaultContainer" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
            
         </AnchorPane>
 

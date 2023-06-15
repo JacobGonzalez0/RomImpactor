@@ -269,7 +269,7 @@ public class MainWindowController {
             Parent root = loader.load();
     
             // Create a custom shape for the stage
-            Rectangle windowShape = new Rectangle(700, 480);
+            Rectangle windowShape = new Rectangle(700, 528);
             windowShape.setArcWidth(20);
             windowShape.setArcHeight(20);
             root.setClip(windowShape);

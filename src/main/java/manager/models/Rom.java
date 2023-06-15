@@ -31,7 +31,14 @@ public class Rom {
             for (int i = 0; i < files.length; i++) {
                 if (files[i] != null) {
                     String filePath = files[i].getPath();
-                    File renamedFile = new File(filePath.replace(files[i].getName(), name));
+                    String extension = "";
+    
+                    int dotIndex = files[i].getName().lastIndexOf('.');
+                    if (dotIndex > 0) {
+                        extension = files[i].getName().substring(dotIndex);
+                    }
+    
+                    File renamedFile = new File(filePath.replace(files[i].getName(), name + extension));
                     if (files[i].renameTo(renamedFile)) {
                         files[i] = renamedFile;
                     } else {
@@ -40,7 +47,7 @@ public class Rom {
                 }
             }
         }
-    }
+    }    
 
     public String getName() {
         return name;

@@ -28,7 +28,7 @@ public class App extends Application
         primaryStage.initStyle(StageStyle.TRANSPARENT);
     
         // Create a custom shape for the stage
-        Rectangle windowShape = new Rectangle(910, 600);
+        Rectangle windowShape = new Rectangle(900, 600);
         windowShape.setArcWidth(20);
         windowShape.setArcHeight(20);
         windowShape.setFill(Color.WHITE);
