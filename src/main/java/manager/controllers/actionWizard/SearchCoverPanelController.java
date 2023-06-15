@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import manager.elements.CoverResultCell;
 import manager.elements.GameResultCell;
 import manager.interfaces.SearchProvider;
@@ -23,6 +24,7 @@ import manager.models.GameSearchResult;
 import manager.models.SystemListItem;
 import manager.services.ImageService;
 import manager.services.searchproviders.CoverArtProjectUtil;
+import manager.services.searchproviders.IGDBUtil;
 import manager.elements.GameResultCell;
 
 public class SearchCoverPanelController {
@@ -49,14 +51,17 @@ public class SearchCoverPanelController {
     // Add your controller logic here
     @FXML
     public void initialize() {
-        searchProvider = new CoverArtProjectUtil();
     }
 
-    public void receiveQuery(GameSearchResult game) throws IOException{
+    public void receiveQuery(Pair<SearchProvider, GameSearchResult> query) throws IOException{
+        SearchProvider searchProvider = query.getKey();
+        GameSearchResult gameQuery = query.getValue();
+
+
         // Create an ObservableList to hold the data
         ObservableList<CoverSearchResult> coverList = FXCollections.observableArrayList();
                         
-        List<CoverSearchResult> coverItems = searchProvider.retriveCovers(game);
+        List<CoverSearchResult> coverItems = searchProvider.retriveCovers(gameQuery);
 
         for(CoverSearchResult i : coverItems){
             coverList.add(i);
@@ -105,9 +110,11 @@ public class SearchCoverPanelController {
     }
     
 
-    public CoverSearchResult sendQuery(){
-        return CoverSearchResults.getSelectionModel().getSelectedItem();
+    public Pair<SearchProvider, CoverSearchResult> sendQuery() {
+        CoverSearchResult selectedResult = CoverSearchResults.getSelectionModel().getSelectedItem();
+        return new Pair<>(searchProvider, selectedResult);
     }
+    
 
     public void setParentController(RomActionWizard controller){
         parentController = controller;

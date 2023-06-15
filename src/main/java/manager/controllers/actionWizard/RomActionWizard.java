@@ -26,6 +26,7 @@ import javafx.util.Pair;
 import manager.enums.OperatingMode;
 import manager.enums.SearchProvider;
 import manager.enums.devices.FunkeyDevice;
+import manager.models.GameSearchResult;
 import manager.models.Rom;
 import manager.models.Settings;
 import manager.services.ImageService;
@@ -266,7 +267,7 @@ public class RomActionWizard {
                 saveButton.setVisible(true);
                 break;
             case "coverSearch":
-                try {
+                try {                  
                     loadSearchCover().receiveQuery(searchGamePanelController.sendQuery());
                 } catch (IOException e) {
                     // TODO Auto-generated catch block

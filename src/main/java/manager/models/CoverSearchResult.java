@@ -4,13 +4,13 @@ import java.awt.image.BufferedImage;
 
 public class CoverSearchResult {
     private String name;
-    private int id;
+    private String id;
     private BufferedImage image;
 
     public CoverSearchResult() {
     }
 
-    public CoverSearchResult(String name, int id, BufferedImage image) {
+    public CoverSearchResult(String name, String id, BufferedImage image) {
         this.name = name;
         this.id = id;
         this.image = image;
@@ -24,11 +24,11 @@ public class CoverSearchResult {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

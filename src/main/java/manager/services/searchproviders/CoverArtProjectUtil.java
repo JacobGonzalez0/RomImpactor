@@ -131,7 +131,7 @@ public class CoverArtProjectUtil implements SearchProvider{
                         String coverName = link.text();
                 
                         CoverSearchResult item = new CoverSearchResult();
-                        item.setId(coverId);
+                        item.setId(String.valueOf(coverId));
                         item.setImage(downloadImage(coverId));
                         item.setName(coverName);
                 

@@ -69,10 +69,6 @@ public class ImageCropperPanelController {
             imageView.fitWidthProperty().bind(size);
             imageView.fitHeightProperty().bind(size);
         }
-       
-
-       
-
 
         // Add listeners to the AnchorPane's and ImageView's size properties
         wizardPane.widthProperty().addListener((obs, oldVal, newVal) -> updateImageViewLayout());

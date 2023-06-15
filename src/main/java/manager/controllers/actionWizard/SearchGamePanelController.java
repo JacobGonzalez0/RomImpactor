@@ -21,6 +21,7 @@ import manager.models.GameSearchResult;
 import manager.models.SystemListItem;
 import manager.services.ImageService;
 import manager.services.searchproviders.CoverArtProjectUtil;
+import manager.services.searchproviders.IGDBUtil;
 import manager.elements.GameResultCell;
 
 public class SearchGamePanelController {
@@ -59,7 +60,7 @@ public class SearchGamePanelController {
                 searchProvider = new CoverArtProjectUtil();
                 break;
             case IGDB:
-                searchProvider = new CoverArtProjectUtil();
+                searchProvider = new IGDBUtil();
                 break;
             default:
                 break;
@@ -109,7 +110,7 @@ public class SearchGamePanelController {
         }
     }
 
-    public GameSearchResult sendQuery(){
-        return GameSearchResults.getSelectionModel().getSelectedItem();
+    public Pair<SearchProvider, GameSearchResult> sendQuery(){
+        return new Pair(searchProvider,GameSearchResults.getSelectionModel().getSelectedItem());
     }
 }
