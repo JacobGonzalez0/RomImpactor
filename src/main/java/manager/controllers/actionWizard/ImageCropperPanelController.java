@@ -56,10 +56,23 @@ public class ImageCropperPanelController {
         Image image = new Image(file.toURI().toString());
         imageView.setImage(image);
 
-        // Bind the ImageView's size to the smaller of the AnchorPane's width and height
-        DoubleBinding size = (DoubleBinding) Bindings.min(wizardPane.widthProperty(), wizardPane.heightProperty().subtract(42));
-        imageView.fitWidthProperty().bind(size);
-        imageView.fitHeightProperty().bind(size);
+
+        if (image.getWidth() > image.getHeight()) {
+            // Bind the ImageView's width to the width of the AnchorPane
+            imageView.fitWidthProperty().bind(wizardPane.widthProperty());
+
+            // Bind the ImageView's height to the height of the AnchorPane minus 42
+            imageView.fitHeightProperty().bind(wizardPane.heightProperty().subtract(42));
+        } else {
+             // Bind the ImageView's size to the smaller of the AnchorPane's width and height
+            DoubleBinding size = (DoubleBinding) Bindings.min(wizardPane.widthProperty(), wizardPane.heightProperty().subtract(42));
+            imageView.fitWidthProperty().bind(size);
+            imageView.fitHeightProperty().bind(size);
+        }
+       
+
+       
+
 
         // Add listeners to the AnchorPane's and ImageView's size properties
         wizardPane.widthProperty().addListener((obs, oldVal, newVal) -> updateImageViewLayout());
