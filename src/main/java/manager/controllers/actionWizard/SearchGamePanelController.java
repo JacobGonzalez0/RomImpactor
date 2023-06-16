@@ -22,6 +22,7 @@ import manager.models.SystemListItem;
 import manager.services.ImageService;
 import manager.services.searchproviders.CoverArtProjectUtil;
 import manager.services.searchproviders.IGDBUtil;
+import manager.services.searchproviders.SGDBUtil;
 import manager.elements.GameResultCell;
 
 public class SearchGamePanelController {
@@ -57,7 +58,7 @@ public class SearchGamePanelController {
                 searchProvider = new CoverArtProjectUtil();
                 break;
             case SGDB:
-                searchProvider = new CoverArtProjectUtil();
+                searchProvider = new SGDBUtil();
                 break;
             case IGDB:
                 searchProvider = new IGDBUtil();

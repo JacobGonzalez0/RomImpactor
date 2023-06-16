@@ -57,7 +57,6 @@ public class SearchCoverPanelController {
         SearchProvider searchProvider = query.getKey();
         GameSearchResult gameQuery = query.getValue();
 
-
         // Create an ObservableList to hold the data
         ObservableList<CoverSearchResult> coverList = FXCollections.observableArrayList();
                         
