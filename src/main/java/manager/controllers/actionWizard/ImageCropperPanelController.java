@@ -207,7 +207,7 @@ class RubberBandSelection {
         rect.setStroke(Color.BLUE);
         rect.setFill(Color.LIGHTBLUE.deriveColor(0, 1.2, 1, 0.6));
         this.pane = pane;
-        this.pane.getChildren().add(rect);
+        this.pane.getChildren().add(1, rect); // Add the rectangle to the wizardPane before the toolbar
 
         // Offset from the anchor panel its contained in
         dragging = false;
@@ -224,9 +224,10 @@ class RubberBandSelection {
         seHandle.setFill(Color.RED);
 
         // Add the handles to the anchorPane
-        pane.getChildren().addAll(nwHandle, neHandle, swHandle, seHandle);
-
-        
+        pane.getChildren().add(2, nwHandle);
+        pane.getChildren().add(2, neHandle);
+        pane.getChildren().add(2, swHandle);
+        pane.getChildren().add(2, seHandle);
 
         this.imageView = imageView;
         this.imageView.imageProperty().addListener((obs, oldImage, newImage) -> {
@@ -295,7 +296,6 @@ class RubberBandSelection {
                 double deltaY = newY - previousYClick;
 
                 if (target == nwHandle) {
-                    System.out.println("nw");
                     double newWidth = rect.getWidth() - deltaX;
                     double newHeight = rect.getHeight() - deltaY;
                     
@@ -306,7 +306,6 @@ class RubberBandSelection {
                         rect.setHeight(newHeight);
                     }
                 } else if (target == neHandle) {
-                    System.out.println("ne");
                     double newWidth = rect.getWidth() + deltaX;
                     double newHeight = rect.getHeight() - deltaY;
                     if (newWidth > 0 && newHeight > 0) {
