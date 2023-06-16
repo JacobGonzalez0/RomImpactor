@@ -130,11 +130,11 @@ public class ImageCropperPanelController {
     
         // Update the rectangle in the RubberBandSelection instance
         rubberBandSelection.setRectangle(rect);
+        updateSpinners();
     }
     
 
     private void setupSpinners() {
-
         configureSpinner(xCordSpinner, 0, 0, Integer.MAX_VALUE);
         configureInverseSpinner(yCordSpinner, 0, 0,  Integer.MAX_VALUE);
         configureSpinner(widthSpinner, 0, 0,  Integer.MAX_VALUE);

@@ -61,8 +61,7 @@ public class FinalImagePreviewPanel{
                     break;
             }
 
-            //implement consoles here
-
+            selectedRom.updateName();
             // Get the base name of the Rom file (without extension)
             String romBaseName = selectedRom.getRomFile().getName();
             int pos = romBaseName.lastIndexOf(".");

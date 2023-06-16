@@ -25,6 +25,7 @@ import manager.models.Rom;
 import manager.models.SystemListItem;
 import manager.services.DirectoryService;
 import manager.services.ImageService;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -61,6 +62,7 @@ public class MainWindowController {
     private double yOffset;
 
     private Rom selectedRom;
+    private boolean isDraggingRomActionWizard;
 
     // Initialize method, called after all @FXML annotated members have been injected
     @FXML
@@ -261,32 +263,162 @@ public class MainWindowController {
     public void handleChangeDirButton() {
         // Handle changeDirButton action here
     }
+
     @FXML
     public void handlelocalImageButton() {
         try {
             // Load the RomActionWizard.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/RomActionWizard.fxml"));
             Parent root = loader.load();
-    
+
             // Create a custom shape for the stage
             Rectangle windowShape = new Rectangle(700, 528);
             windowShape.setArcWidth(20);
             windowShape.setArcHeight(20);
             root.setClip(windowShape);
-    
+
+            int maxWindowWidth = 700;
+            int maxWindowHeight = 528;
+
             // Create a new stage for the options window
             Stage localImageStage = new Stage();
             localImageStage.initStyle(StageStyle.TRANSPARENT);
             localImageStage.setTitle("Local Image Wizard");
-            localImageStage.setScene(new Scene(root, Color.TRANSPARENT));
-    
+            Scene scene = new Scene(root, Color.TRANSPARENT);
+            localImageStage.setScene(scene);
+
+            // Make the stage resizable
+            scene.setOnMouseMoved(event -> {
+                double x = event.getX();
+                double y = event.getY();
+                double width = localImageStage.getWidth();
+                double height = localImageStage.getHeight();
+
+                // Change the cursor when near the edge
+                if (x < 5 && y < 5) {
+                    scene.setCursor(Cursor.NW_RESIZE);
+                } else if (x < 5 && Math.abs(y - height) < 5) {
+                    scene.setCursor(Cursor.SW_RESIZE);
+                } else if (Math.abs(x - width) < 5 && y < 5) {
+                    scene.setCursor(Cursor.NE_RESIZE);
+                } else if (Math.abs(x - width) < 5 && Math.abs(y - height) < 5) {
+                    scene.setCursor(Cursor.SE_RESIZE);
+                } else if (x < 5) {
+                    scene.setCursor(Cursor.W_RESIZE);
+                } else if (Math.abs(x - width) < 5) {
+                    scene.setCursor(Cursor.E_RESIZE);
+                } else if (y < 5) {
+                    scene.setCursor(Cursor.N_RESIZE);
+                } else if (Math.abs(y - height) < 5) {
+                    scene.setCursor(Cursor.S_RESIZE);
+                } else {
+                    scene.setCursor(Cursor.DEFAULT);
+                }
+            });
+
+            scene.setOnMouseDragged(event -> {
+                // Resize the window when dragging near the edge
+                if (scene.getCursor() == Cursor.NW_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaX = event.getScreenX() - localImageStage.getX();
+                    double deltaY = event.getScreenY() - localImageStage.getY();
+                    double newWidth = localImageStage.getWidth() - deltaX;
+                    double newHeight = localImageStage.getHeight() - deltaY;
+            
+                    if (newWidth > maxWindowWidth  && newHeight > 0) {
+                        localImageStage.setX(event.getScreenX());
+                        localImageStage.setWidth(newWidth);
+                        localImageStage.setY(event.getScreenY());
+                        localImageStage.setHeight(newHeight);
+                    }
+                } else if (scene.getCursor() == Cursor.NE_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaX = event.getScreenX() - localImageStage.getX() - localImageStage.getWidth();
+                    double deltaY = event.getScreenY() - localImageStage.getY();
+                    double newWidth = localImageStage.getWidth() + deltaX;
+                    double newHeight = localImageStage.getHeight() - deltaY;
+            
+                    if (newWidth > maxWindowWidth && newHeight > maxWindowHeight) {
+                        localImageStage.setY(event.getScreenY());
+                        localImageStage.setWidth(newWidth);
+                        localImageStage.setHeight(newHeight);
+                    }
+                } else if (scene.getCursor() == Cursor.SW_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaX = event.getScreenX() - localImageStage.getX();
+                    double deltaY = event.getScreenY() - localImageStage.getY() - localImageStage.getHeight();
+                    double newWidth = localImageStage.getWidth() - deltaX;
+                    double newHeight = localImageStage.getHeight() + deltaY;
+            
+                    if (newWidth > maxWindowWidth && newHeight > maxWindowHeight) {
+                        localImageStage.setX(event.getScreenX());
+                        localImageStage.setWidth(newWidth);
+                        localImageStage.setHeight(newHeight);
+                    }
+                } else if (scene.getCursor() == Cursor.SE_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaX = event.getScreenX() - localImageStage.getX() - localImageStage.getWidth();
+                    double deltaY = event.getScreenY() - localImageStage.getY() - localImageStage.getHeight();
+                    double newWidth = localImageStage.getWidth() + deltaX;
+                    double newHeight = localImageStage.getHeight() + deltaY;
+            
+                    if (newWidth > maxWindowWidth && newHeight > maxWindowHeight) {
+                        localImageStage.setWidth(newWidth);
+                        localImageStage.setHeight(newHeight);
+                    }
+                } else if (scene.getCursor() == Cursor.N_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaY = event.getScreenY() - localImageStage.getY();
+                    double newHeight = localImageStage.getHeight() - deltaY;
+            
+                    if (newHeight > maxWindowHeight) {
+                        localImageStage.setY(event.getScreenY());
+                        localImageStage.setHeight(newHeight);
+                    }
+                } else if (scene.getCursor() == Cursor.S_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaY = event.getScreenY() - localImageStage.getY() - localImageStage.getHeight();
+                    double newHeight = localImageStage.getHeight() + deltaY;
+            
+                    if (newHeight > maxWindowHeight) {
+                        localImageStage.setHeight(newHeight);
+                    }
+                } else if (scene.getCursor() == Cursor.W_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaX = event.getScreenX() - localImageStage.getX();
+                    double newWidth = localImageStage.getWidth() - deltaX;
+            
+                    if (newWidth > maxWindowWidth) {
+                        localImageStage.setX(event.getScreenX());
+                        localImageStage.setWidth(newWidth);
+                    }
+                } else if (scene.getCursor() == Cursor.E_RESIZE) {
+                    isDraggingRomActionWizard = true;
+                    double deltaX = event.getScreenX() - localImageStage.getX() - localImageStage.getWidth();
+                    double newWidth = localImageStage.getWidth() + deltaX;
+            
+                    if (newWidth > maxWindowWidth) {
+                        localImageStage.setWidth(newWidth);
+                    }
+                }
+
+                // Update the custom shape
+                windowShape.setWidth(localImageStage.getWidth());
+                windowShape.setHeight(localImageStage.getHeight());
+                
+            });
+            scene.setOnMouseReleased(event -> {
+                isDraggingRomActionWizard = false;
+            });
+
             // Show the options window
             localImageStage.show();
-    
+
             RomActionWizard localImageWindowController = loader.getController();
             localImageWindowController.setPrimaryStage(localImageStage);
             localImageWindowController.receiveRom(selectedRom);
-    
+            localImageWindowController.setParentController(this);
+
             // Set listener for options window closing event
             localImageStage.setOnHidden(event -> {
                 handleSystemListViewClick(null);
@@ -295,7 +427,9 @@ public class MainWindowController {
             e.printStackTrace();
         }
     }
-    
 
-    
+    public boolean isDragging() {
+        return this.isDraggingRomActionWizard;
+    }
+
 }

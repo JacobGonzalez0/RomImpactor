@@ -31,6 +31,7 @@ import manager.models.Rom;
 import manager.models.Settings;
 import manager.services.ImageService;
 import manager.services.SettingsService;
+import manager.controllers.MainWindowController;
 import manager.controllers.actionWizard.FinalImagePreviewPanel;
 
 import java.awt.image.BufferedImage;
@@ -87,6 +88,8 @@ public class RomActionWizard {
 
     private SearchProviderPanelController searchProviderPanelController;
 
+    private MainWindowController parentController;
+
     @FXML
     public void initialize() {
         // Add event listeners for drag functionality
@@ -129,7 +132,6 @@ public class RomActionWizard {
         backButton.setVisible(false);
         saveButton.setVisible(false);
     }
-
     
     /*
      * Init Helpers
@@ -168,15 +170,19 @@ public class RomActionWizard {
     }
 
     private void handleMousePressed(MouseEvent event) {
-        xOffset = event.getSceneX();
-        yOffset = event.getSceneY();
+        if (event.getY() > 6 && !parentController.isDragging()) { // Ignore events within the first 6 pixels from the top
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        }
     }
-
+    
     private void handleMouseDragged(MouseEvent event) {
-        primaryStage.setX(event.getScreenX() - xOffset);
-        primaryStage.setY(event.getScreenY() - yOffset);
+        if (event.getY() > 6 && !parentController.isDragging()) {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        }
     }
-
+    
     /*
      * Wizard Buttons
      */
@@ -572,7 +578,7 @@ public class RomActionWizard {
             SearchProviderPanelController controller = loader.getController();
             this.searchProviderPanelController = controller;
             controller.setParentController(this);
-            
+
             return controller;
         } catch (IOException e) {
             e.printStackTrace();
@@ -583,8 +589,7 @@ public class RomActionWizard {
 
     @FXML
     private void saveImage(){
-        if(finalImagePreviewPanel.saveImage()){
-            selectedRom.updateName();
+        if(finalImagePreviewPanel.saveImage()){   
             Stage stage = (Stage) wizardPane.getScene().getWindow();
             stage.close();
         }
@@ -623,4 +628,7 @@ public class RomActionWizard {
         this.saveButton = saveButton;
     }
 
+    public void setParentController(MainWindowController controller){
+        parentController = controller;
+    }
 }
