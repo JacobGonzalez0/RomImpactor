@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import manager.enums.Language;
 import manager.enums.devices.DeviceSupport;
 import manager.models.ApiSettings;
 import manager.models.General;
@@ -21,6 +22,9 @@ public class OptionsWindowController {
 
     @FXML
     private ComboBox<String> deviceProfileComboBox;
+    
+    @FXML
+    private ComboBox<Language> languageComboBox;
 
     @FXML
     private Label deviceProfileLabel, manualScaleSizeLabel, steamGridDBLabel, igdbLabel;
@@ -29,7 +33,7 @@ public class OptionsWindowController {
     private TextField manualScaleSizeTextField;
 
     @FXML
-    private TextField steamGridDBApiKeyTextField, igdbSecretTextField, igdbClientIdTextField;
+    private TextField deviceDirectoryTextField,steamGridDBApiKeyTextField, igdbSecretTextField, igdbClientIdTextField;
 
     @FXML
     private CheckBox steamGridDBEnabledCheckBox, igdbEnabledCheckBox, manualScaleEnableCheckBox;
@@ -55,7 +59,8 @@ public class OptionsWindowController {
             general.setDeviceProfile(DeviceSupport.FUNKEY_S.toString()); //Default FunkeyS
             general.setManualScaleSize(240);
             general.setManualScale(false);
-            general.setLanguage("english");
+            general.setLanguage(Language.ENGLISH);
+            general.setRootDirectory(null);
             settings.setGeneral(general);
     
             ApiSettings apiSettings = new ApiSettings();
@@ -93,9 +98,11 @@ public class OptionsWindowController {
         boolean steamGridDb = steamGridDBEnabledCheckBox.isSelected();
         String igdbClientId = igdbClientIdTextField.getText();
         String igdbSecret = igdbSecretTextField.getText();
+        String rootDirectory = deviceDirectoryTextField.getText();
+        Language language = languageComboBox.getSelectionModel().getSelectedItem();
         boolean igdb = igdbEnabledCheckBox.isSelected();
 
-        SettingsService.saveSettings(deviceProfile, manualScaleSize, manualScale,
+        SettingsService.saveSettings(deviceProfile, manualScaleSize, manualScale, rootDirectory, language,
                 steamGridDbKey, steamGridDb, igdbClientId, igdbSecret, igdb);
     }
 
@@ -116,6 +123,9 @@ public class OptionsWindowController {
             List<String> deviceProfiles = getDeviceList();
             deviceProfileComboBox.getItems().addAll(deviceProfiles);
             deviceProfileComboBox.setValue(general.getDeviceProfile());
+
+            languageComboBox.getItems().addAll(Language.values());
+            languageComboBox.setValue(general.getLanguage());
 
             // Populate other options fields
             manualScaleSizeTextField.setText(String.valueOf(general.getManualScaleSize()));

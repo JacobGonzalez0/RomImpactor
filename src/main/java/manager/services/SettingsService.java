@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import manager.enums.Language;
 import manager.models.ApiSettings;
 import manager.models.General;
 import manager.models.Settings;
@@ -42,6 +43,8 @@ public class SettingsService {
             String deviceProfile,
             int manualScaleSize,
             boolean manualScale,
+            String rootDirectory,
+            Language language,
             String steamGridDbKey,
             boolean steamGridDb,
             String igdbClientId,
@@ -55,6 +58,8 @@ public class SettingsService {
         general.setDeviceProfile(deviceProfile);
         general.setManualScaleSize(manualScaleSize);
         general.setManualScale(manualScale);
+        general.setRootDirectory(rootDirectory);
+        general.setLanguage(language);
         settings.setGeneral(general);
 
         ApiSettings apiSettings = new ApiSettings();

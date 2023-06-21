@@ -1,13 +1,16 @@
 package manager.models;
 
+import manager.enums.Language;
+
 public class General {
 
     private String deviceProfile;
     private int manualScaleSize;
     private boolean manualScale;
-    private String language;
+    private Language language;
+    private String rootDirectory;
 
-    public General(String deviceProfile, int manualScaleSize, boolean manualScale, String language) {
+    public General(String deviceProfile, int manualScaleSize, boolean manualScale, Language language) {
         this.deviceProfile = deviceProfile;
         this.manualScaleSize = manualScaleSize;
         this.manualScale = manualScale;
@@ -35,11 +38,17 @@ public class General {
     public void setManualScale(boolean manualScale) {
         this.manualScale = manualScale;
     }
-    public String getLanguage() {
+    public Language getLanguage() {
         return language;
     }
-    public void setLanguage(String language) {
+    public void setLanguage(Language language) {
         this.language = language;
+    }
+    public String getRootDirectory() {
+        return rootDirectory;
+    }
+    public void setRootDirectory(String rootDirectory) {
+        this.rootDirectory = rootDirectory;
     }
 
   
