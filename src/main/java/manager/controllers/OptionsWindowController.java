@@ -1,19 +1,23 @@
 package manager.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
 import manager.enums.Language;
 import manager.enums.devices.DeviceSupport;
 import manager.models.ApiSettings;
 import manager.models.General;
 import manager.models.Settings;
+import manager.services.DirectoryService;
 import manager.services.SettingsService;
 
 public class OptionsWindowController {
@@ -38,7 +42,9 @@ public class OptionsWindowController {
     @FXML
     private CheckBox steamGridDBEnabledCheckBox, igdbEnabledCheckBox, manualScaleEnableCheckBox;
 
-
+    @FXML
+    private Button changeDirectoryButton;
+    
     // Add your controller logic here
     // ...
 
@@ -48,42 +54,14 @@ public class OptionsWindowController {
         
         Settings settings = SettingsService.loadSettings();
 
+        changeDirectoryButton.setOnAction(e -> chooseDirectory());
+
         if (settings != null) {
             populateSettingsUI(settings);
         }
         else 
         {
-            // Create new settings with default values
-            settings = new Settings();
-            General general = new General();
-            general.setDeviceProfile(DeviceSupport.FUNKEY_S.toString()); //Default FunkeyS
-            general.setManualScaleSize(240);
-            general.setManualScale(false);
-            general.setLanguage(Language.ENGLISH);
-            general.setRootDirectory(null);
-            settings.setGeneral(general);
-    
-            ApiSettings apiSettings = new ApiSettings();
-            apiSettings.setSteamGridDb(false);
-            apiSettings.setSteamGridDbKey("");
-            apiSettings.setIgdb(false);
-            apiSettings.setIgdbClientId("");
-            apiSettings.setIgdbSecret("");
-            settings.setApiSettings(apiSettings);
-    
-            // Save new settings to the JSON file
-            SettingsService.writeSettings(settings);
-
-            settings = SettingsService.loadSettings();
-            if(settings == null){
-                try {
-                    throw new Exception("Could not write settings.json");
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            populateSettingsUI(settings);
+            populateSettingsUI(SettingsService.defaultSettings());
         }
         
         
@@ -124,6 +102,7 @@ public class OptionsWindowController {
             deviceProfileComboBox.getItems().addAll(deviceProfiles);
             deviceProfileComboBox.setValue(general.getDeviceProfile());
 
+            deviceDirectoryTextField.setText(general.getRootDirectory());
             languageComboBox.getItems().addAll(Language.values());
             languageComboBox.setValue(general.getLanguage());
 
@@ -140,5 +119,21 @@ public class OptionsWindowController {
         }
     }
 
+    private void chooseDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        String initialDirectoryPath = deviceDirectoryTextField.getText();
+        File initialDirectory = new File(initialDirectoryPath);
+        if (!initialDirectory.isDirectory()) {
+            String removableDrivePath = DirectoryService.getFirstRemovableDrivePath();
+            if (removableDrivePath != null) {
+                initialDirectory = new File(removableDrivePath);
+            }
+        }
+        directoryChooser.setInitialDirectory(initialDirectory);
+        File selectedDirectory = directoryChooser.showDialog(changeDirectoryButton.getScene().getWindow());
+        if (selectedDirectory != null) {
+            deviceDirectoryTextField.setText(selectedDirectory.getAbsolutePath());
+        }
+    }
     
 }

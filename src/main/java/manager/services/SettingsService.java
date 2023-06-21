@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import manager.enums.Language;
+import manager.enums.devices.DeviceSupport;
 import manager.models.ApiSettings;
 import manager.models.General;
 import manager.models.Settings;
@@ -72,6 +73,40 @@ public class SettingsService {
 
         // Save settings to the JSON file
         writeSettings(settings);
+    }
+
+    public static Settings defaultSettings(){
+        // Create new settings with default values
+        Settings settings = new Settings();
+        General general = new General();
+        general.setDeviceProfile(DeviceSupport.FUNKEY_S.toString()); //Default FunkeyS
+        general.setManualScaleSize(240);
+        general.setManualScale(false);
+        general.setLanguage(Language.ENGLISH);
+        general.setRootDirectory(DirectoryService.getFirstRemovableDrivePath());
+        settings.setGeneral(general);
+
+        ApiSettings apiSettings = new ApiSettings();
+        apiSettings.setSteamGridDb(false);
+        apiSettings.setSteamGridDbKey("");
+        apiSettings.setIgdb(false);
+        apiSettings.setIgdbClientId("");
+        apiSettings.setIgdbSecret("");
+        settings.setApiSettings(apiSettings);
+
+        // Save new settings to the JSON file
+        SettingsService.writeSettings(settings);
+
+        settings = SettingsService.loadSettings();
+        if(settings == null){
+            try {
+                throw new Exception("Could not write settings.json");
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return settings;
     }
 
 }

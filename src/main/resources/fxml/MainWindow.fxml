@@ -116,10 +116,10 @@
                           
                       </cellFactory>
                   </ListView>
-                  <Label fx:id="directoryLabel" layoutX="14.0" layoutY="520.0" text="E:\" />
+                  <Label fx:id="directoryLabel" layoutX="14.0" layoutY="520.0" />
                   <Label layoutX="14.0" layoutY="491.0" text="Current Directory" />
                   <Separator layoutX="11.0" layoutY="507.0" opacity="0.1" prefWidth="200.0" />
-                  <Button fx:id="changeDirButton" layoutX="137.0" layoutY="516.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="67.0" styleClass="smallbutton" text="CHANGE" />
+                  <Button fx:id="changeDirButton" onAction="#handleChangeDirButton" layoutX="137.0" layoutY="516.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="67.0" styleClass="smallbutton" text="CHANGE" />
           </children>
         </AnchorPane>
       <AnchorPane id="Content" fx:id="romPane" minHeight="-1.0" minWidth="315.0" prefHeight="545.0" prefWidth="315.0" styleClass="root">

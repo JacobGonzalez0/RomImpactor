@@ -16,21 +16,27 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import manager.controllers.actionWizard.RomActionWizard;
 import manager.elements.RomListCell;
 import manager.elements.SystemListCell;
+import manager.enums.Language;
+import manager.models.General;
 import manager.models.Rom;
+import manager.models.Settings;
 import manager.models.SystemListItem;
 import manager.services.DirectoryService;
 import manager.services.ImageService;
+import manager.services.SettingsService;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -63,36 +69,30 @@ public class MainWindowController {
 
     private Rom selectedRom;
     private boolean isDraggingRomActionWizard;
+    private Settings settings;
 
     // Initialize method, called after all @FXML annotated members have been injected
     @FXML
     public void initialize() {
+        settings = SettingsService.loadSettings();
+
+        if(settings != null){
+            
+        }else{
+            settings = SettingsService.defaultSettings();
+        }
+
+        directoryLabel.setText(settings.getGeneral().getRootDirectory());
+        setLanguage(settings.getGeneral().getLanguage());
+
         // Add event listeners for drag functionality
         topBar.setOnMousePressed(this::handleMousePressed);
         topBar.setOnMouseDragged(this::handleMouseDragged);
 
-        // TODO: implement localizationService
-        // Load the resource bundle for the desired language
-        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale("en"));
-
-        // Retrieve translations for each UI element from the resource bundle
-        optionsMenuItem.setText(bundle.getString("optionsMenuItem"));
-        closeMenuItem.setText(bundle.getString("closeMenuItem"));
-
-        changeDirButton.setText(bundle.getString("changeDirButton"));
-        addRomButton.setText(bundle.getString("addRomButton"));
-        localImageButton.setText(bundle.getString("localImageButton"));
-        onlineSearchButton.setText(bundle.getString("searchOnlineButton"));
-
-        directoryLabel.setText(bundle.getString("currentDirectoryLabel"));
-        leftStatus.setText(bundle.getString("leftStatusLabel"));
-        rightStatus.setText(bundle.getString("rightStatusLabel"));
-
-
         // Create an ObservableList to hold the data
         ObservableList<SystemListItem> systemList = FXCollections.observableArrayList();
         
-        List<SystemListItem> systemListItems = DirectoryService.loadDevice();
+        List<SystemListItem> systemListItems = DirectoryService.loadDevice(settings.getGeneral().getRootDirectory());
 
         for(SystemListItem i : systemListItems){
             systemList.add(i);
@@ -109,6 +109,54 @@ public class MainWindowController {
             systemListView.getSelectionModel().selectFirst();
             handleSystemListViewClick(null);
         }
+    }
+
+    private void updateUI(Settings settings){
+
+        // Create an ObservableList to hold the data
+        ObservableList<SystemListItem> systemList = FXCollections.observableArrayList();
+        List<SystemListItem> systemListItems;
+        if(settings != null){
+            systemListItems = DirectoryService.loadDevice(settings.getGeneral().getRootDirectory());
+            directoryLabel.setText(settings.getGeneral().getRootDirectory());
+        }else{
+            systemListItems = DirectoryService.loadDevice(this.settings.getGeneral().getRootDirectory());
+            directoryLabel.setText(this.settings.getGeneral().getRootDirectory());
+        }
+
+        for(SystemListItem i : systemListItems){
+            systemList.add(i);
+        }
+
+        // Set the custom cell factory for the ListView
+        systemListView.setCellFactory(listView -> new SystemListCell());
+
+        // Set the ObservableList as the data source for the ListView
+        systemListView.setItems(systemList);
+
+        // Select first item and populate
+        if (!systemList.isEmpty()) {
+            systemListView.getSelectionModel().selectFirst();
+            handleSystemListViewClick(null);
+        }
+    
+    }
+
+    private void setLanguage(Language language){
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
+    
+        // Retrieve translations for each UI element from the resource bundle
+        optionsMenuItem.setText(bundle.getString("optionsMenuItem"));
+        closeMenuItem.setText(bundle.getString("closeMenuItem"));
+
+        changeDirButton.setText(bundle.getString("changeDirButton"));
+        addRomButton.setText(bundle.getString("addRomButton"));
+        localImageButton.setText(bundle.getString("localImageButton"));
+        onlineSearchButton.setText(bundle.getString("searchOnlineButton"));
+
+        leftStatus.setText(bundle.getString("leftStatusLabel"));
+        rightStatus.setText(bundle.getString("rightStatusLabel"));
+
     }
 
     private void handleMousePressed(MouseEvent event) {
@@ -253,6 +301,9 @@ public class MainWindowController {
             optionsStage.setOnHidden(event -> {
                 // Perform saveSettings() operation when the options window is closed
                 optionsController.saveSettings();
+                settings = SettingsService.loadSettings();
+                setLanguage(settings.getGeneral().getLanguage());
+                updateUI(settings);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,7 +312,27 @@ public class MainWindowController {
 
     @FXML
     public void handleChangeDirButton() {
-        // Handle changeDirButton action here
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        String initialDirectoryPath = settings.getGeneral().getRootDirectory();
+        File initialDirectory = new File(initialDirectoryPath);
+        if (!initialDirectory.isDirectory()) {
+            String removableDrivePath = DirectoryService.getFirstRemovableDrivePath();
+            if (removableDrivePath != null) {
+                initialDirectory = new File(removableDrivePath);
+            }
+        }
+        directoryChooser.setInitialDirectory(initialDirectory);
+        File selectedDirectory = directoryChooser.showDialog(directoryLabel.getScene().getWindow());
+        if (selectedDirectory != null) {
+            String selectedDirectoryString = selectedDirectory.getAbsolutePath();
+            directoryLabel.setText(selectedDirectoryString);
+
+            Settings settings = new Settings();
+            General general = new General();
+            general.setRootDirectory(selectedDirectoryString);
+            settings.setGeneral(general);
+            updateUI(settings);
+        }
     }
 
     @FXML

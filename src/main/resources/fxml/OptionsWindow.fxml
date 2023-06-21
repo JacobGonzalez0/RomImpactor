@@ -25,7 +25,7 @@
                         <CheckBox fx:id="manualScaleEnableCheckBox" contentDisplay="RIGHT" layoutX="295.0" layoutY="110.0" mnemonicParsing="false" styleClass="apiCheckbox" text="Enable" />
                         <TextField fx:id="deviceDirectoryTextField" layoutX="201.0" layoutY="134.0" prefHeight="25.0" prefWidth="88.0" />
                         <Label layoutX="18.0" layoutY="137.0" text="Device Directory" />
-                        <Button layoutX="295.0" layoutY="134.0" mnemonicParsing="false" text="Change" />
+                        <Button fx:id="changeDirectoryButton" layoutX="295.0" layoutY="134.0" mnemonicParsing="false" text="Change" />
                         <ComboBox fx:id="languageComboBox" layoutX="202.0" layoutY="169.0" prefWidth="150.0" />
                         <Label layoutX="19.0" layoutY="173.0" text="Language" />
                      </children></AnchorPane>

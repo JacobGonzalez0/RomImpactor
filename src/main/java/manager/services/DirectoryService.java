@@ -1,7 +1,11 @@
 package manager.services;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -12,6 +16,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+import javax.swing.filechooser.FileSystemView;
+
+import javafx.scene.shape.Path;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,15 +28,32 @@ import manager.enums.consoles.ConsoleImages;
 import manager.enums.devices.DeviceSupport;
 import manager.enums.devices.FunkeyDevice;
 import manager.models.Rom;
+import manager.models.Settings;
 import manager.models.SystemListItem;
 
 public class DirectoryService {
 
-    public static List<SystemListItem> loadDevice(){
+    public static List<SystemListItem> loadDevice(String directory){
+        Settings settings = SettingsService.loadSettings();
+        String rootFolder;
+
+        if(directory == null || directory.isEmpty()){
+            // first check if the settings exists
+            if(settings != null){
+                rootFolder = settings.getGeneral().getRootDirectory();
+            }else{
+                // otherwise default to first removable drive
+                rootFolder = getFirstRemovableDrivePath();
+            }
+        }else{
+            // if we pass in a directory we use that to load 
+            rootFolder = directory;
+        }
+        
 
         //check settings for device we are using, and what path we are using
         DeviceSupport device = DeviceSupport.FUNKEY_S; //set to funkey for now
-        String rootFolder = "C:\\roms\\";
+        
 
         Map<String, Entry<String, String>> folders = getFolderList(device, rootFolder);
         List<SystemListItem> systemList = new ArrayList<SystemListItem>();
@@ -215,5 +239,73 @@ public class DirectoryService {
     
         return foundFiles;
     }
+
+    public static String getFirstRemovableDrivePath() {
+        // Get all filesystem roots
+        File[] roots = File.listRoots();
+    
+        for (File root : roots) {
+            // Skip the C: drive
+            if (!root.getAbsolutePath().equalsIgnoreCase("C:\\")) {
+                if (isRemovableDrive(root)) {
+                    return root.getAbsolutePath();
+                }
+            }
+        }
+    
+        // No removable drive found, so fallback to documents folder or home folder
+        String userHome = System.getProperty("user.home");
+        File documentsFolder = new File(userHome, "Documents");
+        File romsFolder = new File(documentsFolder, "roms");
+    
+        if (!romsFolder.exists()) {
+            romsFolder.mkdirs(); // Create the "roms" folder if it doesn't exist
+        }
+    
+        return romsFolder.getAbsolutePath();
+    }
+
+    private static boolean isRemovableDrive(File root) {
+        String os = System.getProperty("os.name").toLowerCase();
+    
+        if (os.contains("win")) {
+            // Get version of Windows
+            String version = System.getProperty("os.version");
+            String majorVersionString = version.split("\\.")[0];
+            int majorVersion = Integer.parseInt(majorVersionString);
+    
+            // Check if Windows version is 7 or later
+            if (majorVersion >= 6) {
+                // Try to get the drive's type using a PowerShell command
+                String driveLetter = root.getAbsolutePath().substring(0, 2); // e.g., "E:"
+                ProcessBuilder processBuilder = new ProcessBuilder("powershell.exe", "/c", "Get-WmiObject -Query \"SELECT * from win32_logicaldisk WHERE deviceid = '" + driveLetter + "'\" | select MediaType");
+                processBuilder.redirectErrorStream(true);
+                try {
+                    Process process = processBuilder.start();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        line = line.trim();
+                        // If the drive's MediaType is null or 11, it's probably removable
+                        if (line.isEmpty() || "11".equals(line)) {
+                            return true;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        } else if (os.contains("mac") || os.contains("nix") || os.contains("nux") || os.contains("sunos")) {
+            String path = root.getAbsolutePath();
+            return path.toLowerCase().startsWith("/volumes") || path.toLowerCase().startsWith("/media") || path.toLowerCase().startsWith("/run/media");
+        } else {
+            return false;
+        }
+    }
+    
+    
+
+    
     
 }
