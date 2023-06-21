@@ -2,6 +2,7 @@ package manager.enums.devices;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import manager.interfaces.DeviceRomType;
@@ -103,6 +104,16 @@ public enum FunkeyDevice implements DeviceRomType {
     public String getImageRegexPattern() {
         return imageRegexPattern;
     }
+
+    public static List<String> getFileExtensionsByName(String deviceName) {
+        for (FunkeyDevice device : FunkeyDevice.values()) {
+            if (device.getDeviceName().equals(deviceName)) {
+                return device.getFileExtensions();
+            }
+        }
+        return Collections.emptyList();
+    }
+    
 }
 
 

@@ -49,14 +49,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.ContextMenu?>
-
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox fx:controller="manager.controllers.MainWindowController" minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@/styles/mainWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@/styles/mainWindow.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.MainWindowController">
   <children>
       <HBox id="topBar" fx:id="topBar" prefHeight="33.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
         <children>
@@ -66,10 +63,10 @@
                   <menus>
                     <Menu fx:id="topMenu" mnemonicParsing="false" text="Menu">
                       <items>
-                              <MenuItem fx:id="optionsMenuItem" onAction="#handleOptionsMenuItem" mnemonicParsing="false" text="Options" />
+                              <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" onAction="#handleOptionsMenuItem" text="Options" />
                         <MenuItem mnemonicParsing="false" text="About" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem fx:id="closeMenuItem" onAction="#handleCloseMenuItem" mnemonicParsing="false" text="Close" />
+                              <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleCloseMenuItem" text="Close" />
                       </items>
                     </Menu>
                   </menus>
@@ -79,14 +76,14 @@
           <AnchorPane id="WindowActionButtons" minHeight="0.0" minWidth="0.0" prefHeight="12.0" prefWidth="802.0">
                <children>
                   <ButtonBar layoutX="360.0" layoutY="-6.0" prefHeight="40.0" prefWidth="200.0" />
-                <Button styleClass="minimize-button" fx:id="minimizeButton" onAction="#handleMinimizeButton" layoutX="738.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
+                <Button fx:id="minimizeButton" layoutX="738.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleMinimizeButton" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-button">
                   <graphic>
-                    <FontIcon  iconLiteral="fas-window-minimize" iconSize="10" iconColor="#dee6f1c7"/>
+                    <FontIcon iconColor="#dee6f1c7" iconLiteral="fas-window-minimize" iconSize="10" />
                   </graphic>
                 </Button>
-                <Button styleClass="close-button" fx:id="closeButton" onAction="#handleCloseButton" layoutX="768.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
+                <Button fx:id="closeButton" layoutX="768.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="20.0" prefWidth="20.0" styleClass="close-button">
                   <graphic>
-                    <FontIcon iconLiteral="fas-window-close" iconSize="10" iconColor="#dee6f1c7"/>
+                    <FontIcon iconColor="#dee6f1c7" iconLiteral="fas-window-close" iconSize="10" />
                   </graphic>
                 </Button>
                </children>
@@ -111,7 +108,7 @@
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
             </Label>
-                  <ListView fx:id="systemListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="220.0" onMouseClicked="#handleSystemListViewClick">
+                  <ListView fx:id="systemListView" layoutX="11.0" layoutY="40.0" onMouseClicked="#handleSystemListViewClick" prefHeight="434.0" prefWidth="220.0">
                       <cellFactory>
                           
                       </cellFactory>
@@ -119,23 +116,31 @@
                   <Label fx:id="directoryLabel" layoutX="14.0" layoutY="520.0" />
                   <Label layoutX="14.0" layoutY="491.0" text="Current Directory" />
                   <Separator layoutX="11.0" layoutY="507.0" opacity="0.1" prefWidth="200.0" />
-                  <Button fx:id="changeDirButton" onAction="#handleChangeDirButton" layoutX="137.0" layoutY="516.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="67.0" styleClass="smallbutton" text="CHANGE" />
+                  <Button fx:id="changeDirButton" layoutX="137.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleChangeDirButton" prefHeight="23.0" prefWidth="67.0" styleClass="smallbutton" text="CHANGE" />
           </children>
         </AnchorPane>
       <AnchorPane id="Content" fx:id="romPane" minHeight="-1.0" minWidth="315.0" prefHeight="545.0" prefWidth="315.0" styleClass="root">
         <children>
           <Label alignment="CENTER" font="$x1" layoutX="10.0" layoutY="7.0" style="&#10;" styleClass="title" text="Roms" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-          <ListView fx:id="romListView" layoutX="11.0" layoutY="40.0" prefHeight="434.0" prefWidth="300.0" onMouseClicked="#handleRomListViewClick" onKeyPressed="#handleRomListViewKeyPressed">
+          <ListView fx:id="romListView" layoutX="11.0" layoutY="40.0" onKeyPressed="#handleRomListViewKeyPressed" onMouseClicked="#handleRomListViewClick" prefHeight="434.0" prefWidth="300.0">
             <cellFactory>
                 
             </cellFactory>
           </ListView>
           <Button fx:id="addRomButton" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="116.0">
             <graphic>
-              <FontIcon iconLiteral="far-plus-square" iconSize="12" iconColor="e3e4fc"/>
+              <FontIcon iconColor="e3e4fc" iconLiteral="far-plus-square" iconSize="12" />
             </graphic>
             <text> ADD ROM</text>
           </Button>
+          <AnchorPane fx:id="romListHover" minHeight="${romPane.height}" minWidth="${romPane.width}" prefHeight="${romPane.height}" prefWidth="${romPane.width}">
+                     <children>
+                        <Label fx:id="romListHoverLabel" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="226.0">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
         </children>
       </AnchorPane>
         <AnchorPane fx:id="infoPane" minWidth="316.0" prefHeight="555.0" prefWidth="353.0" styleClass="root">
@@ -146,24 +151,24 @@
                         <Image url="@images/noselection.png" />
                      </image>
                   </ImageView>
-                  <Pane fx:id="romInfo" id="RomInfo" layoutX="10.0" layoutY="372.0" prefHeight="103.0" prefWidth="326.0">
+                  <Pane id="RomInfo" fx:id="romInfo" layoutX="10.0" layoutY="372.0" prefHeight="103.0" prefWidth="326.0">
                       <AnchorPane>
                         <VBox>
-                          <Label styleClass="romInfoTitle" fx:id="romInfoTitle" />
-                          <Label styleClass="romInfoSubTitle" fx:id="romInfoSubTitle" />
+                          <Label fx:id="romInfoTitle" styleClass="romInfoTitle" />
+                          <Label fx:id="romInfoSubTitle" styleClass="romInfoSubTitle" />
                         </VBox>
                           
                       </AnchorPane>
                   </Pane>
-                  <Button onMouseClicked="#handlelocalImageButton" fx:id="localImageButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="164.0">  
+                  <Button fx:id="localImageButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#handlelocalImageButton" prefHeight="35.0" prefWidth="164.0">  
                     <graphic>
-                     <FontIcon iconLiteral="fas-plus" iconSize="12" iconColor="e3e4fc"/>
+                     <FontIcon iconColor="e3e4fc" iconLiteral="fas-plus" iconSize="12" />
                     </graphic>
                     <text> LOCAL IMAGE</text>
                   </Button>
                   <Button fx:id="onlineSearchButton" layoutX="176.0" layoutY="488.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="164.0" styleClass="secondaryButton">
                     <graphic>
-                     <FontIcon iconLiteral="fas-search" iconSize="12" iconColor="e3e4fc"/>
+                     <FontIcon iconColor="e3e4fc" iconLiteral="fas-search" iconSize="12" />
                     </graphic>
                     <text> SEARCH ONLINE</text>
                   </Button>

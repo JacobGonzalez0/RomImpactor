@@ -12,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,6 +25,8 @@ import manager.controllers.actionWizard.RomActionWizard;
 import manager.elements.RomListCell;
 import manager.elements.SystemListCell;
 import manager.enums.Language;
+import manager.enums.devices.DeviceSupport;
+import manager.enums.devices.FunkeyDevice;
 import manager.models.General;
 import manager.models.Rom;
 import manager.models.Settings;
@@ -37,6 +41,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -50,7 +55,7 @@ public class MainWindowController {
     @FXML
     private Button changeDirButton, addRomButton, localImageButton, onlineSearchButton;
     @FXML
-    private Label directoryLabel, leftStatus, rightStatus, romInfoTitle, romInfoSubTitle;
+    private Label directoryLabel, leftStatus, rightStatus, romInfoTitle, romInfoSubTitle, romListHoverLabel;
     @FXML
     private ListView<Rom> romListView;
     @FXML
@@ -61,6 +66,8 @@ public class MainWindowController {
     private HBox topBar;
     @FXML
     private Pane romInfo;
+    @FXML
+    private AnchorPane romListHover, romPane;
     
     private Stage primaryStage;
 
@@ -107,8 +114,53 @@ public class MainWindowController {
         // Select first item and populate
         if (!systemList.isEmpty()) {
             systemListView.getSelectionModel().selectFirst();
+            setupDragAndDrop();
             handleSystemListViewClick(null);
         }
+
+        //Hide rom hover
+        romListHover.setVisible(false);
+
+    }
+
+    private void setupDragAndDrop() {
+        DeviceSupport device = DeviceSupport.valueOf(settings.getGeneral().getDeviceProfile());
+
+        List<String> allowedExtensions;
+        SystemListItem system = systemListView.getSelectionModel().getSelectedItem();
+        switch(device){
+            case FUNKEY_S:
+                allowedExtensions = FunkeyDevice.getFileExtensionsByName(system.getSystemName());
+                break;
+            default:
+                allowedExtensions = new ArrayList<>();
+                break;
+        }
+
+        romPane.setOnDragOver(event -> {
+            if (event.getGestureSource() != romPane
+                    && event.getDragboard().hasFiles()) {
+                romListHover.setVisible(true); 
+                if (event.getDragboard().getFiles().stream().anyMatch(f ->
+                        allowedExtensions.contains(getFileExtension(f.getName())))) {
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    romListHoverLabel.setText("Drop Rom Here");
+                } else {
+                    romListHoverLabel.setText("File not supported");
+                }
+            }
+            event.consume();
+        });
+
+        romPane.setOnDragExited(event -> {
+            romListHover.setVisible(false);
+            romListHoverLabel.setText(""); // Resets the label text when the drag is exited
+        });
+    }
+
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex);
     }
 
     private void updateUI(Settings settings){
@@ -138,6 +190,7 @@ public class MainWindowController {
         if (!systemList.isEmpty()) {
             systemListView.getSelectionModel().selectFirst();
             handleSystemListViewClick(null);
+            setupDragAndDrop();
         }
     
     }
@@ -201,6 +254,7 @@ public class MainWindowController {
         if (!romList.isEmpty()) {
             romListView.getSelectionModel().selectFirst();
             updateRomPreview(romListView.getSelectionModel().getSelectedItem());
+            setupDragAndDrop();
             handleRomListViewClick(null);
         }
     }
