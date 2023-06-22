@@ -76,7 +76,7 @@ public class ImageService {
         return bufferedImage;
     }    
 
-    public static void convertAndResizeImage(BufferedImage originalImage, String outputPath, boolean overwrite) throws IOException {
+    public static File convertAndResizeImage(BufferedImage originalImage, String outputPath, boolean overwrite) throws IOException {
         // Check if the output file exists and whether to overwrite it
         File outputFile = new File(outputPath);
         if (outputFile.exists() && !overwrite) {
@@ -88,6 +88,7 @@ public class ImageService {
 
         // Save the FX Image to the output file
         saveFxImage(resizedImage, outputFile);
+        return outputFile;
     }
 
     private static BufferedImage resizeImage(BufferedImage image, int maxWidth, int maxHeight) {

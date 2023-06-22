@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -17,8 +18,6 @@ import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileSystemView;
-
-import javafx.scene.shape.Path;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -138,7 +137,7 @@ public class DirectoryService {
                     }
         
                     // Using folderName here for systemName, replace it with the variable you want
-                    SystemListItem system = new SystemListItem(folderName, roms, image);
+                    SystemListItem system = new SystemListItem(folderName, enumName, roms, image);
                     systemList.add(system);
                 }
                 break;
@@ -150,6 +149,59 @@ public class DirectoryService {
 
     }
 
+    public static Rom saveRom(Rom inputRom) {
+        try {
+            // Get settings
+            Settings settings = SettingsService.loadSettings();
+
+             //check settings for device we are using, and what path we are using
+            DeviceSupport device = DeviceSupport.getByEnumName(settings.getGeneral().getDeviceProfile()); //set to funkey for now
+            
+            String system = null;
+
+            switch(device){
+                case FUNKEY_S:
+                    system = FunkeyDevice.getDeviceByEnumName(inputRom.getSystem()).getFolderPath();
+                break;
+            }
+            
+            File[] files = inputRom.getFiles();
+            
+            // Define root directory
+            Path rootDirectory = Paths.get(settings.getGeneral().getRootDirectory());
+    
+            // Define target directory
+            Path targetDirectory = rootDirectory.resolve(system);
+    
+            // Create directory if it doesn't exist
+            if (!Files.exists(targetDirectory)) {
+                Files.createDirectories(targetDirectory);
+            }
+    
+            // Create a list to store non-null copied files
+            List<File> copiedFiles = new ArrayList<>();
+            
+            // Copy each file into the target directory
+            for (File file : files) {
+                // Skip null files
+                if (file != null) {
+                    Path originalPath = file.toPath();
+                    Path targetPath = targetDirectory.resolve(file.getName());
+                    Files.copy(originalPath, targetPath);
+                    // Add copied file to list
+                    copiedFiles.add(targetPath.toFile());
+                }
+            }
+            
+            // Update the Rom object with non-null copied files
+            inputRom.setFiles(copiedFiles.toArray(new File[0]));
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            // You may want to handle exceptions differently, depending on your application
+        }
+        return inputRom;
+    }    
 
     /*
      * Based on device get folders that match that device only ruturns filePath and foldername
@@ -166,7 +218,7 @@ public class DirectoryService {
                         for (File file : files) {
                             String folderName = file.getName();
                             for (FunkeyDevice device : FunkeyDevice.values()) {
-                                if (device.getDeviceName().equals(folderName)) {
+                                if (device.getFolderPath().equals(folderName)) {
                                     folderPaths.put(
                                         file.getPath(), 
                                         new AbstractMap.SimpleEntry<>(folderName, device.name())
@@ -194,7 +246,7 @@ public class DirectoryService {
             case FUNKEY_S:
                 String folderName = Paths.get(filePath).getFileName().toString();
                 FunkeyDevice funkeyDevice = Arrays.stream(FunkeyDevice.values())
-                        .filter(device -> device.getDeviceName().equals(folderName))
+                        .filter(device -> device.getFolderPath().equals(folderName))
                         .findFirst()
                         .orElseThrow(() -> new IllegalArgumentException("No matching FunkeyDevice found for folder: " + folderName));
 

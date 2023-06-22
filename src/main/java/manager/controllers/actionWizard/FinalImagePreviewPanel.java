@@ -48,7 +48,7 @@ public class FinalImagePreviewPanel{
         }
     }
 
-    public boolean saveImage(){
+    public Rom saveImage(){
         try {
             Settings settings = SettingsService.loadSettings();
             String deviceName = settings.getGeneral().getDeviceProfile();
@@ -56,14 +56,14 @@ public class FinalImagePreviewPanel{
             String relativeFilePath = "";
             switch (deviceName) {
                 case "FUNKEY_S":
-                    FunkeyDevice funkeyDevice = FunkeyDevice.valueOf(selectedRom.getSystem());
+                    FunkeyDevice funkeyDevice = FunkeyDevice.getDeviceByEnumName(selectedRom.getSystem());
                     relativeFilePath = funkeyDevice.getImageRegexPattern();
                     break;
             }
 
             selectedRom.updateName();
             // Get the base name of the Rom file (without extension)
-            String romBaseName = selectedRom.getRomFile().getName();
+            String romBaseName = selectedRom.getName();
             int pos = romBaseName.lastIndexOf(".");
             if (pos > 0) {
                 romBaseName = romBaseName.substring(0, pos);
@@ -78,11 +78,16 @@ public class FinalImagePreviewPanel{
                 imageFile.getAbsolutePath(),
                 true
             );
+
+            File[] files = selectedRom.getFiles();
+            files[1] = imageFile;
+            selectedRom.setFiles(files);
+
+            return selectedRom;
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return false;
+            return null;
         }
-        return true;
     }
 }

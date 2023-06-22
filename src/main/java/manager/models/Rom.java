@@ -32,13 +32,25 @@ public class Rom {
                 if (files[i] != null) {
                     String filePath = files[i].getPath();
                     String extension = "";
+                    String fileNameWithoutExtension = "";
     
                     int dotIndex = files[i].getName().lastIndexOf('.');
                     if (dotIndex > 0) {
                         extension = files[i].getName().substring(dotIndex);
+                        fileNameWithoutExtension = files[i].getName().substring(0, dotIndex);
                     }
     
-                    File renamedFile = new File(filePath.replace(files[i].getName(), name + extension));
+                    // Check if the new name already includes the extension
+                    String newName;
+                    if (name.equals(fileNameWithoutExtension)) {
+                        // If name equals the filename without extension, add the extension
+                        newName = name + extension;
+                    } else {
+                        // Otherwise, name already includes the extension
+                        newName = name;
+                    }
+    
+                    File renamedFile = new File(filePath.replace(files[i].getName(), newName));
                     if (files[i].renameTo(renamedFile)) {
                         files[i] = renamedFile;
                     } else {
@@ -47,7 +59,8 @@ public class Rom {
                 }
             }
         }
-    }    
+    }
+    
 
     public String getName() {
         return name;

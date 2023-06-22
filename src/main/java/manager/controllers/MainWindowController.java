@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -19,8 +20,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.FileChooser.ExtensionFilter;
 import manager.controllers.actionWizard.RomActionWizard;
 import manager.elements.RomListCell;
 import manager.elements.SystemListCell;
@@ -77,6 +80,7 @@ public class MainWindowController {
     private Rom selectedRom;
     private boolean isDraggingRomActionWizard;
     private Settings settings;
+    private SystemListItem selectedSystem;
 
     // Initialize method, called after all @FXML annotated members have been injected
     @FXML
@@ -123,40 +127,65 @@ public class MainWindowController {
 
     }
 
-    private void setupDragAndDrop() {
+    private List<String> getAllowedExtentions(){
         DeviceSupport device = DeviceSupport.valueOf(settings.getGeneral().getDeviceProfile());
 
         List<String> allowedExtensions;
         SystemListItem system = systemListView.getSelectionModel().getSelectedItem();
         switch(device){
             case FUNKEY_S:
-                allowedExtensions = FunkeyDevice.getFileExtensionsByName(system.getSystemName());
+                allowedExtensions = FunkeyDevice.getFileExtensionsByFolderPath(system.getSystemName());
                 break;
             default:
                 allowedExtensions = new ArrayList<>();
                 break;
         }
+        return allowedExtensions;
+    }
 
+    private void setupDragAndDrop() {
+        List<String> allowedExtensions = getAllowedExtentions();
+    
         romPane.setOnDragOver(event -> {
-            if (event.getGestureSource() != romPane
-                    && event.getDragboard().hasFiles()) {
-                romListHover.setVisible(true); 
-                if (event.getDragboard().getFiles().stream().anyMatch(f ->
-                        allowedExtensions.contains(getFileExtension(f.getName())))) {
+            if (event.getGestureSource() != romPane && event.getDragboard().hasFiles()) {
+                romListHover.setVisible(true);
+                boolean hasSupportedFiles = event.getDragboard().getFiles().stream().anyMatch(f ->
+                        allowedExtensions.contains(getFileExtension(f.getName())));
+    
+                if (hasSupportedFiles) {
                     event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                    romListHoverLabel.setText("Drop Rom Here");
+                    romListHoverLabel.setText("Drop ROM Here");
                 } else {
                     romListHoverLabel.setText("File not supported");
                 }
             }
             event.consume();
         });
-
+    
+        romPane.setOnDragDropped(event -> {
+            boolean success = false;
+            Dragboard dragboard = event.getDragboard();
+            if (dragboard.hasFiles()) {
+                List<File> files = dragboard.getFiles();
+                for (File file : files) {
+                    if (allowedExtensions.contains(getFileExtension(file.getName()))) {
+                        // File matches the allowed extensions
+                        Rom rom = createRom(file);
+                        // Perform any additional actions with the ROM file
+                        success = true;
+                    }
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    
         romPane.setOnDragExited(event -> {
             romListHover.setVisible(false);
             romListHoverLabel.setText(""); // Resets the label text when the drag is exited
         });
     }
+    
 
     private String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf(".");
@@ -194,6 +223,86 @@ public class MainWindowController {
         }
     
     }
+
+    private void updateSystemUI(Rom rom){
+
+        // Create an ObservableList to hold the data
+        ObservableList<SystemListItem> systemList = FXCollections.observableArrayList();
+        List<SystemListItem> systemListItems;
+        if(settings != null){
+            systemListItems = DirectoryService.loadDevice(settings.getGeneral().getRootDirectory());
+            directoryLabel.setText(settings.getGeneral().getRootDirectory());
+        }else{
+            systemListItems = DirectoryService.loadDevice(this.settings.getGeneral().getRootDirectory());
+            directoryLabel.setText(this.settings.getGeneral().getRootDirectory());
+        }
+
+        SystemListItem selectedItem = null;
+
+        for(SystemListItem i : systemListItems){
+            if( i.getEnumName().equals(rom.getSystem()) ){
+                selectedItem = i;
+            }
+            systemList.add(i);
+        }
+
+        if(selectedItem == null){
+            selectedItem = systemList.get(0);
+        }
+
+        // Set the custom cell factory for the ListView
+        systemListView.setCellFactory(listView -> new SystemListCell());
+
+        // Set the ObservableList as the data source for the ListView
+        systemListView.setItems(systemList);
+
+        
+
+        // Select first item and populate
+        if (!systemList.isEmpty()) {
+            systemListView.getSelectionModel().select(selectedItem);
+            handleSystemListViewClick(null);
+            updateRomUI(rom);
+            setupDragAndDrop();
+        }
+    
+    }
+
+    private void updateRomUI(Rom inputRom) {
+        SystemListItem selectedItem = systemListView.getSelectionModel().getSelectedItem();
+    
+        // Create an ObservableList to hold the data
+        ObservableList<Rom> romList = FXCollections.observableArrayList();
+    
+        List<Rom> romListItems = selectedItem.getRoms();
+    
+        for (Rom rom : romListItems) {
+            romList.add(rom);
+        }
+    
+        if (inputRom != null) {
+            romList.add(inputRom);
+        }
+    
+        // Set the custom cell factory for the ListView
+        romListView.setCellFactory(listView -> new RomListCell());
+    
+        // Set the ObservableList as the data source for the ListView
+        romListView.setItems(romList);
+    
+        // Select the inputRom if it was selected previously, otherwise select the first ROM on the list
+        if (inputRom != null && romList.contains(inputRom)) {
+            romListView.getSelectionModel().select(inputRom);
+        } else if (!romList.isEmpty()) {
+            romListView.getSelectionModel().selectFirst();
+        }
+    
+        // Update the ROM preview and set up drag and drop
+        updateRomPreview(romListView.getSelectionModel().getSelectedItem());
+        setupDragAndDrop();
+        handleRomListViewClick(null);
+    }
+    
 
     private void setLanguage(Language language){
         ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
@@ -233,12 +342,12 @@ public class MainWindowController {
     @FXML
     public void handleSystemListViewClick(MouseEvent event){
         // Get the selected item from the ListView
-        SystemListItem selectedItem = systemListView.getSelectionModel().getSelectedItem();
+        selectedSystem = systemListView.getSelectionModel().getSelectedItem();
 
         // Create an ObservableList to hold the data
         ObservableList<Rom> romList = FXCollections.observableArrayList();
         
-        List<Rom> romListItems = selectedItem.getRoms();
+        List<Rom> romListItems = selectedSystem.getRoms();
 
         for(Rom rom : romListItems){
             romList.add(rom);
@@ -275,8 +384,7 @@ public class MainWindowController {
             // Only trigger the action on a right click event
             
         }
-     }
-     
+    }
 
     @FXML
     public void handleRomListViewKeyPressed(KeyEvent event) {
@@ -290,6 +398,28 @@ public class MainWindowController {
             updateRomPreview(selectedRom);
 
         }
+    }
+
+    @FXML
+    public void handleAddRomClick(MouseEvent event){
+        Stage stage = (Stage) addRomButton.getScene().getWindow(); // Replace 'yourNode' with the appropriate reference to your UI node
+
+        FileChooser fileChooser = new FileChooser();
+    
+        // Set the title and initial directory of the file chooser dialog
+        fileChooser.setTitle("Select ROM File");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+    
+        // Specify the file extensions to filter
+        List<String> allowedExtensions = getAllowedExtentions();
+        ExtensionFilter extensionFilter = new ExtensionFilter("ROM Files", allowedExtensions);
+        fileChooser.getExtensionFilters().add(extensionFilter);
+    
+        // Show the file chooser dialog and wait for user selection
+        File selectedFile = fileChooser.showOpenDialog(stage);
+    
+        Rom rom = createRom(selectedFile);
+        // pass this rom over to the Rom Wizard, that leads into the actionWizard;
     }
 
     public void updateRomPreview(Rom rom){
@@ -391,6 +521,10 @@ public class MainWindowController {
 
     @FXML
     public void handlelocalImageButton() {
+        createNewActionWizard();
+    }
+
+    public void createNewActionWizard(){
         try {
             // Load the RomActionWizard.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/RomActionWizard.fxml"));
@@ -547,6 +681,7 @@ public class MainWindowController {
             // Set listener for options window closing event
             localImageStage.setOnHidden(event -> {
                 handleSystemListViewClick(null);
+                updateSystemUI(selectedRom);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -556,5 +691,27 @@ public class MainWindowController {
     public boolean isDragging() {
         return this.isDraggingRomActionWizard;
     }
+
+    public Rom createRom(File file){
+        // take the file, and put it in a Rom
+        Rom rom = new Rom();
+        File[] files = {file,null};
+
+        rom.setFiles(files);
+        rom.setName(file.getName());
+        rom.setReleaseDate("");
+        rom.setSystem(selectedSystem.getEnumName());
+
+        DirectoryService.saveRom(rom);
+        updateSystemUI(selectedRom);
+
+        return rom;
+    }
+
+    public void setSelectedRom(Rom inputRom) {
+        this.selectedRom = inputRom;
+    }
+
+
 
 }

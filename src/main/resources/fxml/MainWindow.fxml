@@ -127,20 +127,21 @@
                 
             </cellFactory>
           </ListView>
-          <Button fx:id="addRomButton" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="116.0">
+          <Button fx:id="addRomButton" onMouseClicked="#handleAddRomClick" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="116.0">
             <graphic>
               <FontIcon iconColor="e3e4fc" iconLiteral="far-plus-square" iconSize="12" />
             </graphic>
             <text> ADD ROM</text>
           </Button>
           <AnchorPane fx:id="romListHover" minHeight="${romPane.height}" minWidth="${romPane.width}" prefHeight="${romPane.height}" prefWidth="${romPane.width}">
-                     <children>
-                        <Label fx:id="romListHoverLabel" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="226.0">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children></AnchorPane>
+            <children>
+              <Label fx:id="romListHoverLabel" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="226.0">
+                  <font>
+                    <Font size="24.0" />
+                  </font>
+              </Label>
+            </children>
+          </AnchorPane>
         </children>
       </AnchorPane>
         <AnchorPane fx:id="infoPane" minWidth="316.0" prefHeight="555.0" prefWidth="353.0" styleClass="root">

@@ -589,7 +589,9 @@ public class RomActionWizard {
 
     @FXML
     private void saveImage(){
-        if(finalImagePreviewPanel.saveImage()){   
+        selectedRom = finalImagePreviewPanel.saveImage();
+        if(selectedRom != null){   
+            parentController.setSelectedRom(selectedRom);
             Stage stage = (Stage) wizardPane.getScene().getWindow();
             stage.close();
         }
