@@ -218,6 +218,7 @@ public class MainWindowController {
         // Select first item and populate
         if (!systemList.isEmpty()) {
             systemListView.getSelectionModel().selectFirst();
+            systemListView.scrollTo(systemListView.getSelectionModel().getSelectedItem());
             handleSystemListViewClick(null);
             setupDragAndDrop();
         }
@@ -261,6 +262,7 @@ public class MainWindowController {
         // Select first item and populate
         if (!systemList.isEmpty()) {
             systemListView.getSelectionModel().select(selectedItem);
+            systemListView.scrollTo(systemListView.getSelectionModel().getSelectedItem());
             handleSystemListViewClick(null);
             updateRomUI(rom);
             setupDragAndDrop();
@@ -298,6 +300,7 @@ public class MainWindowController {
         }
     
         // Update the ROM preview and set up drag and drop
+        romListView.scrollTo(romListView.getSelectionModel().getSelectedItem());
         updateRomPreview(romListView.getSelectionModel().getSelectedItem());
         setupDragAndDrop();
         handleRomListViewClick(null);
@@ -377,7 +380,7 @@ public class MainWindowController {
 
         // Update selectedRom whenever a new Rom is clicked
         selectedRom = romListView.getSelectionModel().getSelectedItem();
-
+        romListView.scrollTo(romListView.getSelectionModel().getSelectedItem());
         updateRomPreview(selectedRom);
 
         if (event != null && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
@@ -394,6 +397,7 @@ public class MainWindowController {
 
             // Update selectedRom whenever a new Rom is selected via key press
             selectedRom = romListView.getSelectionModel().getSelectedItem();
+            romListView.scrollTo(romListView.getSelectionModel().getSelectedItem());
 
             updateRomPreview(selectedRom);
 
@@ -438,6 +442,7 @@ public class MainWindowController {
         }else{
             imagePreview.setImage(ImageService.convertToFxImage(rom.getImageAsBufferedImage()));
         }
+        
     }
 
     /*
