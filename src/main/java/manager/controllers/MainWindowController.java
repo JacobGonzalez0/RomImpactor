@@ -702,8 +702,7 @@ public class MainWindowController {
         rom.setReleaseDate("");
         rom.setSystem(selectedSystem.getEnumName());
 
-        DirectoryService.saveRom(rom);
-        updateSystemUI(selectedRom);
+        updateSystemUI(DirectoryService.saveRom(rom));
 
         return rom;
     }
