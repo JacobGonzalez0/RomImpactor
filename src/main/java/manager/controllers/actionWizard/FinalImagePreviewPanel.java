@@ -80,7 +80,18 @@ public class FinalImagePreviewPanel{
             );
 
             File[] files = selectedRom.getFiles();
-            files[1] = imageFile;
+
+            if (files.length == 1) {
+                // If yes, create a new array of size 2 and copy the original file to the first position
+                File[] updatedFiles = new File[2];
+                updatedFiles[0] = files[0];
+                updatedFiles[1] = imageFile;
+                files = updatedFiles;
+            } else {
+                // If the files array has more than one element, replace the second element
+                files[1] = imageFile;
+            }
+            
             selectedRom.setFiles(files);
 
             return selectedRom;

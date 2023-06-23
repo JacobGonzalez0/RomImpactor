@@ -100,8 +100,6 @@ public class RomActionWizard {
 
         localImageSelect.setToggleGroup(operatingModeSelection);
         onlineImageSearch.setToggleGroup(operatingModeSelection);
-        localRomPatcher.setToggleGroup(operatingModeSelection);
-        onlineRomPatcher.setToggleGroup(operatingModeSelection);
 
        
         operatingModeSelection.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
