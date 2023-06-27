@@ -18,6 +18,7 @@ src: url('../fonts/Roboto-Bold.ttf');
 *{
     -fx-background-primary: #0b192f;
     -fx-background-secondary: #182a46;
+    -fx-background-selected: #040912;
     -fx-primary-button: #af019e;
     -fx-primary-buttonaccent: #d41e86;
     -fx-secondary-button: #3b7cf6;
@@ -262,13 +263,16 @@ src: url('../fonts/Roboto-Bold.ttf');
 	-fx-background-color: -fx-grey-color, #1b2755;
     -fx-text-fill: #e3e4fc;
     -fx-font-weight: bold;
-    -fx-padding: 10px;
-    -fx-background-color: #0e192b;
-	-fx-background-radius: 5;
+    -fx-background-color: -fx-background-secondary;
+	-fx-background-radius: 3;
 }
 .text-field:focused {
-	-fx-background-color: -fx-primary-color, white;
+	-fx-background-color: -fx-background-selected;
 }
+
+/* 
+Combo Boxes
+*/
 
 /* // Background color of the whole context menu */
 .choice-box .context-menu { -fx-background-color: -fx-background-secondary; }
@@ -287,3 +291,33 @@ src: url('../fonts/Roboto-Bold.ttf');
 
 /* // Selected item text color on the control itself */
 .choice-box > .label { -fx-text-fill: white; }
+
+.combo-box {
+    -fx-background-color: -fx-background-secondary; /* Custom background color (blue) */
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent; /* Remove button background color */
+    -fx-background-insets: 0; /* Remove button background insets */
+    -fx-padding: 4px; /* Remove button padding */
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: white; /* Custom arrow color */
+}
+
+.combo-box .text-field {
+    -fx-background-color: transparent; /* Remove text field background color */
+    -fx-border-color: transparent; /* Remove text field border color */
+    -fx-padding: 0; /* Remove text field padding */
+    -fx-text-fill: #e3e4fc; /* Custom text color */
+}
+
+.combo-box .list-view {
+    -fx-background-color: -fx-background-secondary; /* Custom dropdown background color */
+    -fx-text-fill: white; /* Custom dropdown text color */
+}
+
+.combo-box .list-view .list-cell {
+    -fx-background-radius: 3;
+}
