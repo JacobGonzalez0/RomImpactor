@@ -2,6 +2,7 @@ package manager.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
@@ -56,9 +57,9 @@ public class MainWindowController {
     @FXML
     private Button closeButton, maximizeButton, minimizeButton;
     @FXML
-    private Button changeDirButton, addRomButton, localImageButton, onlineSearchButton;
+    private Button changeDirButton, impactButton, localImageButton;
     @FXML
-    private Label directoryLabel, leftStatus, rightStatus, romInfoTitle, romInfoSubTitle, romListHoverLabel;
+    private Label directoryLabel, leftStatus, romInfoTitle, romInfoSubTitle, romListHoverLabel;
     @FXML
     private ListView<Rom> romListView;
     @FXML
@@ -66,11 +67,9 @@ public class MainWindowController {
     @FXML
     private ImageView imagePreview;
     @FXML
-    private HBox topBar;
-    @FXML
     private Pane romInfo;
     @FXML
-    private AnchorPane romListHover, romPane;
+    private AnchorPane romListHover, romPane, topBar;
     
     private Stage primaryStage;
 
@@ -124,6 +123,10 @@ public class MainWindowController {
 
         //Hide rom hover
         romListHover.setVisible(false);
+
+        Label windowTitle = new Label("Rom Impactor");
+        windowTitle.setLayoutX(topBar.getWidth() / 2);
+        windowTitle.setLayoutY(4);
 
     }
 
@@ -315,12 +318,9 @@ public class MainWindowController {
         closeMenuItem.setText(bundle.getString("closeMenuItem"));
 
         changeDirButton.setText(bundle.getString("changeDirButton"));
-        addRomButton.setText(bundle.getString("addRomButton"));
-        localImageButton.setText(bundle.getString("localImageButton"));
-        onlineSearchButton.setText(bundle.getString("searchOnlineButton"));
+        impactButton.setText(bundle.getString("impactButton"));
 
         leftStatus.setText(bundle.getString("leftStatusLabel"));
-        rightStatus.setText(bundle.getString("rightStatusLabel"));
 
     }
 
@@ -406,7 +406,7 @@ public class MainWindowController {
 
     @FXML
     public void handleAddRomClick(MouseEvent event){
-        Stage stage = (Stage) addRomButton.getScene().getWindow(); // Replace 'yourNode' with the appropriate reference to your UI node
+        Stage stage = (Stage) impactButton.getScene().getWindow(); // Replace 'yourNode' with the appropriate reference to your UI node
 
         FileChooser fileChooser = new FileChooser();
     
@@ -450,7 +450,7 @@ public class MainWindowController {
      */
     
     @FXML
-    public void handleMinimizeButton() {
+    public void handleMinimizeButton(ActionEvent event) {
         primaryStage.setIconified(true);  // Minimize the window
     }
 
@@ -460,7 +460,7 @@ public class MainWindowController {
     }
 
     @FXML
-    public void handleCloseButton() {
+    public void handleCloseButton(ActionEvent event) {
         primaryStage.close();  // Close the window
     }
 

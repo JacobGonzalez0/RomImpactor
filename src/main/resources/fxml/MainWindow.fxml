@@ -41,7 +41,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -53,49 +52,36 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@/styles/mainWindow.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.MainWindowController">
+<VBox minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.MainWindowController">
   <children>
-      <HBox id="topBar" fx:id="topBar" prefHeight="33.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
-        <children>
-          <AnchorPane id="menuContainer" minHeight="0.0" minWidth="0.0" prefHeight="30.0" prefWidth="115.0" SplitPane.resizableWithParent="false">
-               <children>
-                <MenuBar layoutY="8.0" prefHeight="25.0" prefWidth="815.0">
-                  <menus>
-                    <Menu fx:id="topMenu" mnemonicParsing="false" text="Menu">
-                      <items>
-                              <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" onAction="#handleOptionsMenuItem" text="Options" />
-                        <MenuItem mnemonicParsing="false" text="About" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleCloseMenuItem" text="Close" />
-                      </items>
-                    </Menu>
-                  </menus>
-                </MenuBar>
-               </children>
-            </AnchorPane>
-          <AnchorPane id="WindowActionButtons" minHeight="0.0" minWidth="0.0" prefHeight="12.0" prefWidth="802.0">
-               <children>
-                  <ButtonBar layoutX="360.0" layoutY="-6.0" prefHeight="40.0" prefWidth="200.0" />
-                <Button fx:id="minimizeButton" layoutX="738.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleMinimizeButton" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-button">
-                  <graphic>
-                    <FontIcon iconColor="#dee6f1c7" iconLiteral="fas-window-minimize" iconSize="10" />
-                  </graphic>
-                </Button>
-                <Button fx:id="closeButton" layoutX="768.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="20.0" prefWidth="20.0" styleClass="close-button">
-                  <graphic>
-                    <FontIcon iconColor="#dee6f1c7" iconLiteral="fas-window-close" iconSize="10" />
-                  </graphic>
-                </Button>
-               </children>
-            </AnchorPane>
-        </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <VBox.margin>
-            <Insets top="-8.0" />
-         </VBox.margin>
-      </HBox>
+      <AnchorPane fx:id="topBar" prefHeight="23.0" prefWidth="600.0" styleClass="topBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <children>
+              <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <menus>
+                <Menu fx:id="topMenu" mnemonicParsing="false" text="Menu">
+                  <items>
+                    <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" onAction="#handleOptionsMenuItem" />
+                  <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="Close" onAction="#handleCloseMenuItem" />
+                  </items>
+                </Menu>
+                </menus>
+              </MenuBar>
+              <ButtonBar buttonMinWidth="20.0" layoutX="484.0" prefHeight="25.0" prefWidth="116.0" styleClass="windowButtons" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <buttons>
+                  <Button  prefHeight="18.0" prefWidth="18.0" styleClass="minimize-button" onAction="#handleMinimizeButton" />
+                  <Button  prefHeight="18.0" prefWidth="18.0" styleClass="close-button" onAction="#handleCloseButton"  />
+                </buttons>
+                <opaqueInsets>
+                  <Insets />
+                </opaqueInsets>
+                <padding>
+                  <Insets right="3.0" />
+                </padding>
+              </ButtonBar>
+              <Label fx:id="windowTitle" layoutY="4" AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="4.0" />
+          </children>
+      </AnchorPane>
     <SplitPane dividerPositions="0.2505567928730512, 0.60913140311804" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
         <AnchorPane fx:id="systemPane" minWidth="240.0" styleClass="root">
@@ -127,7 +113,7 @@
                 
             </cellFactory>
           </ListView>
-          <Button fx:id="addRomButton" onMouseClicked="#handleAddRomClick" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="116.0">
+          <Button fx:id="addRomButton" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" onMouseClicked="#handleAddRomClick" prefHeight="35.0" prefWidth="116.0">
             <graphic>
               <FontIcon iconColor="e3e4fc" iconLiteral="far-plus-square" iconSize="12" />
             </graphic>
@@ -147,7 +133,7 @@
         <AnchorPane fx:id="infoPane" minWidth="316.0" prefHeight="555.0" prefWidth="353.0" styleClass="root">
           <children>
             <Label alignment="CENTER" font="$x1" layoutX="15.0" layoutY="6.0" style="&#10;" styleClass="title" text="Details" textAlignment="CENTER" textFill="$x2" wrapText="false" />
-                  <ImageView fx:id="imagePreview" fitHeight="380.0" fitWidth="316.0" layoutX="15.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imagePreview" fitHeight="316.0" fitWidth="316.0" layoutX="15.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/noselection.png" />
                      </image>
@@ -161,17 +147,11 @@
                           
                       </AnchorPane>
                   </Pane>
-                  <Button fx:id="localImageButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#handlelocalImageButton" prefHeight="35.0" prefWidth="164.0">  
+                  <Button fx:id="impactButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#handlelocalImageButton" prefHeight="35.0" prefWidth="158.0">  
                     <graphic>
                      <FontIcon iconColor="e3e4fc" iconLiteral="fas-plus" iconSize="12" />
                     </graphic>
-                    <text> LOCAL IMAGE</text>
-                  </Button>
-                  <Button fx:id="onlineSearchButton" layoutX="176.0" layoutY="488.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="164.0" styleClass="secondaryButton">
-                    <graphic>
-                     <FontIcon iconColor="e3e4fc" iconLiteral="fas-search" iconSize="12" />
-                    </graphic>
-                    <text> SEARCH ONLINE</text>
+                    <text>IMPACT ROM</text>
                   </Button>
           </children>
         </AnchorPane>
@@ -188,7 +168,6 @@
           </textFill>
         </Label>
         <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label fx:id="rightStatus" font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

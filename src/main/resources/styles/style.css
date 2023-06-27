@@ -15,6 +15,16 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-text-fill: #e3e4fc;
 }
 
+*{
+    -fx-background-primary: #0b192f;
+    -fx-background-secondary: #182a46;
+    -fx-primary-button: #af019e;
+    -fx-primary-buttonaccent: #d41e86;
+    -fx-secondary-button: #3b7cf6;
+    -fx-secondary-buttonaccent: #3ab8f9;
+    -fx-focus: #4d8bf1;
+}
+
 .imageView,
 .imagePane,
 .vbox,
@@ -23,17 +33,7 @@ src: url('../fonts/Roboto-Bold.ttf');
 .default-pane,
 .split-pane,
 .menu-bar {
--fx-background-color: #0b192f;
-}
-
-.toolbar,
-#WindowActionButtons {
--fx-background-color: #182a46;
--fx-base: #182a46;
-}
-
-#WindowActionButtons{
-    -fx-background-color: #0b192f;
+-fx-background-color: -fx-background-primary;
 }
 
 .hbox {
@@ -42,7 +42,7 @@ src: url('../fonts/Roboto-Bold.ttf');
 
 .button,
 .secondaryButton {
--fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #845db1, #6A0DAD);
+-fx-background-color: linear-gradient(from 0% 50% to 100% 50%, -fx-primary-button, -fx-primary-buttonaccent);
 -fx-background-radius: 20;
 -fx-background-insets: 0;
 -fx-transition-duration: 0.3s;
@@ -51,11 +51,13 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-font-size: 12pt;
 -fx-font-weight: bold;
 -fx-text-transform: uppercase;
+-fx-effect: innershadow(gaussian, #00000080, 6, 0.5, 0, 0);
 }
 
 .button:hover,
 .secondaryButton:hover {
--fx-background-color: linear-gradient(from 0% 50% to 100% 50%, #3d0e66, #24083d);
+-fx-background-color: linear-gradient(from 0% 50% to 100% 50%, -fx-secondary-button, -fx-secondary-buttonaccent);
+-fx-effect: innershadow(gaussian, #00000080, 12, 0.5, 0, 0);
 -fx-transition-timing-function: linear;
 }
 
@@ -78,15 +80,25 @@ src: url('../fonts/Roboto-Bold.ttf');
 }
 
 .minimize-button {
--fx-background-color: #883cdf;
+-fx-background-color: #FFBD44;
+-fx-effect: innershadow(gaussian, #00000080, 3, 0.5, 0, 0);
+-fx-padding: 0;
 }
 
-.maximize-button {
--fx-background-color: #ff6d4f;
+.minimize-button:hover {
+-fx-background-color: #efaf39;
+-fx-effect: innershadow(gaussian, #00000080, 7, 0.5, 0, 0);
 }
 
 .close-button {
--fx-background-color: #f926ba;
+-fx-background-color: #c42b1c;
+-fx-effect: innershadow(gaussian, #00000080, 3, 0.5, 0, 0);
+-fx-padding: 0;
+}
+
+.close-button:hover {
+-fx-background-color: #b32316;
+-fx-effect: innershadow(gaussian, #00000080, 7, 0.5, 0, 0);
 }
 
 .title,
@@ -96,13 +108,9 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-font-weight: bold;
 }
 
-.accent {
--fx-background-color: #b361fa;
-}
-
 .list-view,
 .list-cell {
--fx-background-color: #182a46;
+-fx-background-color: -fx-background-secondary;
 -fx-background-radius: 10;
 -fx-background-insets: 0;
 }
@@ -164,10 +172,7 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-border-width: 2pt;
 }
 
-.borderBox .label,
-.borderBoxDotted .label,
-.romInfoTitle,
-.label {
+.boldLabel {
 -fx-font-family: 'Roboto-bold';
 -fx-font-weight: bold;
 -fx-font-size: 16pt;
@@ -198,7 +203,7 @@ src: url('../fonts/Roboto-Bold.ttf');
 }
 
 .list-cell:focused {
--fx-background-color: #4d8bf1;
+-fx-background-color: -fx-focus;
 }
 
 .romInfoTitle {
@@ -212,11 +217,23 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-font-size: 10pt;
 }
 
+.split-pane {
+    -fx-padding: 0;
+    -fx-margin: 0;
+    -fx-border-width: 0;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+.separator {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
 .label {
--fx-text-fill: #e3e4fc;
--fx-font-family: 'Roboto-bold';
--fx-font-weight: bold;
--fx-font-size: 12pt;
 -fx-fill: rgb(255, 255, 255);
 -fx-stroke: rgb(0, 0, 0);
 -fx-stroke-width: .2px;
@@ -240,14 +257,6 @@ src: url('../fonts/Roboto-Bold.ttf');
     -fx-font-size: 11px; /* Make the text size 12 points */
 }
 
-* {
-	-fx-primary-color: #007acc;
-	-fx-secondary-color: #4B6EAF;
-	-fx-grey-color: #b9b9b9;
-    -fx-font-family: 'Roboto';
-	-fx-focus-color: -fx-secondary-color;
-}
-
 .text-field {
 	-fx-accent: -fx-primary-color;
 	-fx-background-color: -fx-grey-color, #1b2755;
@@ -262,9 +271,9 @@ src: url('../fonts/Roboto-Bold.ttf');
 }
 
 /* // Background color of the whole context menu */
-.choice-box .context-menu { -fx-background-color: #0e192b; }
+.choice-box .context-menu { -fx-background-color: -fx-background-secondary; }
 /* // Focused item background color in the list */
-.choice-box .menu-item:focused { -fx-background-color: #6A0DAD; }
+.choice-box .menu-item:focused { -fx-background-color: -fx-focus; }
 /* // Text color of non-focused items in the list */
 .choice-box .menu-item > .label { -fx-text-fill: #e3e4fc; }
 /* // Text color of focused item in the list */
@@ -272,8 +281,8 @@ src: url('../fonts/Roboto-Bold.ttf');
 
 /* // Background color of the control itself */
 .choice-box {
-  -fx-background-color: #0e192b;
-  -fx-mark-color: #6A0DAD;  /* arrow color */
+  -fx-background-color: -fx-background-secondary;
+  -fx-mark-color: -fx-primary-button;  /* arrow color */
 }
 
 /* // Selected item text color on the control itself */
