@@ -65,14 +65,8 @@
         <AnchorPane fx:id="WindowActionButtons" id="WindowActionButtons" layoutX="0" layoutY="0" minHeight="32.0" minWidth="0.0" prefHeight="32.0" prefWidth="${wizardPane.width}">
             <children>
             <Button styleClass="minimize-button" fx:id="minimizeButton" onAction="#handleMinimizeButton" AnchorPane.rightAnchor="44.0" layoutX="738.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
-                <graphic>
-                <FontIcon  iconLiteral="fas-window-minimize" iconSize="10" iconColor="#dee6f1c7"/>
-                </graphic>
             </Button>
             <Button styleClass="close-button" fx:id="closeButton" onAction="#handleCloseButton" AnchorPane.rightAnchor="14.0" layoutX="768.0" layoutY="11.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
-                <graphic>
-                <FontIcon iconLiteral="fas-window-close" iconSize="10" iconColor="#dee6f1c7"/>
-                </graphic>
             </Button>
             </children>
         </AnchorPane> 

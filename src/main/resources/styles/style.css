@@ -321,3 +321,73 @@ Combo Boxes
 .combo-box .list-view .list-cell {
     -fx-background-radius: 3;
 }
+
+.menu-bar {
+    -fx-background-color: transparent; /* Remove menu bar background color */
+    -fx-border-color: transparent; /* Remove menu bar border color */
+    -fx-padding: 0; /* Remove menu bar padding */
+    -fx-border-width: 0; /* Remove menu bar border */
+
+}
+
+
+.menu-item {
+    -fx-background-color: -fx-background-secondary; /* Custom background color for menu items */
+    -fx-border-color: transparent; /* Remove menu item border color */
+    -fx-text-fill: #e3e4fc; /* Custom text color for menu items */
+    -fx-padding: 5 10; /* Add padding to menu items if needed */
+}
+
+.menu-item:hover {
+    -fx-background-color: -fx-focus; /* Custom background color for selected menu item */
+}
+
+.menu-item:selected {
+    -fx-background-color: #1976D2; /* Custom background color for selected menu item */
+    -fx-border-color: transparent; /* Remove selected menu item border color */
+    -fx-text-fill: #e3e4fc; /* Custom text color for selected menu item */
+    -fx-padding: 5 10; /* Add padding to selected menu items if needed */
+}
+
+.menu-item .label {
+    -fx-background-color: transparent; /* Remove label background color */
+}
+
+/* Scrollbar Track */
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Scrollbar Thumb */
+.scroll-bar:vertical .thumb {
+    -fx-background-radius: 10px;
+    -fx-background-color: linear-gradient(from 0px 0px to 0px 100%, rgb(122, 153, 217) 44%, rgb(73, 125, 189) 72%, rgb(28, 58, 148) 86%);
+    -fx-border-color: transparent;
+}
+
+/* Scrollbar Background */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-width: 10px;
+}
+
+/* Scrollbar Decrease/Increase Button */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+/* Move Arrow 2 Pixels to the Left */
+.scroll-bar:vertical .increment-button > .increment-arrow,
+.scroll-bar:vertical .decrement-button > .decrement-arrow {
+    -fx-translate-x: -2px;
+}
+
+/* Scrollbar Thumb Hover/Focused Styles */
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:vertical .thumb:focused {
+    -fx-background-color: linear-gradient(from 0px 0px to 0px 100%, rgb(102, 133, 197) 44%, rgb(45, 92, 169) 72%, rgb(0, 31, 133) 86%);
+}
