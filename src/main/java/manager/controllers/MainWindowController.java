@@ -31,6 +31,7 @@ import manager.elements.SystemListCell;
 import manager.enums.Language;
 import manager.enums.devices.DeviceSupport;
 import manager.enums.devices.FunkeyDevice;
+import manager.enums.devices.PowKiddyV90Device;
 import manager.models.General;
 import manager.models.Rom;
 import manager.models.Settings;
@@ -131,13 +132,16 @@ public class MainWindowController {
     }
 
     private List<String> getAllowedExtentions(){
-        DeviceSupport device = DeviceSupport.valueOf(settings.getGeneral().getDeviceProfile());
+        DeviceSupport device = DeviceSupport.getByName(settings.getGeneral().getDeviceProfile());
 
         List<String> allowedExtensions;
         SystemListItem system = systemListView.getSelectionModel().getSelectedItem();
         switch(device){
             case FUNKEY_S:
                 allowedExtensions = FunkeyDevice.getFileExtensionsByFolderPath(system.getSystemName());
+                break;
+            case POWKIDDY_V90:
+                allowedExtensions = PowKiddyV90Device.getFileExtensionsByFolderPath(system.getSystemName());
                 break;
             default:
                 allowedExtensions = new ArrayList<>();

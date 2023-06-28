@@ -1,7 +1,8 @@
 package manager.enums.devices;
 
 public enum DeviceSupport {
-    FUNKEY_S("Funkey S");
+    FUNKEY_S("Funkey S"),
+    POWKIDDY_V90("PowKiddy v90");
 
     private final String deviceName;
 
