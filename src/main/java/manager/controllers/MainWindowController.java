@@ -535,14 +535,14 @@ public class MainWindowController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/actionWizard/RomActionWizard.fxml"));
             Parent root = loader.load();
 
+            int minWindowWidth = 800;
+            int minWindowHeight = 528;
+
             // Create a custom shape for the stage
-            Rectangle windowShape = new Rectangle(700, 528);
+            Rectangle windowShape = new Rectangle(minWindowWidth, minWindowHeight);
             windowShape.setArcWidth(20);
             windowShape.setArcHeight(20);
             root.setClip(windowShape);
-
-            int maxWindowWidth = 700;
-            int maxWindowHeight = 528;
 
             // Create a new stage for the options window
             Stage localImageStage = new Stage();
@@ -589,7 +589,7 @@ public class MainWindowController {
                     double newWidth = localImageStage.getWidth() - deltaX;
                     double newHeight = localImageStage.getHeight() - deltaY;
             
-                    if (newWidth > maxWindowWidth  && newHeight > 0) {
+                    if (newWidth > minWindowWidth  && newHeight > 0) {
                         localImageStage.setX(event.getScreenX());
                         localImageStage.setWidth(newWidth);
                         localImageStage.setY(event.getScreenY());
@@ -602,7 +602,7 @@ public class MainWindowController {
                     double newWidth = localImageStage.getWidth() + deltaX;
                     double newHeight = localImageStage.getHeight() - deltaY;
             
-                    if (newWidth > maxWindowWidth && newHeight > maxWindowHeight) {
+                    if (newWidth > minWindowWidth && newHeight > minWindowHeight) {
                         localImageStage.setY(event.getScreenY());
                         localImageStage.setWidth(newWidth);
                         localImageStage.setHeight(newHeight);
@@ -614,7 +614,7 @@ public class MainWindowController {
                     double newWidth = localImageStage.getWidth() - deltaX;
                     double newHeight = localImageStage.getHeight() + deltaY;
             
-                    if (newWidth > maxWindowWidth && newHeight > maxWindowHeight) {
+                    if (newWidth > minWindowWidth && newHeight > minWindowHeight) {
                         localImageStage.setX(event.getScreenX());
                         localImageStage.setWidth(newWidth);
                         localImageStage.setHeight(newHeight);
@@ -626,7 +626,7 @@ public class MainWindowController {
                     double newWidth = localImageStage.getWidth() + deltaX;
                     double newHeight = localImageStage.getHeight() + deltaY;
             
-                    if (newWidth > maxWindowWidth && newHeight > maxWindowHeight) {
+                    if (newWidth > minWindowWidth && newHeight > minWindowHeight) {
                         localImageStage.setWidth(newWidth);
                         localImageStage.setHeight(newHeight);
                     }
@@ -635,7 +635,7 @@ public class MainWindowController {
                     double deltaY = event.getScreenY() - localImageStage.getY();
                     double newHeight = localImageStage.getHeight() - deltaY;
             
-                    if (newHeight > maxWindowHeight) {
+                    if (newHeight > minWindowHeight) {
                         localImageStage.setY(event.getScreenY());
                         localImageStage.setHeight(newHeight);
                     }
@@ -644,7 +644,7 @@ public class MainWindowController {
                     double deltaY = event.getScreenY() - localImageStage.getY() - localImageStage.getHeight();
                     double newHeight = localImageStage.getHeight() + deltaY;
             
-                    if (newHeight > maxWindowHeight) {
+                    if (newHeight > minWindowHeight) {
                         localImageStage.setHeight(newHeight);
                     }
                 } else if (scene.getCursor() == Cursor.W_RESIZE) {
@@ -652,7 +652,7 @@ public class MainWindowController {
                     double deltaX = event.getScreenX() - localImageStage.getX();
                     double newWidth = localImageStage.getWidth() - deltaX;
             
-                    if (newWidth > maxWindowWidth) {
+                    if (newWidth > minWindowWidth) {
                         localImageStage.setX(event.getScreenX());
                         localImageStage.setWidth(newWidth);
                     }
@@ -661,7 +661,7 @@ public class MainWindowController {
                     double deltaX = event.getScreenX() - localImageStage.getX() - localImageStage.getWidth();
                     double newWidth = localImageStage.getWidth() + deltaX;
             
-                    if (newWidth > maxWindowWidth) {
+                    if (newWidth > minWindowWidth) {
                         localImageStage.setWidth(newWidth);
                     }
                 }

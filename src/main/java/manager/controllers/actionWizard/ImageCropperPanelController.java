@@ -101,6 +101,11 @@ public class ImageCropperPanelController {
     }
 
     public BufferedImage cropImage() {
+
+        if (rubberBandSelection.getRectangle().getWidth() == 0 || rubberBandSelection.getRectangle().getHeight() == 0) {
+            selectAll();
+        }
+        
         Image croppedImage = rubberBandSelection.cropImage(imageView.getImage(), rubberBandSelection.getRectangle());
     
         // Use the convertToBufferedImage method to convert the WritableImage to BufferedImage

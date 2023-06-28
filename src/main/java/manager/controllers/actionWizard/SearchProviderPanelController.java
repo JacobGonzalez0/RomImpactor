@@ -41,7 +41,7 @@ public class SearchProviderPanelController {
         
         ObservableList<SearchProvider> options = FXCollections.observableArrayList(SearchProvider.values());
     
-        choiceBox.setItems(options);
+        choiceBox.setItems(options);    
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 if(newValue == SearchProvider.IGDB){
@@ -54,6 +54,7 @@ public class SearchProviderPanelController {
                 description.setText(newValue.getDescription());
             }
         });
+        choiceBox.getSelectionModel().selectFirst();
     }
 
     public void setParentController(RomActionWizard controller){

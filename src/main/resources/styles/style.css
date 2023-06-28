@@ -109,8 +109,14 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-font-weight: bold;
 }
 
+.borderBoxDotted {
+-fx-border-style: dotted;
+}
+
 .list-view,
-.list-cell {
+.list-cell,
+.borderBox,
+.borderBoxDotted {
 -fx-background-color: -fx-background-secondary;
 -fx-background-radius: 10;
 -fx-background-insets: 0;
@@ -166,22 +172,13 @@ src: url('../fonts/Roboto-Bold.ttf');
 -fx-font-weight: bold;
 }
 
-.borderBox,
-.borderBoxDotted {
--fx-background-color: #182a46;
--fx-border-color: #091220;
--fx-border-width: 2pt;
-}
-
 .boldLabel {
 -fx-font-family: 'Roboto-bold';
 -fx-font-weight: bold;
 -fx-font-size: 16pt;
 }
 
-.borderBoxDotted {
--fx-border-style: dotted;
-}
+
 
 .fontIcon {
 -fx-icon-size: 48;
@@ -266,10 +263,25 @@ src: url('../fonts/Roboto-Bold.ttf');
     -fx-background-color: -fx-background-secondary;
 	-fx-background-radius: 3;
 }
+.borderBox .text-field:focused {
+	-fx-background-color: -fx-background-selected;
+}
+
+.borderBox .text-field {
+	-fx-accent: -fx-background-primary;
+	-fx-background-color: -fx-background-primary;
+    -fx-text-fill: #e3e4fc;
+    -fx-font-weight: bold;
+	-fx-background-radius: 3;
+}
 .text-field:focused {
 	-fx-background-color: -fx-background-selected;
 }
 
+.title{
+    -fx-font-size: 16pt;
+    -fx-font-weight: bold;
+}
 /* 
 Combo Boxes
 */
@@ -285,7 +297,7 @@ Combo Boxes
 
 /* // Background color of the control itself */
 .choice-box {
-  -fx-background-color: -fx-background-secondary;
+  -fx-background-color: -fx-background-primary;
   -fx-mark-color: -fx-primary-button;  /* arrow color */
 }
 
