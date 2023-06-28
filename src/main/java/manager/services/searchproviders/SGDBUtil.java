@@ -32,7 +32,7 @@ import okhttp3.Response;
 
 public class SGDBUtil implements SearchProvider {
     private String API_KEY;
-    private int API_LIMIT = 10;
+    private int API_LIMIT = 6;
     private final String API_URL = "https://www.steamgriddb.com/api/v2/search/autocomplete/";
     private final String IMAGE_URL = "https://www.steamgriddb.com/api/v2/grids/game/";
     
@@ -62,7 +62,7 @@ public class SGDBUtil implements SearchProvider {
     
             List<GameSearchResult> results = new ArrayList<>();
             for (int i = 0; i < gamesArray.length(); i++) {
-                if(API_LIMIT > i){
+                if(API_LIMIT < i){
                     continue;
                 }
                 JSONObject gameObj = gamesArray.getJSONObject(i);
@@ -118,7 +118,7 @@ public class SGDBUtil implements SearchProvider {
     
             List<CoverSearchResult> results = new ArrayList<>();
             for (int i = 0; i < dataArr.length(); i++) {
-                if(API_LIMIT > i){
+                if(API_LIMIT < i){
                     continue;
                 }
                 JSONObject dataObj = dataArr.getJSONObject(i);
