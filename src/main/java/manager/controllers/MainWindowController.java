@@ -5,7 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -18,8 +20,10 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -54,13 +58,16 @@ import java.util.ResourceBundle;
 
 public class MainWindowController {
     @FXML
-    private MenuItem optionsMenuItem, closeMenuItem;
+    private Menu topMenu;
+    @FXML
+    private MenuItem optionsMenuItem, closeMenuItem, aboutMenuItem;
     @FXML
     private Button closeButton, maximizeButton, minimizeButton;
     @FXML
-    private Button changeDirButton, impactButton, localImageButton;
+    private Button changeDirButton, impactButton, addRomButton;
     @FXML
-    private Label directoryLabel, leftStatus, romInfoTitle, romInfoSubTitle, romListHoverLabel;
+    private Label directoryLabel, leftStatus, romInfoTitle, romInfoSubTitle, romListHoverLabel,
+                  detailsLabel, currentDirectoryLabel, systemSelectLabel, windowTitle, romListLabel;
     @FXML
     private ListView<Rom> romListView;
     @FXML
@@ -320,12 +327,34 @@ public class MainWindowController {
         // Retrieve translations for each UI element from the resource bundle
         optionsMenuItem.setText(bundle.getString("optionsMenuItem"));
         closeMenuItem.setText(bundle.getString("closeMenuItem"));
-
+        topMenu.setText(bundle.getString("topMenu"));
+        aboutMenuItem.setText(bundle.getString("aboutMenuItem"));
+        addRomButton.setText(bundle.getString("addRomButton"));
         changeDirButton.setText(bundle.getString("changeDirButton"));
+        
+
         impactButton.setText(bundle.getString("impactButton"));
 
         leftStatus.setText(bundle.getString("leftStatusLabel"));
 
+        windowTitle.setText(bundle.getString("windowTitle"));
+        //make windowTitle layoutX half of 900 minus how long the text makes it to center it
+        adjustLayoutXToFitText(windowTitle, 900);
+
+        currentDirectoryLabel.setText(bundle.getString("currentDirectoryLabel"));
+        systemSelectLabel.setText(bundle.getString("systemSelectLabel"));
+        detailsLabel.setText(bundle.getString("detailsLabel"));
+        romListLabel.setText(bundle.getString("romListLabel"));
+    }
+
+    private void adjustLayoutXToFitText(Label labelElement, double containerWidth) {
+        Text tempText = new Text(labelElement.getText());
+        tempText.setFont(labelElement.getFont());
+    
+        double textWidth = tempText.getLayoutBounds().getWidth();
+    
+        // Set layoutX to half of container width minus half of text width
+        labelElement.setLayoutX((containerWidth - textWidth) / 2);
     }
 
     private void handleMousePressed(MouseEvent event) {
@@ -502,6 +531,12 @@ public class MainWindowController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void handleAboutMenuItem(MouseEvent event) {
+
+       // 
+   }
 
     @FXML
     public void handleChangeDirButton() {

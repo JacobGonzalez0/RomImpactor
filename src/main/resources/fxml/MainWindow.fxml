@@ -52,25 +52,25 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.MainWindowController">
+<VBox minHeight="400.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.controllers.MainWindowController">
   <children>
       <AnchorPane fx:id="topBar" prefHeight="23.0" prefWidth="600.0" styleClass="topBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <children>
               <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <menus>
                 <Menu fx:id="topMenu" mnemonicParsing="false" text="Menu">
-                  <items>
-                    <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" onAction="#handleOptionsMenuItem" />
-                  <MenuItem mnemonicParsing="false" text="About" />
-                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="Close" onAction="#handleCloseMenuItem" />
+                  <items> 
+                    <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" onAction="#handleOptionsMenuItem" text="Options" />
+                    <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#handleAboutMenuItem" text="About" />
+                    <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#handleCloseMenuItem" text="Close" />
                   </items>
                 </Menu>
                 </menus>
               </MenuBar>
               <ButtonBar buttonMinWidth="20.0" layoutX="484.0" prefHeight="25.0" prefWidth="116.0" styleClass="windowButtons" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <buttons>
-                  <Button  prefHeight="18.0" prefWidth="18.0" styleClass="minimize-button" onAction="#handleMinimizeButton" />
-                  <Button  prefHeight="18.0" prefWidth="18.0" styleClass="close-button" onAction="#handleCloseButton"  />
+                  <Button onAction="#handleMinimizeButton" prefHeight="18.0" prefWidth="18.0" styleClass="minimize-button" />
+                  <Button onAction="#handleCloseButton" prefHeight="18.0" prefWidth="18.0" styleClass="close-button" />
                 </buttons>
                 <opaqueInsets>
                   <Insets />
@@ -79,14 +79,14 @@
                   <Insets right="3.0" />
                 </padding>
               </ButtonBar>
-              <Label fx:id="windowTitle" layoutY="4" AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="4.0" />
+              <Label fx:id="windowTitle"  AnchorPane.bottomAnchor="4.0" AnchorPane.topAnchor="4.0" />
           </children>
       </AnchorPane>
     <SplitPane dividerPositions="0.2505567928730512, 0.60913140311804" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
         <AnchorPane fx:id="systemPane" minWidth="240.0" styleClass="root">
           <children>
-            <Label alignment="CENTER" layoutX="11.0" layoutY="7.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" styleClass="title" text="System Select" textAlignment="CENTER" wrapText="false">
+            <Label fx:id="systemSelectLabel" alignment="CENTER" layoutX="11.0" layoutY="7.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" styleClass="title" textAlignment="CENTER" wrapText="false">
               <font>
                 <Font size="18.0" fx:id="x1" />
               </font>
@@ -100,20 +100,20 @@
                       </cellFactory>
                   </ListView>
                   <Label fx:id="directoryLabel" layoutX="14.0" layoutY="520.0" />
-                  <Label layoutX="14.0" layoutY="491.0" text="Current Directory" />
+                  <Label fx:id="currentDirectoryLabel" layoutX="14.0" layoutY="491.0" />
                   <Separator layoutX="11.0" layoutY="507.0" opacity="0.1" prefWidth="200.0" />
-                  <Button fx:id="changeDirButton" layoutX="137.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleChangeDirButton" prefHeight="23.0" prefWidth="67.0" styleClass="smallbutton" text="CHANGE" />
+                  <Button fx:id="changeDirButton" layoutX="137.0" layoutY="516.0" mnemonicParsing="false" onAction="#handleChangeDirButton" prefHeight="23.0" prefWidth="91.0" styleClass="smallbutton" text="CHANGE" />
           </children>
         </AnchorPane>
       <AnchorPane id="Content" fx:id="romPane" minHeight="-1.0" minWidth="315.0" prefHeight="545.0" prefWidth="315.0" styleClass="root">
         <children>
-          <Label alignment="CENTER" font="$x1" layoutX="10.0" layoutY="7.0" style="&#10;" styleClass="title" text="Roms" textAlignment="CENTER" textFill="$x2" wrapText="false" />
+          <Label fx:id="romListLabel" alignment="CENTER" font="$x1" layoutX="10.0" layoutY="7.0" style="&#10;" styleClass="title" text="Roms" textAlignment="CENTER" textFill="$x2" wrapText="false" />
           <ListView fx:id="romListView" layoutX="11.0" layoutY="40.0" onKeyPressed="#handleRomListViewKeyPressed" onMouseClicked="#handleRomListViewClick" prefHeight="434.0" prefWidth="300.0">
             <cellFactory>
                 
             </cellFactory>
           </ListView>
-          <Button fx:id="addRomButton" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" onMouseClicked="#handleAddRomClick" prefHeight="35.0" prefWidth="116.0">
+          <Button fx:id="addRomButton" layoutX="10.0" layoutY="489.0" mnemonicParsing="false" onMouseClicked="#handleAddRomClick" prefHeight="35.0" prefWidth="300.0">
             <graphic>
               <FontIcon iconColor="e3e4fc" iconLiteral="far-plus-square" iconSize="12" />
             </graphic>
@@ -132,7 +132,7 @@
       </AnchorPane>
         <AnchorPane fx:id="infoPane" minWidth="316.0" prefHeight="555.0" prefWidth="353.0" styleClass="root">
           <children>
-            <Label alignment="CENTER" font="$x1" layoutX="15.0" layoutY="6.0" style="&#10;" styleClass="title" text="Details" textAlignment="CENTER" textFill="$x2" wrapText="false" />
+            <Label fx:id="detailsLabel" alignment="CENTER" font="$x1" layoutX="15.0" layoutY="6.0" style="&#10;" styleClass="title" textAlignment="CENTER" textFill="$x2" wrapText="false" />
                   <ImageView fx:id="imagePreview" fitHeight="316.0" fitWidth="316.0" layoutX="15.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/noselection.png" />
@@ -147,7 +147,7 @@
                           
                       </AnchorPane>
                   </Pane>
-                  <Button fx:id="impactButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#handlelocalImageButton" prefHeight="35.0" prefWidth="158.0">  
+                  <Button fx:id="impactButton" layoutX="5.0" layoutY="488.0" mnemonicParsing="false" onMouseClicked="#handlelocalImageButton" prefHeight="35.0" prefWidth="326.0">  
                     <graphic>
                      <FontIcon iconColor="e3e4fc" iconLiteral="fas-plus" iconSize="12" />
                     </graphic>
