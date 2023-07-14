@@ -555,10 +555,17 @@ public class MainWindowController {
             String selectedDirectoryString = selectedDirectory.getAbsolutePath();
             directoryLabel.setText(selectedDirectoryString);
 
-            Settings settings = new Settings();
-            General general = new General();
+            Settings settings = SettingsService.loadSettings();
+
+            if(settings != null){
+                
+            }else{
+                settings = SettingsService.defaultSettings();
+            }
+            General general = settings.getGeneral();
             general.setRootDirectory(selectedDirectoryString);
             settings.setGeneral(general);
+            SettingsService.writeSettings(settings);
             updateUI(settings);
         }
     }
