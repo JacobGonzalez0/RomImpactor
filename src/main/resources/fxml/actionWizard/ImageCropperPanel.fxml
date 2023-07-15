@@ -16,8 +16,6 @@
    
     <ImageView fx:id="imageView" preserveRatio="true" styleClass="imageView"  />
 
-
-
      <ToolBar minWidth="${wizardPane.width}" prefHeight="42.0" prefWidth="700.0" styleClass="toolbar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <items>
              <HBox alignment="CENTER" minWidth="${wizardPane.width + 20}" prefHeight="32.0" prefWidth="685.0" styleClass="hbox">
@@ -41,7 +39,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Spinner>
-                 <Button onAction="#selectAll" text="Select All" />
+                 <Button fx:id="selectAllButton" onAction="#selectAll" text="Select All" />
              </HBox>
          </items>
      </ToolBar>

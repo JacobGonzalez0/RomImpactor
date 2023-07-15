@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import manager.enums.Language;
 import manager.enums.devices.FunkeyDevice;
 import manager.models.Rom;
 import manager.models.Settings;
@@ -15,6 +16,8 @@ import manager.services.SettingsService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.awt.image.BufferedImage;
 
 public class FinalImagePreviewPanel{
@@ -26,7 +29,7 @@ public class FinalImagePreviewPanel{
     private ImageView imageView;
 
     @FXML
-    private Label titleLabel;
+    private Label finalPreviewLabel;
 
     @FXML
     private Button saveButton;
@@ -36,7 +39,18 @@ public class FinalImagePreviewPanel{
     private BufferedImage image;
 
     public void initialize() {
-        // Initialization code goes here
+        Settings settings = SettingsService.loadSettings();
+        setLanguage(settings.getGeneral().getLanguage());
+    }
+
+    private void setLanguage(Language language) {
+        if (language == null) {
+            language = Language.ENGLISH;
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
+    
+        finalPreviewLabel.setText(bundle.getString("finalPreviewLabel"));
     }
 
     public void receiveData(BufferedImage image, Rom selectedRom){

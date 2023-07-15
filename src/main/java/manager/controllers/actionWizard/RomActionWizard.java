@@ -2,6 +2,8 @@ package manager.controllers.actionWizard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import manager.enums.Language;
 import manager.enums.OperatingMode;
 import manager.enums.SearchProvider;
 import manager.enums.devices.FunkeyDevice;
@@ -42,7 +45,7 @@ public class RomActionWizard {
     private AnchorPane wizardPane, selectMode, localFileSelect, imageCropper, finalPreview, WindowActionButtons, gameSearch, coverSearch, providerSelect;
 
     @FXML
-    private Label selectedFileLabel;
+    private Label selectedFileLabel, coverArtActionsLabel;
 
     @FXML
     private VBox vbox;
@@ -92,6 +95,11 @@ public class RomActionWizard {
 
     @FXML
     public void initialize() {
+
+        Settings settings = SettingsService.loadSettings();
+        
+        setLanguage(settings.getGeneral().getLanguage());
+
         // Add event listeners for drag functionality
         WindowActionButtons.setOnMousePressed(this::handleMousePressed);
         WindowActionButtons.setOnMouseDragged(this::handleMouseDragged);
@@ -129,6 +137,18 @@ public class RomActionWizard {
 
         backButton.setVisible(false);
         saveButton.setVisible(false);
+    }
+
+    private void setLanguage(Language language) {
+        if (language == null) {
+            language = Language.ENGLISH;
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
+    
+        coverArtActionsLabel.setText(bundle.getString("coverArtActionsLabel"));
+        localImageSelect.setText(bundle.getString("localImageSelect"));
+        onlineImageSearch.setText(bundle.getString("onlineImageSearch"));
     }
     
     /*

@@ -19,7 +19,7 @@
         <Label layoutX="23.0" layoutY="14.0" text="Select Mode" />
             <Pane layoutX="23.0" layoutY="67.0" prefHeight="141.0" prefWidth="309.0" styleClass="borderBox">
                 <children>
-                    <Label styleClass="title" layoutX="14.0" layoutY="14.0" text="Cover Art Actions" />
+                    <Label fx:id="coverArtActionsLabel"  styleClass="title" layoutX="14.0" layoutY="14.0" text="Cover Art Actions" />
                     <RadioButton fx:id="localImageSelect" layoutX="26.0" layoutY="60.0" mnemonicParsing="false" text="Local Image Select"/>
                     <RadioButton fx:id="onlineImageSearch" layoutX="26.0" layoutY="93.0" mnemonicParsing="false" text="Online Image Search"  />
                 </children>

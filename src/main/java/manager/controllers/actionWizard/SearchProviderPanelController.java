@@ -6,17 +6,22 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Pair;
+import manager.enums.Language;
 import manager.enums.SearchProvider;
 import manager.models.Rom;
 import manager.models.Settings;
 import manager.services.SettingsService;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class SearchProviderPanelController {
 
     @FXML
-    private CheckBox renameRom;
+    private CheckBox renameRomEnable;
 
     @FXML
     private TextField gameName;
@@ -55,6 +60,18 @@ public class SearchProviderPanelController {
             }
         });
         choiceBox.getSelectionModel().selectFirst();
+
+        setLanguage(settings.getGeneral().getLanguage());
+    }
+
+    private void setLanguage(Language language) {
+        if (language == null) {
+            language = Language.ENGLISH;
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
+        renameRomEnable.setText(bundle.getString("renameRomEnable"));
+
     }
 
     public void setParentController(RomActionWizard controller){
@@ -73,7 +90,7 @@ public class SearchProviderPanelController {
     public Pair<SearchProvider, String> sendQuery() {
         String gameNameText = gameName.getText();
         SearchProvider selectedProvider = choiceBox.getSelectionModel().getSelectedItem();
-        if (renameRom.isSelected()) {
+        if (renameRomEnable.isSelected()) {
             rom.setName(gameNameText);
         }
         return new Pair<>(selectedProvider, gameNameText);

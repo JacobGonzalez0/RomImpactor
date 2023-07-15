@@ -3,6 +3,8 @@ package manager.controllers.actionWizard;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -14,6 +16,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
@@ -25,7 +28,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import manager.enums.Language;
+import manager.models.Settings;
 import manager.services.ImageService;
+import manager.services.SettingsService;
 
 public class ImageCropperPanelController {
 
@@ -37,6 +43,9 @@ public class ImageCropperPanelController {
 
     @FXML
     private Spinner<Integer> xCordSpinner, yCordSpinner, widthSpinner, heightSpinner;
+
+    @FXML
+    private Button selectAllButton;
 
     private RubberBandSelection rubberBandSelection;
 
@@ -50,6 +59,20 @@ public class ImageCropperPanelController {
 
     public void initialize() {
         rubberBandSelection = new RubberBandSelection(wizardPane, imageView, this); // pass AnchorPane instead of StackPane
+    
+
+        Settings settings = SettingsService.loadSettings();
+        setLanguage(settings.getGeneral().getLanguage());
+    }
+    
+    private void setLanguage(Language language) {
+        if (language == null) {
+            language = Language.ENGLISH;
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
+    
+        selectAllButton.setText(bundle.getString("selectAllButton"));
     }
 
     public void loadImage(File file) {

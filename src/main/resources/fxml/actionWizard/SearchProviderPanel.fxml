@@ -10,7 +10,7 @@
    <AnchorPane layoutX="28.0" layoutY="35.0" prefHeight="395.0" prefWidth="300.0" styleClass="borderBox" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="35.0">
       <children>
          <TextField fx:id="gameName" alignment="CENTER" layoutX="8.0" layoutY="133.0" prefHeight="35.0" prefWidth="280.0" promptText="Search Query..." AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
-         <CheckBox fx:id="renameRom" layoutX="8.0" layoutY="174.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="280.0" text="Rename rom with Search Query" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
+         <CheckBox fx:id="renameRomEnable" layoutX="8.0" layoutY="174.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="280.0" text="Rename rom with Search Query" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" />
          <ChoiceBox fx:id="choiceBox" layoutX="8.0" layoutY="198.0" prefHeight="39.0" prefWidth="280.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
     </ChoiceBox>
       </children>
