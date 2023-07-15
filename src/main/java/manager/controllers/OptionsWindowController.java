@@ -3,11 +3,15 @@ package manager.controllers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -31,7 +35,7 @@ public class OptionsWindowController {
     private ComboBox<Language> languageComboBox;
 
     @FXML
-    private Label deviceProfileLabel, manualScaleSizeLabel, steamGridDBLabel, igdbLabel;
+    private Label steamGridDBLabel, igdbLabel,  deviceProfileLabel, manualScaleSizeLabel, deviceDirectoryLabel, languageLabel;
 
     @FXML
     private TextField manualScaleSizeTextField;
@@ -44,9 +48,7 @@ public class OptionsWindowController {
 
     @FXML
     private Button changeDirectoryButton;
-    
-    // Add your controller logic here
-    // ...
+
 
     // Optional: You can add initialization code using @FXML initialize method
     @FXML
@@ -58,14 +60,53 @@ public class OptionsWindowController {
 
         if (settings != null) {
             populateSettingsUI(settings);
+            setLanguage(settings.getGeneral().getLanguage());
         }
         else 
         {
+            setLanguage(settings.getGeneral().getLanguage());
             populateSettingsUI(SettingsService.defaultSettings());
         }
         
+        languageComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            Language selectedLanguage = languageComboBox.getSelectionModel().getSelectedItem();
+            
+            // Call the setLanguage() method with the selected language to load the new language
+            setLanguage(selectedLanguage);
+        });
         
     }
+
+    private void setLanguage(Language language) {
+        if (language == null) {
+            language = Language.ENGLISH;
+        }
+
+        ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
+    
+        // Retrieve translations for each UI element from the resource bundle
+        deviceProfileComboBox.setPromptText(bundle.getString("deviceProfilePromptText"));
+        languageComboBox.setPromptText(bundle.getString("languagePromptText"));
+        steamGridDBLabel.setText(bundle.getString("steamGridDBLabel"));
+        igdbLabel.setText(bundle.getString("igdbLabel"));
+        deviceProfileLabel.setText(bundle.getString("deviceProfileLabel"));
+        manualScaleSizeLabel.setText(bundle.getString("manualScaleSizeLabel"));
+        deviceDirectoryLabel.setText(bundle.getString("deviceDirectoryLabel"));
+        languageLabel.setText(bundle.getString("languageLabel"));
+    
+        manualScaleSizeTextField.setPromptText(bundle.getString("manualScaleSizePromptText"));
+        deviceDirectoryTextField.setPromptText(bundle.getString("deviceDirectoryPromptText"));
+        steamGridDBApiKeyTextField.setPromptText(bundle.getString("steamGridDBApiKeyPromptText"));
+        igdbSecretTextField.setPromptText(bundle.getString("igdbSecretPromptText"));
+        igdbClientIdTextField.setPromptText(bundle.getString("igdbClientIdPromptText"));
+    
+        steamGridDBEnabledCheckBox.setText(bundle.getString("steamGridDBEnabledCheckBox"));
+        igdbEnabledCheckBox.setText(bundle.getString("igdbEnabledCheckBox"));
+        manualScaleEnableCheckBox.setText(bundle.getString("manualScaleEnableCheckBox"));
+    
+        changeDirectoryButton.setText(bundle.getString("changeDirectoryButtonText"));
+    }
+    
 
     @FXML
     public void saveSettings() {

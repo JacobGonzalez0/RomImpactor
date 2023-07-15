@@ -322,6 +322,11 @@ public class MainWindowController {
     
 
     private void setLanguage(Language language){
+
+        if (language == null) {
+            language = Language.ENGLISH;
+        }
+        
         ResourceBundle bundle = ResourceBundle.getBundle("localization/mainWindow", new Locale(language.getCode()));
     
         // Retrieve translations for each UI element from the resource bundle
